@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/schema";
-import { SITE } from "@/lib/site";
+import {
+  SITE,
+  MONETIZATION,
+  isAdsEnabled,
+  isAnalyticsEnabled,
+  isConsentRequired,
+} from "@/lib/site";
 import { ConsentProvider } from "@/components/consent/ConsentProvider";
-import { ConsentedScripts } from "@/components/consent/ConsentedScripts";
 import { CookieConsent } from "@/components/consent/CookieConsent";
 
 const geistSans = Geist({
@@ -68,6 +74,40 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
+      <head>
+        {/* Google Consent Mode v2 defaults — set BEFORE any ad/analytics
+            script so no personalized/ad-storage cookies are used until the
+            visitor accepts in the cookie banner. */}
+        {isConsentRequired() && (
+          <Script id="consent-default" strategy="beforeInteractive">
+            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});`}
+          </Script>
+        )}
+        {/* AdSense loader — present on every page so Google can verify the
+            site and serve (non-personalized) ads under Consent Mode. */}
+        {isAdsEnabled() && (
+          <Script
+            id="adsbygoogle-init"
+            async
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${MONETIZATION.adsenseClientId}`}
+          />
+        )}
+        {isAnalyticsEnabled() && (
+          <>
+            <Script
+              id="ga4-src"
+              async
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${MONETIZATION.analyticsId}`}
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${MONETIZATION.analyticsId}',{anonymize_ip:true});`}
+            </Script>
+          </>
+        )}
+      </head>
       <body className="flex min-h-full flex-col bg-white text-slate-900">
         <ConsentProvider>
           <JsonLd data={organizationSchema()} />
@@ -83,7 +123,6 @@ export default function RootLayout({
           </main>
           <Footer />
           <CookieConsent />
-          <ConsentedScripts />
         </ConsentProvider>
       </body>
     </html>

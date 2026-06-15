@@ -49,7 +49,7 @@ export const COMPANY = {
 export const MONETIZATION = {
   // Google AdSense publisher ID, e.g. "ca-pub-1234567890123456".
   // Leave empty to disable ads (placeholders show only in development).
-  adsenseClientId: "",
+  adsenseClientId: "ca-pub-1060204849522425",
   ads: {
     // AdSense ad-unit slot IDs (numeric strings). Leave empty to disable a slot.
     inContent: "",

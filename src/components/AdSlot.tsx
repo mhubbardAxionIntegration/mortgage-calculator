@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { MONETIZATION, isAdsEnabled } from "@/lib/site";
-import { useConsent } from "@/components/consent/ConsentProvider";
 
 type SlotName = keyof typeof MONETIZATION.ads;
 
@@ -29,12 +28,12 @@ export function AdSlot({
   label?: string;
   className?: string;
 }) {
-  const { consent } = useConsent();
   const slotId = MONETIZATION.ads[slot];
-  // Only render a real ad unit once ads are configured AND the visitor has
-  // accepted cookies, so no ad requests fire without consent.
-  const enabled =
-    isAdsEnabled() && slotId.trim().length > 0 && consent === "granted";
+  // Render a real ad unit when ads + this slot are configured. Cookie/consent
+  // behavior is governed by Google Consent Mode (default denied until the
+  // visitor accepts in the cookie banner), so ads serve non-personalized
+  // until then rather than being withheld entirely.
+  const enabled = isAdsEnabled() && slotId.trim().length > 0;
   const pushed = useRef(false);
 
   useEffect(() => {

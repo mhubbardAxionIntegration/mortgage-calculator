@@ -12,6 +12,24 @@ export type ConsentStatus = "unknown" | "granted" | "denied";
 
 const STORAGE_KEY = "pm_consent";
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+/** Push a Google Consent Mode v2 update so ad/analytics cookies match choice. */
+function updateConsentMode(granted: boolean) {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  const v = granted ? "granted" : "denied";
+  window.gtag("consent", "update", {
+    ad_storage: v,
+    ad_user_data: v,
+    ad_personalization: v,
+    analytics_storage: v,
+  });
+}
+
 interface ConsentContextValue {
   /** Current choice. "unknown" means the visitor hasn't decided yet. */
   consent: ConsentStatus;
@@ -42,6 +60,8 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === "granted" || stored === "denied") {
         setConsentState(stored);
+        // Re-apply a returning visitor's choice to Consent Mode (default denied).
+        updateConsentMode(stored === "granted");
       }
     } catch {
       /* storage unavailable; treat as undecided */
@@ -55,6 +75,7 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     } catch {
       /* ignore storage errors */
     }
+    updateConsentMode(value === "granted");
     setConsentState(value);
   }, []);
 
