@@ -2,7 +2,7 @@ export const SITE = {
   name: "PayMortgage Calculator",
   shortName: "PayMortgage",
   // Update this to your production domain before deploying.
-  url: "https://www.paymortgagecalculator.com",
+  url: "https://www.smartmortgagecalc.org",
   description:
     "Free mortgage calculator with taxes, insurance, PMI and a full amortization schedule. Estimate your monthly payment and find out how much house you can afford.",
   locale: "en_US",
