@@ -1,19 +1,19 @@
 export const SITE = {
-  name: "PayMortgage Calculator",
-  shortName: "PayMortgage",
+  name: "Smart Mortgage Calculator",
+  shortName: "Smart Mortgage Calc",
   // Update this to your production domain before deploying.
   url: "https://www.smartmortgagecalc.com",
   description:
     "Free mortgage calculator with taxes, insurance, PMI and a full amortization schedule. Estimate your monthly payment and find out how much house you can afford.",
   locale: "en_US",
-  twitter: "@paymortgagecalc",
+  twitter: "@smartmortgagecalc",
   // Indicative national average used as a sensible default. Replace with a live
   // rate feed in production and keep the "as of" date current for E-E-A-T.
   defaultRate: 6.75,
   ratesAsOf: "June 2026",
   year: 2026,
   author: {
-    name: "PayMortgage Editorial Team",
+    name: "Smart Mortgage Calculator Editorial Team",
     role: "Mortgage & home-finance writers",
   },
 } as const;
