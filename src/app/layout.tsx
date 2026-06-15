@@ -83,15 +83,14 @@ export default function RootLayout({
             {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});`}
           </Script>
         )}
-        {/* AdSense loader — present on every page so Google can verify the
-            site and serve (non-personalized) ads under Consent Mode. */}
+        {/* AdSense loader — literal <script> in SSR HTML so Google's
+            verification crawler finds it in <head> (next/script
+            afterInteractive only preloads and injects client-side). */}
         {isAdsEnabled() && (
-          <Script
-            id="adsbygoogle-init"
+          <script
             async
-            strategy="afterInteractive"
-            crossOrigin="anonymous"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${MONETIZATION.adsenseClientId}`}
+            crossOrigin="anonymous"
           />
         )}
         {isAnalyticsEnabled() && (
