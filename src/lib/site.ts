@@ -59,7 +59,7 @@ export const MONETIZATION = {
   // Google Analytics 4 measurement ID, e.g. "G-XXXXXXXXXX". Leave empty to
   // disable analytics. When set, the GA script loads only after the visitor
   // accepts cookies in the consent banner.
-  analyticsId: "",
+  analyticsId: "G-PSELBZR91H",
   affiliate: {
     // Lead-gen / affiliate destination for "Get personalized rates" CTAs.
     // e.g. your LendingTree, Rocket Mortgage, or FlexOffers tracking link.
