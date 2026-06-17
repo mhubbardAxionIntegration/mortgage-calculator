@@ -1,16 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "smartmortgagecalc.com" }],
-        destination: "https://www.smartmortgagecalc.com/:path*",
-        permanent: true,
-      },
-    ];
-  },
+  // Stop trailing-slash redirects that loop with Hostinger CDN + Facebook fbclid URLs.
+  skipTrailingSlashRedirect: true,
 };
 
 export default nextConfig;
