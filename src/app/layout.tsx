@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -75,17 +74,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <head>
-        {/* Google Consent Mode v2 defaults — set BEFORE any ad/analytics
-            script so no personalized/ad-storage cookies are used until the
-            visitor accepts in the cookie banner. */}
+        {/* Google Consent Mode v2 — must run before gtag config. */}
         {isConsentRequired() && (
-          <Script id="consent-default" strategy="beforeInteractive">
-            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});`}
-          </Script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html:
+                "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});",
+            }}
+          />
         )}
-        {/* AdSense loader — literal <script> in SSR HTML so Google's
-            verification crawler finds it in <head> (next/script
-            afterInteractive only preloads and injects client-side). */}
+        {/* AdSense — literal <script> in SSR HTML for crawler/tag detection. */}
         {isAdsEnabled() && (
           <script
             async
@@ -93,17 +91,18 @@ export default function RootLayout({
             crossOrigin="anonymous"
           />
         )}
+        {/* GA4 — literal tags in SSR HTML so Tag Assistant / GA detect the tag. */}
         {isAnalyticsEnabled() && (
           <>
-            <Script
-              id="ga4-src"
+            <script
               async
-              strategy="afterInteractive"
               src={`https://www.googletagmanager.com/gtag/js?id=${MONETIZATION.analyticsId}`}
             />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${MONETIZATION.analyticsId}',{anonymize_ip:true});`}
-            </Script>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${MONETIZATION.analyticsId}',{anonymize_ip:true});`,
+              }}
+            />
           </>
         )}
       </head>
