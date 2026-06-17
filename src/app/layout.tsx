@@ -74,6 +74,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <head>
+        {/* smc-deploy:ga4-v3 — search page source for this marker to confirm Hostinger pulled latest build */}
         {/* Google Consent Mode v2 — must run before gtag config. */}
         {isConsentRequired() && (
           <script
