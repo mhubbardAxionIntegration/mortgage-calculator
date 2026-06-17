@@ -26,6 +26,13 @@ input.range-slider {
   -webkit-touch-callout: none;
 }
 
+/* Reliable taps on calculator controls in embedded mobile WebViews. */
+section[aria-label="Mortgage calculator"] button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
 /* Easier to grab on phones (iOS + Android). */
 @media (pointer: coarse) {
   input[type="range"],

@@ -164,5 +164,24 @@ export function downloadAmortizationPdf(
     doc.text(`Page ${i} of ${pageCount}`, pageWidth - margin, h - 24, { align: "right" });
   }
 
-  doc.save("mortgage-amortization-report.pdf");
+  savePdf(doc, "mortgage-amortization-report.pdf");
+}
+
+/** Trigger a PDF download in a way that works in mobile in-app browsers. */
+function savePdf(doc: import("jspdf").jsPDF, filename: string) {
+  try {
+    const blob = doc.output("blob");
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.rel = "noopener";
+    anchor.style.display = "none";
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch {
+    doc.save(filename);
+  }
 }

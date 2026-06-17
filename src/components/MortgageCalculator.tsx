@@ -12,7 +12,9 @@ import {
 import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { buildRateQuoteUrl } from "@/lib/monetization";
 import { MONETIZATION, isPremiumLocked } from "@/lib/site";
-import { downloadAmortizationPdf } from "@/lib/pdf";
+import { copyOrShareText, isInAppBrowser } from "@/lib/clipboard";
+import { inputsFromSearchParams } from "@/lib/readCalculatorParams";
+import { bindTap } from "@/lib/tap";
 import { PaymentDonut } from "./PaymentDonut";
 import { AmortizationSchedule } from "./AmortizationSchedule";
 
@@ -60,6 +62,37 @@ export function MortgageCalculator({
   initialMode = "payment",
   lockMode = false,
 }: Props) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return (
+      <section
+        aria-label="Mortgage calculator"
+        aria-busy="true"
+        className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+      >
+        <div className="flex items-center justify-center p-12 text-sm text-slate-500">
+          Loading calculator…
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <MortgageCalculatorInner
+      initialInputs={initialInputs}
+      initialMode={initialMode}
+      lockMode={lockMode}
+    />
+  );
+}
+
+function MortgageCalculatorInner({
+  initialInputs,
+  initialMode = "payment",
+  lockMode = false,
+}: Props) {
   const [mode, setMode] = useState<Mode>(initialMode);
   const [inputs, setInputs] = useState<MortgageInputs>({
     ...DEFAULT_INPUTS,
@@ -73,6 +106,9 @@ export function MortgageCalculator({
   });
   const [showSchedule, setShowSchedule] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [shareFailed, setShareFailed] = useState(false);
+  const [printHint, setPrintHint] = useState(false);
+  const [pdfError, setPdfError] = useState(false);
   const [premiumUnlocked, setPremiumUnlocked] = useState(false);
   const [showLicenseEntry, setShowLicenseEntry] = useState(false);
   const [licenseInput, setLicenseInput] = useState("");
@@ -124,6 +160,19 @@ export function MortgageCalculator({
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  // Restore inputs from ?price=&down=&rate=&term= share links.
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (!params.has("price") && !params.has("down") && !params.has("rate") && !params.has("term")) {
+        return;
+      }
+      setInputs((prev) => inputsFromSearchParams(params, prev));
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   const applyLicense = useCallback(async () => {
@@ -190,14 +239,29 @@ export function MortgageCalculator({
       term: String(inputs.termYears),
     });
     const url = `${window.location.origin}${window.location.pathname}?${params}`;
-    try {
-      await navigator.clipboard.writeText(url);
+    setShareFailed(false);
+    const result = await copyOrShareText(url, "Mortgage calculator estimate");
+    if (result === "copied" || result === "shared") {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* clipboard may be unavailable; fail silently */
+      setTimeout(() => setCopied(false), 2500);
+    } else {
+      setShareFailed(true);
+      window.prompt("Copy this link:", url);
     }
   }, [inputs]);
+
+  const handlePrint = useCallback(() => {
+    setPrintHint(false);
+    try {
+      window.print();
+    } catch {
+      /* in-app browsers often block print */
+    }
+    if (isInAppBrowser()) {
+      setPrintHint(true);
+      setTimeout(() => setPrintHint(false), 6000);
+    }
+  }, []);
 
   const rateQuoteUrl = buildRateQuoteUrl({
     homePrice: inputs.homePrice,
@@ -208,8 +272,15 @@ export function MortgageCalculator({
 
   const [checkingOut, setCheckingOut] = useState(false);
   const canDownloadPdf = !isPremiumLocked() || premiumUnlocked;
-  const handleDownloadPdf = useCallback(() => {
-    downloadAmortizationPdf(inputs, result, schedule);
+  const handleDownloadPdf = useCallback(async () => {
+    setPdfError(false);
+    try {
+      const { downloadAmortizationPdf } = await import("@/lib/pdf");
+      downloadAmortizationPdf(inputs, result, schedule);
+    } catch {
+      setPdfError(true);
+      setTimeout(() => setPdfError(false), 5000);
+    }
   }, [inputs, result, schedule]);
 
   // Start Stripe Checkout; fall back to a configured link if Stripe isn't set up.
@@ -257,10 +328,10 @@ export function MortgageCalculator({
     >
       {!lockMode && (
         <div role="tablist" aria-label="Calculator mode" className="flex border-b border-slate-200">
-          <ModeTab id="payment" active={mode === "payment"} onClick={() => setMode("payment")}>
+          <ModeTab id="payment" active={mode === "payment"} {...bindTap(() => setMode("payment"))}>
             Monthly payment
           </ModeTab>
-          <ModeTab id="affordability" active={mode === "affordability"} onClick={() => setMode("affordability")}>
+          <ModeTab id="affordability" active={mode === "affordability"} {...bindTap(() => setMode("affordability"))}>
             Affordability
           </ModeTab>
         </div>
@@ -309,7 +380,7 @@ export function MortgageCalculator({
                       key={yrs}
                       type="button"
                       aria-pressed={inputs.termYears === yrs}
-                      onClick={() => set("termYears", yrs)}
+                      {...bindTap(() => set("termYears", yrs))}
                       className={`rounded-lg border px-4 py-2 text-sm font-medium transition ${
                         inputs.termYears === yrs
                           ? "border-emerald-600 bg-emerald-50 text-emerald-700"
@@ -411,7 +482,7 @@ export function MortgageCalculator({
                       key={opt.v}
                       type="button"
                       aria-pressed={afford.maxDtiRatio === opt.v}
-                      onClick={() => setAfford((p) => ({ ...p, maxDtiRatio: opt.v }))}
+                      {...bindTap(() => setAfford((p) => ({ ...p, maxDtiRatio: opt.v })))}
                       className={`rounded-lg border px-3 py-2 text-sm font-medium transition ${
                         afford.maxDtiRatio === opt.v
                           ? "border-emerald-600 bg-emerald-50 text-emerald-700"
@@ -474,19 +545,30 @@ export function MortgageCalculator({
               <div className="flex flex-wrap gap-2 pt-1">
                 <button
                   type="button"
-                  onClick={handleShare}
+                  {...bindTap(handleShare)}
                   className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-400"
                 >
                   {copied ? "Link copied!" : "Copy shareable link"}
                 </button>
                 <button
                   type="button"
-                  onClick={() => window.print()}
+                  {...bindTap(handlePrint)}
                   className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-400"
                 >
                   Print results
                 </button>
               </div>
+              {printHint && (
+                <p className="text-xs text-amber-700">
+                  Printing may not work inside the LinkedIn/Facebook/Instagram app.
+                  Tap the menu (⋯) and choose &quot;Open in browser&quot;, then print from Safari or Chrome.
+                </p>
+              )}
+              {shareFailed && (
+                <p className="text-xs text-amber-700">
+                  Could not copy automatically — use the link shown in the dialog.
+                </p>
+              )}
             </div>
           ) : (
             <div className="space-y-5">
@@ -546,7 +628,7 @@ export function MortgageCalculator({
           <div className="flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
-              onClick={() => setShowSchedule((s) => !s)}
+              {...bindTap(() => setShowSchedule((s) => !s))}
               aria-expanded={showSchedule}
               className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
             >
@@ -556,7 +638,7 @@ export function MortgageCalculator({
             {canDownloadPdf ? (
               <button
                 type="button"
-                onClick={handleDownloadPdf}
+                {...bindTap(handleDownloadPdf)}
                 className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-400 hover:text-emerald-700"
               >
                 <span aria-hidden>&#8595;</span> Download PDF report
@@ -564,7 +646,7 @@ export function MortgageCalculator({
             ) : (
               <button
                 type="button"
-                onClick={handleUnlock}
+                {...bindTap(handleUnlock)}
                 disabled={checkingOut}
                 className="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-70"
               >
@@ -575,6 +657,12 @@ export function MortgageCalculator({
               </button>
             )}
           </div>
+
+          {pdfError && (
+            <p className="mt-2 text-xs text-amber-700">
+              PDF download may be blocked in this app. Tap ⋯ → Open in browser, then try again.
+            </p>
+          )}
 
           {!canDownloadPdf && (
             <div className="mt-2">
@@ -634,13 +722,17 @@ export function MortgageCalculator({
 function ModeTab({
   id,
   active,
-  onClick,
   children,
+  onTouchStart,
+  onTouchEnd,
+  onClick,
 }: {
   id: string;
   active: boolean;
-  onClick: () => void;
   children: React.ReactNode;
+  onTouchStart?: () => void;
+  onTouchEnd?: (e: React.TouchEvent) => void;
+  onClick?: (e: React.MouseEvent) => void;
 }) {
   return (
     <button
@@ -648,6 +740,8 @@ function ModeTab({
       role="tab"
       id={`tab-${id}`}
       aria-selected={active}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
       onClick={onClick}
       className={`flex-1 px-4 py-3 text-sm font-semibold transition ${
         active
