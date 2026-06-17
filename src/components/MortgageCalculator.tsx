@@ -690,6 +690,12 @@ function SliderField({
 }) {
   const id = useId();
   const safeValue = Math.min(Math.max(value, min), max);
+
+  const commit = (raw: string) => {
+    const n = Number(raw);
+    if (Number.isFinite(n)) onChange(n);
+  };
+
   return (
     <div>
       <div className="mb-1 flex items-baseline justify-between gap-3">
@@ -705,7 +711,10 @@ function SliderField({
         max={max}
         step={step}
         value={safeValue}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onInput={(e) => commit(e.currentTarget.value)}
+        onChange={(e) => commit(e.currentTarget.value)}
+        onTouchEnd={(e) => commit(e.currentTarget.value)}
+        onPointerUp={(e) => commit(e.currentTarget.value)}
         className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-emerald-600"
       />
       {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
@@ -743,7 +752,8 @@ function NumberField({
           min={0}
           step={step}
           value={Number.isFinite(value) ? value : 0}
-          onChange={(e) => onChange(Number(e.target.value))}
+          onInput={(e) => onChange(Number(e.currentTarget.value))}
+          onChange={(e) => onChange(Number(e.currentTarget.value))}
           className="w-full bg-transparent px-2.5 py-2 text-sm text-slate-900 outline-none"
         />
         {suffix && <span className="pr-2.5 text-sm text-slate-400">{suffix}</span>}

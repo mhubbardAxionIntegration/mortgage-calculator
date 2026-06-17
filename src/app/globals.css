@@ -17,9 +17,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Keep range thumbs comfortably tappable on touch devices for good INP. */
+/* Horizontal sliders need full touch control in in-app browsers (LinkedIn, etc.). */
 input[type="range"] {
-  touch-action: pan-y;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @media print {
