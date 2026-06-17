@@ -5,11 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node scripts/start.mjs",
+    "start": "next start",
     "lint": "eslint"
   },
   "engines": {
-    "node": ">=20"
+    "node": "20.x"
   },
   "dependencies": {
     "jspdf": "^4.2.1",
