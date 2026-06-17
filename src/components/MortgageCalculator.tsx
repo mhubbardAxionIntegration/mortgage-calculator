@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useId, useCallback, useEffect } from "react";
+import { useMemo, useState, useId, useCallback, useEffect, useRef } from "react";
 import {
   calculatePayment,
   buildAmortizationSchedule,
@@ -689,12 +689,66 @@ function SliderField({
   hint?: string;
 }) {
   const id = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
   const safeValue = Math.min(Math.max(value, min), max);
+  const dragging = useRef(false);
+  const [active, setActive] = useState(false);
+  const [local, setLocal] = useState(safeValue);
 
-  const commit = (raw: string) => {
-    const n = Number(raw);
-    if (Number.isFinite(n)) onChange(n);
-  };
+  useEffect(() => {
+    if (!dragging.current) setLocal(safeValue);
+  }, [safeValue]);
+
+  const commit = useCallback(
+    (el: HTMLInputElement) => {
+      const n = Number(el.value);
+      if (!Number.isFinite(n)) return;
+      setLocal(n);
+      onChange(n);
+    },
+    [onChange],
+  );
+
+  // Non-passive touchmove prevents LinkedIn/Facebook/Instagram from scrolling
+  // over the slider while the user is dragging (iOS + Android WebViews).
+  useEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      commit(el);
+      e.preventDefault();
+    };
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => el.removeEventListener("touchmove", onTouchMove);
+  }, [commit]);
+
+  const begin = useCallback(
+    (el: HTMLInputElement) => {
+      dragging.current = true;
+      setActive(true);
+      commit(el);
+    },
+    [commit],
+  );
+
+  const move = useCallback(
+    (el: HTMLInputElement) => {
+      if (dragging.current) commit(el);
+    },
+    [commit],
+  );
+
+  const end = useCallback(
+    (el: HTMLInputElement) => {
+      commit(el);
+      dragging.current = false;
+      setActive(false);
+    },
+    [commit],
+  );
+
+  const shown = active ? local : safeValue;
 
   return (
     <div>
@@ -702,20 +756,34 @@ function SliderField({
         <label htmlFor={id} className="text-sm font-medium text-slate-700">
           {label}
         </label>
-        <span className="text-sm font-semibold text-slate-900">{format(value)}</span>
+        <span className="text-sm font-semibold text-slate-900">
+          {format(active ? local : value)}
+        </span>
       </div>
       <input
+        ref={inputRef}
         id={id}
         type="range"
         min={min}
         max={max}
         step={step}
-        value={safeValue}
-        onInput={(e) => commit(e.currentTarget.value)}
-        onChange={(e) => commit(e.currentTarget.value)}
-        onTouchEnd={(e) => commit(e.currentTarget.value)}
-        onPointerUp={(e) => commit(e.currentTarget.value)}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-emerald-600"
+        value={shown}
+        onPointerDown={(e) => {
+          begin(e.currentTarget);
+          e.currentTarget.setPointerCapture?.(e.pointerId);
+        }}
+        onPointerMove={(e) => move(e.currentTarget)}
+        onPointerUp={(e) => {
+          end(e.currentTarget);
+          e.currentTarget.releasePointerCapture?.(e.pointerId);
+        }}
+        onPointerCancel={(e) => end(e.currentTarget)}
+        onTouchStart={(e) => begin(e.currentTarget)}
+        onTouchMove={(e) => move(e.currentTarget)}
+        onTouchEnd={(e) => end(e.currentTarget)}
+        onInput={(e) => move(e.currentTarget)}
+        onChange={(e) => commit(e.currentTarget)}
+        className="range-slider h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-emerald-600"
       />
       {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
     </div>
@@ -754,6 +822,7 @@ function NumberField({
           value={Number.isFinite(value) ? value : 0}
           onInput={(e) => onChange(Number(e.currentTarget.value))}
           onChange={(e) => onChange(Number(e.currentTarget.value))}
+          onBlur={(e) => onChange(Number(e.currentTarget.value))}
           className="w-full bg-transparent px-2.5 py-2 text-sm text-slate-900 outline-none"
         />
         {suffix && <span className="pr-2.5 text-sm text-slate-400">{suffix}</span>}
