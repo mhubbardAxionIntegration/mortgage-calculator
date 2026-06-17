@@ -79,7 +79,7 @@ export default function RootLayout({
           <script
             dangerouslySetInnerHTML={{
               __html:
-                "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});",
+                "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});",
             }}
           />
         )}
@@ -100,7 +100,7 @@ export default function RootLayout({
             />
             <script
               dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${MONETIZATION.analyticsId}',{anonymize_ip:true});`,
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${MONETIZATION.analyticsId}',{anonymize_ip:true,send_page_view:true});`,
               }}
             />
           </>

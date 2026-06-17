@@ -26,7 +26,19 @@ function updateConsentMode(granted: boolean) {
     ad_storage: v,
     ad_user_data: v,
     ad_personalization: v,
-    analytics_storage: v,
+    // Only turn off analytics when the visitor explicitly declines.
+    analytics_storage: granted ? "granted" : "denied",
+  });
+}
+
+/** Restore first-visit defaults when the visitor re-opens cookie preferences. */
+function resetConsentModeDefaults() {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  window.gtag("consent", "update", {
+    analytics_storage: "granted",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
   });
 }
 
@@ -60,7 +72,7 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === "granted" || stored === "denied") {
         setConsentState(stored);
-        // Re-apply a returning visitor's choice to Consent Mode (default denied).
+        // Re-apply a returning visitor's choice to Consent Mode.
         updateConsentMode(stored === "granted");
       }
     } catch {
@@ -86,6 +98,7 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
       /* ignore storage errors */
     }
     setConsentState("unknown");
+    resetConsentModeDefaults();
   }, []);
 
   return (
