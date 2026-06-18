@@ -397,7 +397,7 @@ function MortgageCalculatorInner({
                 onChange={(v) => set("annualRate", v)}
                 min={0.5}
                 max={12}
-                step={0.05}
+                step={0.01}
                 format={(v) => formatPercent(v)}
               />
               <fieldset>
@@ -495,7 +495,7 @@ function MortgageCalculatorInner({
                 onChange={(v) => set("annualRate", v)}
                 min={0.5}
                 max={12}
-                step={0.05}
+                step={0.01}
                 format={(v) => formatPercent(v)}
               />
               <fieldset>
