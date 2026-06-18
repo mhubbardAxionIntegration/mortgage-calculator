@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { CalculatorSeoPreview } from "@/components/CalculatorSeoPreview";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
 import { CurrentMortgageRates } from "@/components/CurrentMortgageRates";
 import { FaqSection } from "@/components/FaqSection";
@@ -97,6 +98,10 @@ export default async function MortgageCalculatorPage() {
           </p>
         </header>
 
+        <div className="mt-6">
+          <CalculatorSeoPreview annualRate={rates.rate30} />
+        </div>
+
         <div className="mt-8">
           <MortgageCalculator initialInputs={{ annualRate: rates.rate30 }} />
         </div>
@@ -117,6 +122,20 @@ export default async function MortgageCalculatorPage() {
         </Suspense>
 
         <article className="prose-slate mt-14 max-w-3xl space-y-10">
+          <section>
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+              What is a free mortgage payment calculator?
+            </h2>
+            <p className="mt-4 leading-relaxed text-slate-600">
+              A mortgage payment calculator estimates your monthly cost to buy a
+              home. The best calculators include <strong>taxes, insurance, PMI,
+              and HOA</strong> — not just principal and interest — so you see the
+              same payment lenders use for approval. Ours also shows total interest,
+              a full amortization schedule, and an affordability mode based on your
+              income.
+            </p>
+          </section>
+
           <section>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
               How to Use This Mortgage Calculator
@@ -275,7 +294,7 @@ export default async function MortgageCalculatorPage() {
             Property taxes and insurance costs vary by state. Choose yours for
             localized defaults and a more accurate monthly payment estimate.
           </p>
-          <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-3 lg:grid-cols-4">
+          <ul id="states" className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-3 lg:grid-cols-4">
             {STATES.map((s) => (
               <li key={s.slug}>
                 <Link

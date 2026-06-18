@@ -12,22 +12,16 @@ export function FaqSection({
       <h2 id="faq-heading" className="text-2xl font-bold tracking-tight text-slate-900">
         {heading}
       </h2>
-      <div className="mt-6 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">
+      <p className="mt-3 text-slate-600">
+        Common questions about estimating your monthly mortgage payment, PITI,
+        PMI, and affordability.
+      </p>
+      <div className="mt-6 space-y-6">
         {faqs.map((faq) => (
-          <details key={faq.question} className="group px-5 py-4">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-slate-900">
-              {faq.question}
-              <span
-                aria-hidden
-                className="shrink-0 text-emerald-600 transition group-open:rotate-45"
-              >
-                +
-              </span>
-            </summary>
-            <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              {faq.answer}
-            </p>
-          </details>
+          <article key={faq.question} className="rounded-2xl border border-slate-200 bg-white p-5">
+            <h3 className="text-base font-semibold text-slate-900">{faq.question}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{faq.answer}</p>
+          </article>
         ))}
       </div>
     </section>

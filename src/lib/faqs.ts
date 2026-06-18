@@ -1,5 +1,3 @@
-import { SITE } from "./site";
-
 export interface Faq {
   question: string;
   answer: string;
@@ -40,6 +38,26 @@ export const MORTGAGE_FAQS: Faq[] = [
   {
     question: "Are the interest rates in this calculator current?",
     answer:
-      `The calculator uses an indicative national average rate (around ${SITE.defaultRate}% as of ${SITE.ratesAsOf}) as a starting point, but your actual rate depends on your credit score, loan type, down payment, and the lender. Enter a quote from your own lender for the most accurate estimate.`,
+      "We pre-fill the calculator with the latest Freddie Mac 30-year average from the Federal Reserve (FRED), updated weekly. Your actual rate depends on your credit score, loan type, down payment, and lender — enter a quote from your loan officer for the most accurate estimate.",
+  },
+  {
+    question: "What is a mortgage calculator with taxes and insurance?",
+    answer:
+      "A full mortgage calculator includes principal and interest plus property taxes, homeowners insurance, PMI, and HOA dues — often called PITI. That gives you the true monthly cost of owning a home, not just the loan payment. Our calculator updates all of these as you change the home price, down payment, and rate.",
+  },
+  {
+    question: "How accurate is this mortgage calculator?",
+    answer:
+      "This tool provides educational estimates based on the numbers you enter. Actual lender quotes, escrow requirements, and local tax assessments can differ. Use it to compare scenarios and budget before you apply; confirm final numbers on your Loan Estimate and Closing Disclosure.",
+  },
+  {
+    question: "Can I use this calculator for FHA, VA, or refinance loans?",
+    answer:
+      "Yes. The main calculator works for conventional loans. For FHA (with MIP), VA ($0 down), refinance break-even, affordability, and ARM loans, use our specialized calculators — each is pre-configured with the right defaults and a plain-English guide.",
+  },
+  {
+    question: "Does this calculator show an amortization schedule?",
+    answer:
+      "Yes. Expand the amortization schedule to see how much of each payment goes to principal versus interest, year by year. You can also print results, copy a shareable link, or download a PDF report of your estimate.",
   },
 ];
