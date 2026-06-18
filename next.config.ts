@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Stop trailing-slash redirects that loop with Hostinger CDN + Facebook fbclid URLs.
+  // Avoid trailing-slash redirects that fight Hostinger hcdn canonicalization on "/".
   skipTrailingSlashRedirect: true,
 };
 
