@@ -1,12 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
+import { CurrentMortgageRates } from "@/components/CurrentMortgageRates";
 import { LOAN_TYPES } from "@/lib/loanTypes";
 import { STATES } from "@/lib/states";
 import { BLOG_POSTS_SORTED } from "@/lib/blog";
 import { JsonLd } from "@/components/JsonLd";
 import { RateCta } from "@/components/RateCta";
 import { webApplicationSchema } from "@/lib/schema";
+import { getMortgageRatesWithFallback, formatRateDate } from "@/lib/mortgageRates";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -20,7 +23,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const { rates, isLive } = await getMortgageRatesWithFallback();
+
   return (
     <>
       <JsonLd
@@ -35,7 +40,10 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-4 pb-10 pt-12 sm:pt-16">
           <div className="mx-auto max-w-3xl text-center">
             <p className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-              Updated for {SITE.year} &middot; Rates as of {SITE.ratesAsOf}
+              Updated for {SITE.year}
+              {isLive
+                ? ` · 30-yr avg ${rates.rate30.toFixed(2)}% (${formatRateDate(rates.asOf30)})`
+                : ` · Rates as of ${SITE.ratesAsOf}`}
             </p>
             <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
               {SITE.seo.calculatorH1}
@@ -48,7 +56,7 @@ export default function Home() {
           </div>
 
           <div className="mx-auto mt-8 max-w-5xl">
-            <MortgageCalculator />
+            <MortgageCalculator initialInputs={{ annualRate: rates.rate30 }} />
           </div>
 
           <div className="mx-auto mt-8 max-w-5xl">
@@ -58,15 +66,15 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <h2 className="text-center text-2xl font-bold tracking-tight text-slate-900">
-          Current Mortgage Rates
-        </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-slate-600">
-          As of {SITE.ratesAsOf}, the national average 30-year fixed mortgage
-          rate is around {SITE.defaultRate}%. Your actual rate depends on your
-          credit score, down payment, loan type, and lender. Use the calculator
-          above to see how different rates change your monthly payment.
-        </p>
+        <Suspense
+          fallback={
+            <div className="mx-auto max-w-3xl animate-pulse rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
+              Loading current US mortgage rates…
+            </div>
+          }
+        >
+          <CurrentMortgageRates calculatorHref="/" className="mx-auto max-w-3xl" />
+        </Suspense>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-12">

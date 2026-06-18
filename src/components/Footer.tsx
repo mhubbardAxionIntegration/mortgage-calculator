@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE, COMPANY } from "@/lib/site";
+import { RATE_SOURCE_LINKS } from "@/lib/mortgageRates";
 import { LOAN_TYPES } from "@/lib/loanTypes";
 import { STATES } from "@/lib/states";
 import { CookiePreferencesButton } from "@/components/consent/CookiePreferencesButton";
@@ -92,6 +93,16 @@ export function Footer() {
             </li>
             <li>
               <CookiePreferencesButton className="text-left hover:text-emerald-700" />
+            </li>
+            <li>
+              <a
+                href={RATE_SOURCE_LINKS.fred30}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-emerald-700"
+              >
+                Live US mortgage rates (FRED)
+              </a>
             </li>
             <li className="pt-1 text-xs text-slate-400">Rates as of {SITE.ratesAsOf}</li>
           </ul>

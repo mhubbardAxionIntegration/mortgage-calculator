@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
+import { CurrentMortgageRates } from "@/components/CurrentMortgageRates";
 import { FaqSection } from "@/components/FaqSection";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
@@ -16,6 +18,7 @@ import {
   webApplicationSchema,
 } from "@/lib/schema";
 import { absoluteUrl, SITE } from "@/lib/site";
+import { getMortgageRatesWithFallback } from "@/lib/mortgageRates";
 
 const PAGE_URL = absoluteUrl("/mortgage-calculator");
 
@@ -53,7 +56,9 @@ const HOW_TO_STEPS = [
   },
 ];
 
-export default function MortgageCalculatorPage() {
+export default async function MortgageCalculatorPage() {
+  const { rates } = await getMortgageRatesWithFallback();
+
   return (
     <>
       <JsonLd
@@ -93,7 +98,7 @@ export default function MortgageCalculatorPage() {
         </header>
 
         <div className="mt-8">
-          <MortgageCalculator />
+          <MortgageCalculator initialInputs={{ annualRate: rates.rate30 }} />
         </div>
 
         <div className="mt-10">
@@ -101,22 +106,15 @@ export default function MortgageCalculatorPage() {
         </div>
 
         <div className="mt-10">
-          <RateCta heading="Current Mortgage Rates" />
+          <RateCta heading="Compare personalized rate quotes" />
         </div>
 
-        <section className="mt-10 max-w-3xl">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            Current Mortgage Rates
-          </h2>
-          <p className="mt-4 leading-relaxed text-slate-600">
-            As of {SITE.ratesAsOf}, the national average 30-year fixed mortgage
-            rate is around {SITE.defaultRate}%. Your actual rate depends on your
-            credit score, down payment, loan type, and lender. Adjust the
-            interest-rate slider above to see how even a small rate change
-            affects your monthly payment and total interest over the life of the
-            loan.
-          </p>
-        </section>
+        <Suspense fallback={null}>
+          <CurrentMortgageRates
+            calculatorHref="/mortgage-calculator"
+            className="mt-10"
+          />
+        </Suspense>
 
         <article className="prose-slate mt-14 max-w-3xl space-y-10">
           <section>

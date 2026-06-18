@@ -1,4 +1,5 @@
 import { SITE } from "./site";
+import { getState } from "./states";
 
 export type Block =
   | { type: "p"; html: string }
@@ -383,6 +384,297 @@ export const BLOG_POSTS: BlogPost[] = [
         "Your closing budget is already tight.",
       ] },
       { type: "p", html: "Try both scenarios — with and without points — in the <a href=\"/mortgage-calculator\">mortgage calculator</a> by adjusting the interest rate to see how the monthly payment and total interest change." },
+    ],
+  },
+  {
+    slug: "current-mortgage-rates-june-2026",
+    title: "Current Mortgage Rates in June 2026",
+    description:
+      "Where 30-year and 15-year mortgage rates stand in June 2026, what's moving the market, and how to estimate your payment with today's rates.",
+    excerpt:
+      "A June 2026 snapshot of mortgage rates, what changed this month, and how to plug today's numbers into your budget.",
+    category: "rates",
+    published: "2026-06-15",
+    updated: "2026-06-15",
+    readingMinutes: 5,
+    tags: ["Rates", "June 2026", "Market"],
+    relatedCalculators: [
+      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
+    ],
+    body: [
+      { type: "p", html: `Mortgage rates in June 2026 continue to reflect a market balancing slower inflation against a still-tight Federal Reserve policy stance. The national average for a 30-year fixed loan is around ${SITE.defaultRate}% as of ${SITE.ratesAsOf}, though the rate you actually qualify for depends on your credit, down payment, and loan type.` },
+      { type: "h2", text: "Where rates stand this month" },
+      { type: "p", html: "Headline averages are a starting point, not a quote. In June 2026, well-qualified borrowers with strong credit and 20% down often see rates near or slightly below the national average, while buyers with smaller down payments or lower scores may land higher. Fifteen-year fixed loans typically price 0.5–0.75% below comparable 30-year terms, which lowers total interest but raises the monthly payment." },
+      { type: "ul", items: [
+        `30-year fixed: roughly ${SITE.defaultRate}% national average (indicative).`,
+        "15-year fixed: typically 0.5–0.75% below the 30-year average for similar profiles.",
+        "5/1 and 7/1 ARMs: often start lower than fixed rates, then adjust after the initial period.",
+        "FHA and VA loans: rates can be competitive, but mortgage insurance or funding fees affect total cost.",
+      ] },
+      { type: "h2", text: "What moved rates in June 2026" },
+      { type: "p", html: "Mortgage rates track the broader bond market more closely than any single Fed announcement. This month, traders are weighing inflation reports, jobs data, and expectations for future rate cuts. When the 10-year Treasury yield rises, mortgage rates tend to follow within days. Geopolitical news and Treasury auction demand can also push rates up or down independent of housing fundamentals." },
+      { type: "h2", text: "How to use today's rates in your budget" },
+      { type: "p", html: "Don't shop for a home based on a rate you saw in an ad. Run your own numbers with the home price, down payment, and term you're actually considering. Our <a href=\"/mortgage-calculator\">mortgage calculator</a> includes taxes, insurance, and PMI so you see a full monthly payment — not just principal and interest. If you already own a home, compare your current loan to today's market in the <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a>." },
+      { type: "h2", text: "Tips to get a better rate in June 2026" },
+      { type: "ul", items: [
+        "Compare Loan Estimates from at least three lenders on the same day.",
+        "Improve your credit score before applying — even 20 points can matter.",
+        "Consider a larger down payment to reduce PMI and improve pricing.",
+        "Lock your rate once you're under contract if you expect rates to rise.",
+        "Ask about lender credits versus discount points and run the break-even math.",
+      ] },
+      { type: "p", html: "Rates change daily. Treat any figure here as educational and confirm current pricing with a licensed loan officer before making decisions." },
+    ],
+  },
+  {
+    slug: "how-much-house-can-i-afford-georgia",
+    title: "How Much House Can I Afford in Georgia? (2026 Guide)",
+    description:
+      "Estimate how much house you can afford in Georgia using income, debt, property taxes, and insurance — with a worked example for 2026.",
+    excerpt:
+      "Georgia's property taxes and insurance affect your real payment. Here's how to size a budget that fits — with a worked example.",
+    category: "affordability",
+    published: "2026-06-14",
+    updated: "2026-06-14",
+    readingMinutes: 7,
+    tags: ["Affordability", "Georgia", "Budgeting"],
+    relatedCalculators: [
+      { href: "/mortgage-calculator/georgia", label: "Georgia Mortgage Calculator" },
+      { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
+    ],
+    body: (() => {
+      const ga = getState("georgia")!;
+      const rate = SITE.defaultRate / 100 / 12;
+      const n = 360;
+      const loan = ga.medianHomePrice * 0.8;
+      const pi =
+        (loan * (rate * Math.pow(1 + rate, n))) / (Math.pow(1 + rate, n) - 1);
+      const tax = (ga.medianHomePrice * ga.propertyTaxRate) / 100 / 12;
+      const ins = ga.avgInsurance / 12;
+      const payment = Math.round(pi + tax + ins);
+      return [
+        { type: "p" as const, html: `Georgia remains one of the more affordable states for homebuyers, with a median home price around $${ga.medianHomePrice.toLocaleString()} and an effective property tax rate near ${ga.propertyTaxRate}%. But \"affordable\" still depends on your income, debts, and how much you put down. This guide walks through the math Georgia buyers use in 2026.` },
+        { type: "h2" as const, text: "Start with the 28/36 rule" },
+        { type: "p" as const, html: "Lenders typically cap your housing payment at about 28% of gross monthly income and total debt at 36%. On $8,000/month income, that's roughly $2,240 for housing and $2,880 for all debt combined. If you already pay $500 toward a car and student loans, your practical housing ceiling is closer to $2,380 — whichever limit is lower." },
+        { type: "h2" as const, text: "Georgia costs beyond principal and interest" },
+        { type: "p" as const, html: "Georgia buyers often focus on the loan payment and forget property taxes and insurance. At the state's average tax rate, a $${ga.medianHomePrice.toLocaleString()} home adds about $${Math.round(tax)}/month in taxes, plus roughly $${Math.round(ins)}/month for homeowners insurance — before PMI or HOA dues." },
+        { type: "ul" as const, items: [
+          `Median home price (indicative): $${ga.medianHomePrice.toLocaleString()}`,
+          `Average property tax rate: ${ga.propertyTaxRate}% of home value per year`,
+          `Typical insurance premium: about $${ga.avgInsurance.toLocaleString()}/year`,
+          "Atlanta metro prices run higher; rural and small-city markets often run lower",
+        ] },
+        { type: "h2" as const, text: "Worked example: median-priced Georgia home" },
+        { type: "p" as const, html: `Assume a $${ga.medianHomePrice.toLocaleString()} home with 20% down, a ${SITE.defaultRate}% rate, and a 30-year term. Principal and interest come to about $${Math.round(pi)}/month. Add taxes and insurance and you're near $${payment}/month total — before maintenance, utilities, or HOA fees.` },
+        { type: "h2" as const, text: "Georgia programs that stretch your budget" },
+        { type: "p" as const, html: "First-time buyers may qualify for Georgia Dream down-payment assistance through the Department of Community Affairs. FHA loans allow 3.5% down with flexible credit, and VA loans offer $0 down for eligible veterans — though mortgage insurance or funding fees change the monthly math. Compare options in our <a href=\"/calculators/fha-mortgage-calculator\">FHA calculator</a> and <a href=\"/calculators/va-mortgage-calculator\">VA calculator</a>." },
+        { type: "h2" as const, text: "Run your own Georgia numbers" },
+        { type: "p" as const, html: `Use the <a href=\"/calculators/home-affordability-calculator\">home affordability calculator</a> to work backward from your income, or open the <a href=\"/mortgage-calculator/georgia\">Georgia mortgage calculator</a> — it's pre-loaded with state tax and insurance defaults so your estimate matches local costs more closely.` },
+      ];
+    })(),
+  },
+  {
+    slug: "how-much-house-can-i-afford-texas",
+    title: "How Much House Can I Afford in Texas? (2026 Guide)",
+    description:
+      "Learn how much house you can afford in Texas, including how higher property taxes and insurance affect your monthly payment in 2026.",
+    excerpt:
+      "Texas has no state income tax, but property taxes run high. Here's how to budget for a Texas home in 2026.",
+    category: "affordability",
+    published: "2026-06-13",
+    updated: "2026-06-13",
+    readingMinutes: 7,
+    tags: ["Affordability", "Texas", "Budgeting"],
+    relatedCalculators: [
+      { href: "/mortgage-calculator/texas", label: "Texas Mortgage Calculator" },
+      { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
+    ],
+    body: (() => {
+      const tx = getState("texas")!;
+      const rate = SITE.defaultRate / 100 / 12;
+      const n = 360;
+      const loan = tx.medianHomePrice * 0.8;
+      const pi =
+        (loan * (rate * Math.pow(1 + rate, n))) / (Math.pow(1 + rate, n) - 1);
+      const tax = (tx.medianHomePrice * tx.propertyTaxRate) / 100 / 12;
+      const ins = tx.avgInsurance / 12;
+      const payment = Math.round(pi + tax + ins);
+      return [
+        { type: "p" as const, html: `Texas attracts buyers with strong job growth and no state income tax, but property taxes and homeowners insurance are a bigger slice of the monthly payment than in many states. With a median home near $${tx.medianHomePrice.toLocaleString()} and an effective tax rate around ${tx.propertyTaxRate}%, budgeting correctly matters.` },
+        { type: "h2" as const, text: "The 28/36 rule for Texas buyers" },
+        { type: "p" as const, html: "Lenders size your loan using gross income and existing debt. Keep housing near 28% of income and total debt near 36%. Texas's higher tax load means you may qualify for a larger loan amount than you comfortably afford once taxes and insurance are included — always stress-test the full PITI payment." },
+        { type: "h2" as const, text: "Why Texas taxes change the math" },
+        { type: "p" as const, html: `Texas property taxes are among the highest in the country as a share of home value. On a $${tx.medianHomePrice.toLocaleString()} home at ${tx.propertyTaxRate}%, taxes alone add about $${Math.round(tax)}/month. Wind and hail risk also push insurance premiums — budget roughly $${Math.round(ins)}/month for insurance on a typical home.` },
+        { type: "h2" as const, text: "Sample payment on a median Texas home" },
+        { type: "p" as const, html: `With 20% down, a ${SITE.defaultRate}% rate, and a 30-year term on a $${tx.medianHomePrice.toLocaleString()} purchase, principal and interest run about $${Math.round(pi)}/month. Taxes and insurance bring the total near $${payment}/month — a reminder that Texas \"affordability\" is about the full payment, not the loan alone.` },
+        { type: "h2" as const, text: "Tips for Texas homebuyers in 2026" },
+        { type: "ul" as const, items: [
+          "Homestead exemptions can lower your property tax bill — file after you close.",
+          "Compare insurance quotes; Texas premiums vary widely by county and roof type.",
+          "Look at total monthly cost, not just the price per square foot.",
+          "Consider energy costs — older homes in hot climates can add $200+ in summer AC.",
+        ] },
+        { type: "p" as const, html: `Model your payment with local defaults in the <a href=\"/mortgage-calculator/texas\">Texas mortgage calculator</a>, or start from income in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a>.` },
+      ];
+    })(),
+  },
+  {
+    slug: "how-much-house-can-i-afford-florida",
+    title: "How Much House Can I Afford in Florida? (2026 Guide)",
+    description:
+      "Calculate how much house you can afford in Florida, factoring in insurance, property taxes, and hurricane-related costs in 2026.",
+    excerpt:
+      "Florida insurance and taxes can surprise new buyers. Here's a realistic affordability framework for 2026.",
+    category: "affordability",
+    published: "2026-06-12",
+    updated: "2026-06-12",
+    readingMinutes: 7,
+    tags: ["Affordability", "Florida", "Budgeting"],
+    relatedCalculators: [
+      { href: "/mortgage-calculator/florida", label: "Florida Mortgage Calculator" },
+      { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
+    ],
+    body: (() => {
+      const fl = getState("florida")!;
+      const rate = SITE.defaultRate / 100 / 12;
+      const n = 360;
+      const loan = fl.medianHomePrice * 0.8;
+      const pi =
+        (loan * (rate * Math.pow(1 + rate, n))) / (Math.pow(1 + rate, n) - 1);
+      const tax = (fl.medianHomePrice * fl.propertyTaxRate) / 100 / 12;
+      const ins = fl.avgInsurance / 12;
+      const payment = Math.round(pi + tax + ins);
+      return [
+        { type: "p" as const, html: `Florida remains a top destination for relocators, with a median home price around $${fl.medianHomePrice.toLocaleString()}. Insurance — not just the mortgage rate — often determines whether a Florida home fits your budget. This guide helps you size a realistic payment for 2026.` },
+        { type: "h2" as const, text: "Income limits: the 28/36 rule" },
+        { type: "p" as const, html: "Most lenders cap housing at 28% of gross monthly income and total debt at 36%. Florida buyers with variable income (commission, seasonal work, or self-employment) should use a conservative income figure — lenders may average two years of tax returns, but you should budget on what you reliably earn." },
+        { type: "h2" as const, text: "Florida insurance is the wild card" },
+        { type: "p" as const, html: `Homeowners insurance in Florida averages about $${fl.avgInsurance.toLocaleString()}/year statewide, but coastal counties can cost significantly more. Wind mitigation features, roof age, and flood zone placement change quotes by thousands. Always get an insurance estimate before you offer — not after.` },
+        { type: "h2" as const, text: "Example: median Florida home payment" },
+        { type: "p" as const, html: `On a $${fl.medianHomePrice.toLocaleString()} home with 20% down at ${SITE.defaultRate}% over 30 years, principal and interest are roughly $${Math.round(pi)}/month. Property taxes add about $${Math.round(tax)}/month and insurance about $${Math.round(ins)}/month, for a total near $${payment}/month before HOA or flood insurance.` },
+        { type: "h2" as const, text: "Florida-specific costs to budget for" },
+        { type: "ul" as const, items: [
+          "Flood insurance if you're in or near a FEMA flood zone.",
+          "Higher windstorm deductibles on coastal policies.",
+          "Homestead exemption reduces assessed value for primary residences.",
+          "Condo HOA fees that may include master insurance — verify what's covered.",
+        ] },
+        { type: "p" as const, html: `Run localized numbers in the <a href=\"/mortgage-calculator/florida\">Florida mortgage calculator</a> and compare scenarios in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a> before you tour homes.` },
+      ];
+    })(),
+  },
+  {
+    slug: "how-much-house-can-i-afford-california",
+    title: "How Much House Can I Afford in California? (2026 Guide)",
+    description:
+      "How much house can you afford in California? A 2026 guide covering high home prices, property taxes, and income-based budgeting.",
+    excerpt:
+      "California's high prices mean every percentage point of income matters. Here's how to set a realistic budget in 2026.",
+    category: "affordability",
+    published: "2026-06-11",
+    updated: "2026-06-11",
+    readingMinutes: 7,
+    tags: ["Affordability", "California", "Budgeting"],
+    relatedCalculators: [
+      { href: "/mortgage-calculator/california", label: "California Mortgage Calculator" },
+      { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
+    ],
+    body: (() => {
+      const ca = getState("california")!;
+      const rate = SITE.defaultRate / 100 / 12;
+      const n = 360;
+      const loan = ca.medianHomePrice * 0.8;
+      const pi =
+        (loan * (rate * Math.pow(1 + rate, n))) / (Math.pow(1 + rate, n) - 1);
+      const tax = (ca.medianHomePrice * ca.propertyTaxRate) / 100 / 12;
+      const ins = ca.avgInsurance / 12;
+      const payment = Math.round(pi + tax + ins);
+      return [
+        { type: "p" as const, html: `California's median home price sits around $${ca.medianHomePrice.toLocaleString()} — among the highest in the nation — so affordability is as much about income and down payment as it is about interest rates. This 2026 guide helps you set a target that won't stretch you thin.` },
+        { type: "h2" as const, text: "The 28/36 rule at California incomes" },
+        { type: "p" as const, html: "At $12,000/month gross income, 28% for housing is $3,360 — but in expensive metros that may only cover a condo or a home far from work. Many California buyers technically qualify above their comfort zone. Aim below your maximum, especially if you're dual-income and one partner's job isn't secure." },
+        { type: "h2" as const, text: "Prop 13 and property taxes" },
+        { type: "p" as const, html: `California's effective property tax rate averages about ${ca.propertyTaxRate}%, thanks in part to Proposition 13, which limits annual assessment increases. Taxes on a $${ca.medianHomePrice.toLocaleString()} home run roughly $${Math.round(tax)}/month — lower than many states as a percentage, but on a much higher base price.` },
+        { type: "h2" as const, text: "Sample payment on a median California home" },
+        { type: "p" as const, html: `With 20% down and a ${SITE.defaultRate}% 30-year fixed rate, principal and interest on $${ca.medianHomePrice.toLocaleString()} are about $${Math.round(pi)}/month. Add taxes (~$${Math.round(tax)}/mo) and insurance (~$${Math.round(ins)}/mo) for a total near $${payment}/month — before Mello-Roos, HOA, or earthquake coverage.` },
+        { type: "h2" as const, text: "Strategies California buyers use in 2026" },
+        { type: "ul" as const, items: [
+          "Expand search radius — inland and Central Valley prices differ sharply from coastal metros.",
+          "Consider a larger down payment to reduce PMI and monthly payment.",
+          "Look at first-time buyer programs through CalHFA if you qualify.",
+          "Run 15-year vs. 30-year comparisons — higher prices make term choice critical.",
+        ] },
+        { type: "p" as const, html: `Use the <a href=\"/mortgage-calculator/california\">California mortgage calculator</a> with state defaults, or work from income in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a>.` },
+      ];
+    })(),
+  },
+  {
+    slug: "property-taxes-mortgage-payment",
+    title: "How Property Taxes Affect Your Monthly Mortgage Payment",
+    description:
+      "Property taxes can add hundreds to your monthly payment. Learn how they're calculated, which states cost the most, and how to estimate yours.",
+    excerpt:
+      "Taxes are part of PITI — and they vary wildly by state. Here's how they change what you can afford.",
+    category: "guides",
+    published: "2026-06-10",
+    updated: "2026-06-10",
+    readingMinutes: 6,
+    tags: ["Property taxes", "PITI", "Guides"],
+    relatedCalculators: [
+      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/mortgage-calculator/texas", label: "Texas Calculator" },
+    ],
+    body: [
+      { type: "p", html: "When buyers search for a \"mortgage calculator with taxes and insurance,\" they're usually trying to avoid the surprise that sinks budgets: a payment that's hundreds higher than principal and interest alone. Property taxes are often the biggest piece of that gap." },
+      { type: "h2", text: "How property taxes are calculated" },
+      { type: "p", html: "Most counties tax a percentage of your home's assessed value each year. If your home is assessed at $350,000 and the effective rate is 1.2%, you owe $4,200 per year — or $350 per month when escrowed into your mortgage payment." },
+      { type: "h2", text: "States where taxes hit hardest" },
+      { type: "p", html: "Effective rates vary from under 0.3% in Hawaii to above 2% in parts of New Jersey, Illinois, and Texas. A $300,000 home might cost $75/month in taxes in one state and $500/month in another — same loan, very different budget." },
+      { type: "ul", items: [
+        "Texas, Illinois, and New Jersey: among the highest effective rates nationally.",
+        "Hawaii, Alabama, and Colorado: among the lowest.",
+        "California: moderate rate on very high home values — taxes still add up.",
+        "Florida: mid-range rates, but insurance often matters more.",
+      ] },
+      { type: "h2", text: "Taxes and affordability" },
+      { type: "p", html: "Lenders include estimated taxes in your debt-to-income calculation, but online calculators that ignore taxes make homes look cheaper than they are. Always use a calculator that includes property tax, insurance, PMI, and HOA — like our <a href=\"/mortgage-calculator\">mortgage calculator</a> — or pick your state page for localized defaults." },
+      { type: "h2", text: "Find your state estimate" },
+      { type: "p", html: "We publish localized defaults for all 50 states. Start with high-tax markets like <a href=\"/mortgage-calculator/texas\">Texas</a>, <a href=\"/mortgage-calculator/new-jersey\">New Jersey</a>, or <a href=\"/mortgage-calculator/illinois\">Illinois</a>, or browse the full list from the <a href=\"/mortgage-calculator\">main calculator page</a>." },
+    ],
+  },
+  {
+    slug: "down-payment-how-much-do-you-need",
+    title: "How Much Down Payment Do You Need to Buy a House? (2026)",
+    description:
+      "From 0% VA loans to 20% conventional down payments — how much you really need, what PMI costs, and how down payment size affects your mortgage.",
+    excerpt:
+      "You don't always need 20% down — but the amount you put down changes your rate, PMI, and monthly payment.",
+    category: "guides",
+    published: "2026-06-09",
+    updated: "2026-06-09",
+    readingMinutes: 6,
+    tags: ["Down payment", "PMI", "First-time buyers"],
+    relatedCalculators: [
+      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
+      { href: "/calculators/va-mortgage-calculator", label: "VA Calculator" },
+    ],
+    body: [
+      { type: "p", html: "The old 20% down rule still matters for avoiding PMI, but it's not the minimum most buyers need in 2026. Conventional loans start at 3% down for qualified first-time buyers, FHA at 3.5%, and VA loans at 0% for eligible veterans." },
+      { type: "h2", text: "Common down payment options" },
+      { type: "ul", items: [
+        "Conventional: 3–5% for many first-time buyers; 20% avoids PMI.",
+        "FHA: 3.5% with a 580+ credit score; 10% if your score is 500–579.",
+        "VA: $0 down for eligible service members and veterans.",
+        "USDA: $0 down in eligible rural areas (income limits apply).",
+      ] },
+      { type: "h2", text: "What changes when you put less down" },
+      { type: "p", html: "A smaller down payment means a larger loan, a higher monthly payment, and usually mortgage insurance. On a $350,000 home, 5% down ($17,500) versus 20% down ($70,000) can add $200+ to your monthly payment once PMI is included — even at the same interest rate." },
+      { type: "h2", text: "Don't forget closing costs" },
+      { type: "p", html: "Down payment and closing costs are separate. Closing costs typically run 2–5% of the loan amount. A 5% down buyer on a $350,000 home might need $17,500 down plus $7,000–$14,000 in closing costs — plan for both." },
+      { type: "h2", text: "Compare scenarios" },
+      { type: "p", html: "Slide the down payment in our <a href=\"/mortgage-calculator\">mortgage calculator</a> to see PMI kick in below 20%. Compare FHA and VA paths in the <a href=\"/calculators/fha-mortgage-calculator\">FHA</a> and <a href=\"/calculators/va-mortgage-calculator\">VA calculators</a> if you're weighing low-down options." },
     ],
   },
 ];
