@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState, useId, useCallback, useEffect } from "react";
+import { Suspense, useMemo, useState, useId, useCallback, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   calculatePayment,
   buildAmortizationSchedule,
@@ -58,7 +59,30 @@ const DONUT_COLORS = {
   hoa: "#8b5cf6",
 };
 
-export function MortgageCalculator({
+export function MortgageCalculator(props: Props) {
+  return (
+    <Suspense fallback={<CalculatorLoadingShell />}>
+      <MortgageCalculatorMountGate {...props} />
+    </Suspense>
+  );
+}
+
+function CalculatorLoadingShell() {
+  return (
+    <section
+      id="calculator"
+      aria-label="Mortgage calculator"
+      aria-busy="true"
+      className="scroll-mt-24 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+    >
+      <div className="flex items-center justify-center p-12 text-sm text-slate-500">
+        Loading calculator…
+      </div>
+    </section>
+  );
+}
+
+function MortgageCalculatorMountGate({
   initialInputs,
   initialMode = "payment",
   lockMode = false,
@@ -67,17 +91,7 @@ export function MortgageCalculator({
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    return (
-      <section
-        aria-label="Mortgage calculator"
-        aria-busy="true"
-        className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-      >
-        <div className="flex items-center justify-center p-12 text-sm text-slate-500">
-          Loading calculator…
-        </div>
-      </section>
-    );
+    return <CalculatorLoadingShell />;
   }
 
   return (
@@ -94,6 +108,7 @@ function MortgageCalculatorInner({
   initialMode = "payment",
   lockMode = false,
 }: Props) {
+  const searchParams = useSearchParams();
   const [mode, setMode] = useState<Mode>(initialMode);
   const [inputs, setInputs] = useState<MortgageInputs>({
     ...DEFAULT_INPUTS,
@@ -163,10 +178,10 @@ function MortgageCalculatorInner({
     };
   }, []);
 
-  // Restore inputs from ?price=&down=&rate=&term= share links.
+  // Apply ?price=&down=&rate=&term= from share links and “Use this rate” actions.
   useEffect(() => {
     try {
-      const params = new URLSearchParams(window.location.search);
+      const params = new URLSearchParams(searchParams.toString());
       if (!params.has("price") && !params.has("down") && !params.has("rate") && !params.has("term")) {
         return;
       }
@@ -174,7 +189,7 @@ function MortgageCalculatorInner({
     } catch {
       /* ignore */
     }
-  }, []);
+  }, [searchParams]);
 
   const applyLicense = useCallback(async () => {
     const key = licenseInput.trim();
@@ -324,8 +339,9 @@ function MortgageCalculatorInner({
 
   return (
     <section
+      id="calculator"
       aria-label="Mortgage calculator"
-      className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+      className="scroll-mt-24 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
     >
       {!lockMode && (
         <div role="tablist" aria-label="Calculator mode" className="flex border-b border-slate-200">

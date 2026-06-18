@@ -1,9 +1,9 @@
-import Link from "next/link";
 import {
   RATE_SOURCE_LINKS,
   formatRateDate,
   getMortgageRatesWithFallback,
 } from "@/lib/mortgageRates";
+import { ApplyRateInCalculatorLink } from "@/components/ApplyRateInCalculatorLink";
 
 interface Props {
   /** Base path for “Use this rate” links (?rate=). Defaults to current page root. */
@@ -80,12 +80,10 @@ export async function CurrentMortgageRates({
           Freddie Mac PMMS
           <span aria-hidden="true">&rarr;</span>
         </a>
-        <Link
-          href={`${calculatorHref}${calculatorHref.includes("?") ? "&" : "?"}rate=${rates.rate30}`}
-          className="text-sm font-semibold text-emerald-700 underline-offset-2 hover:underline"
-        >
-          Use {rates.rate30.toFixed(2)}% in calculator
-        </Link>
+        <ApplyRateInCalculatorLink
+          calculatorHref={calculatorHref}
+          rate={rates.rate30}
+        />
       </div>
     </section>
   );
