@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useId, useCallback, useEffect, useRef } from "react";
+import { useMemo, useState, useId, useCallback, useEffect } from "react";
 import {
   calculatePayment,
   buildAmortizationSchedule,
@@ -17,6 +17,7 @@ import { inputsFromSearchParams } from "@/lib/readCalculatorParams";
 import { bindTap } from "@/lib/tap";
 import { PaymentDonut } from "./PaymentDonut";
 import { AmortizationSchedule } from "./AmortizationSchedule";
+import { RangeSlider } from "./RangeSlider";
 
 type Mode = "payment" | "affordability";
 
@@ -342,7 +343,7 @@ function MortgageCalculatorInner({
         <div className="space-y-5 p-5 sm:p-6 lg:col-span-3 lg:border-r lg:border-slate-200">
           {mode === "payment" ? (
             <>
-              <SliderField
+              <RangeSlider
                 label="Home price"
                 value={inputs.homePrice}
                 onChange={(v) => set("homePrice", v)}
@@ -351,7 +352,7 @@ function MortgageCalculatorInner({
                 step={5000}
                 format={(v) => formatCurrency(v)}
               />
-              <SliderField
+              <RangeSlider
                 label="Down payment"
                 value={inputs.downPayment}
                 onChange={(v) => set("downPayment", v)}
@@ -361,7 +362,7 @@ function MortgageCalculatorInner({
                 format={(v) => `${formatCurrency(v)} (${formatPercent(downPaymentPercent, 0)})`}
                 hint={downPaymentPercent < 20 ? "Under 20% — PMI applies" : "20%+ — no PMI"}
               />
-              <SliderField
+              <RangeSlider
                 label="Interest rate"
                 value={inputs.annualRate}
                 onChange={(v) => set("annualRate", v)}
@@ -431,7 +432,7 @@ function MortgageCalculatorInner({
             </>
           ) : (
             <>
-              <SliderField
+              <RangeSlider
                 label="Annual household income"
                 value={afford.annualIncome}
                 onChange={(v) => setAfford((p) => ({ ...p, annualIncome: v }))}
@@ -440,7 +441,7 @@ function MortgageCalculatorInner({
                 step={1000}
                 format={(v) => `${formatCurrency(v)}/yr`}
               />
-              <SliderField
+              <RangeSlider
                 label="Monthly debt payments"
                 value={afford.monthlyDebts}
                 onChange={(v) => setAfford((p) => ({ ...p, monthlyDebts: v }))}
@@ -450,7 +451,7 @@ function MortgageCalculatorInner({
                 format={(v) => `${formatCurrency(v)}/mo`}
                 hint="Car loans, student loans, credit cards, etc."
               />
-              <SliderField
+              <RangeSlider
                 label="Down payment"
                 value={afford.downPayment}
                 onChange={(v) => setAfford((p) => ({ ...p, downPayment: v }))}
@@ -459,7 +460,7 @@ function MortgageCalculatorInner({
                 step={1000}
                 format={(v) => formatCurrency(v)}
               />
-              <SliderField
+              <RangeSlider
                 label="Interest rate"
                 value={inputs.annualRate}
                 onChange={(v) => set("annualRate", v)}
@@ -759,127 +760,6 @@ function Stat({ label, value }: { label: string; value: string }) {
     <div>
       <dt className="text-slate-500">{label}</dt>
       <dd className="font-semibold text-slate-900">{value}</dd>
-    </div>
-  );
-}
-
-function SliderField({
-  label,
-  value,
-  onChange,
-  min,
-  max,
-  step,
-  format,
-  hint,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  min: number;
-  max: number;
-  step: number;
-  format: (v: number) => string;
-  hint?: string;
-}) {
-  const id = useId();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const safeValue = Math.min(Math.max(value, min), max);
-  const dragging = useRef(false);
-  const [active, setActive] = useState(false);
-  const [local, setLocal] = useState(safeValue);
-
-  useEffect(() => {
-    if (!dragging.current) setLocal(safeValue);
-  }, [safeValue]);
-
-  const commit = useCallback(
-    (el: HTMLInputElement) => {
-      const n = Number(el.value);
-      if (!Number.isFinite(n)) return;
-      setLocal(n);
-      onChange(n);
-    },
-    [onChange],
-  );
-
-  // Non-passive touchmove prevents LinkedIn/Facebook/Instagram from scrolling
-  // over the slider while the user is dragging (iOS + Android WebViews).
-  useEffect(() => {
-    const el = inputRef.current;
-    if (!el) return;
-    const onTouchMove = (e: TouchEvent) => {
-      if (!dragging.current) return;
-      commit(el);
-      e.preventDefault();
-    };
-    el.addEventListener("touchmove", onTouchMove, { passive: false });
-    return () => el.removeEventListener("touchmove", onTouchMove);
-  }, [commit]);
-
-  const begin = useCallback(
-    (el: HTMLInputElement) => {
-      dragging.current = true;
-      setActive(true);
-      commit(el);
-    },
-    [commit],
-  );
-
-  const move = useCallback(
-    (el: HTMLInputElement) => {
-      if (dragging.current) commit(el);
-    },
-    [commit],
-  );
-
-  const end = useCallback(
-    (el: HTMLInputElement) => {
-      commit(el);
-      dragging.current = false;
-      setActive(false);
-    },
-    [commit],
-  );
-
-  const shown = active ? local : safeValue;
-
-  return (
-    <div>
-      <div className="mb-1 flex items-baseline justify-between gap-3">
-        <label htmlFor={id} className="text-sm font-medium text-slate-700">
-          {label}
-        </label>
-        <span className="text-sm font-semibold text-slate-900">
-          {format(active ? local : value)}
-        </span>
-      </div>
-      <input
-        ref={inputRef}
-        id={id}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={shown}
-        onPointerDown={(e) => {
-          begin(e.currentTarget);
-          e.currentTarget.setPointerCapture?.(e.pointerId);
-        }}
-        onPointerMove={(e) => move(e.currentTarget)}
-        onPointerUp={(e) => {
-          end(e.currentTarget);
-          e.currentTarget.releasePointerCapture?.(e.pointerId);
-        }}
-        onPointerCancel={(e) => end(e.currentTarget)}
-        onTouchStart={(e) => begin(e.currentTarget)}
-        onTouchMove={(e) => move(e.currentTarget)}
-        onTouchEnd={(e) => end(e.currentTarget)}
-        onInput={(e) => move(e.currentTarget)}
-        onChange={(e) => commit(e.currentTarget)}
-        className="range-slider h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-emerald-600"
-      />
-      {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
     </div>
   );
 }

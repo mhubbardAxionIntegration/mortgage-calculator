@@ -17,7 +17,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* In-app browsers (LinkedIn, Facebook, Instagram) need full touch control on sliders. */
+/* Custom + native sliders in embedded mobile WebViews (Facebook, LinkedIn, etc.). */
+section[aria-label="Mortgage calculator"] [role="slider"],
 input[type="range"],
 input.range-slider {
   touch-action: none;
@@ -35,6 +36,10 @@ section[aria-label="Mortgage calculator"] button {
 
 /* Easier to grab on phones (iOS + Android). */
 @media (pointer: coarse) {
+  section[aria-label="Mortgage calculator"] [role="slider"] {
+    min-height: 2.75rem;
+  }
+
   input[type="range"],
   input.range-slider {
     min-height: 2.75rem;
