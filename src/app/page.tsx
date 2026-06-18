@@ -10,7 +10,14 @@ import { webApplicationSchema } from "@/lib/schema";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
+  title: { absolute: SITE.seo.calculatorTitle },
+  description: SITE.description,
   alternates: { canonical: "/" },
+  openGraph: {
+    title: SITE.seo.calculatorTitle,
+    description: SITE.description,
+    url: SITE.url,
+  },
 };
 
 export default function Home() {
@@ -31,7 +38,7 @@ export default function Home() {
               Updated for {SITE.year} &middot; Rates as of {SITE.ratesAsOf}
             </p>
             <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-              Free Mortgage Calculator
+              {SITE.seo.calculatorH1}
             </h1>
             <p className="mt-4 text-lg text-slate-600">
               Estimate your monthly mortgage payment with taxes, insurance, and
@@ -52,7 +59,19 @@ export default function Home() {
 
       <section className="mx-auto max-w-6xl px-4 py-12">
         <h2 className="text-center text-2xl font-bold tracking-tight text-slate-900">
-          Specialized calculators
+          Current Mortgage Rates
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-center text-slate-600">
+          As of {SITE.ratesAsOf}, the national average 30-year fixed mortgage
+          rate is around {SITE.defaultRate}%. Your actual rate depends on your
+          credit score, down payment, loan type, and lender. Use the calculator
+          above to see how different rates change your monthly payment.
+        </p>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-12">
+        <h2 className="text-center text-2xl font-bold tracking-tight text-slate-900">
+          FHA, VA, and Refinance Calculators
         </h2>
         <p className="mx-auto mt-2 max-w-2xl text-center text-slate-600">
           Pick the calculator that matches your loan. Each one is pre-configured
@@ -80,7 +99,7 @@ export default function Home() {
       <section id="states" className="border-t border-slate-200 bg-slate-50">
         <div className="mx-auto max-w-6xl px-4 py-12">
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            Mortgage calculator by state
+            Mortgage Calculators by State
           </h2>
           <p className="mt-2 max-w-2xl text-slate-600">
             Property taxes and insurance costs vary widely by state. Choose

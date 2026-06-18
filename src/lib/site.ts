@@ -4,7 +4,11 @@ export const SITE = {
   // Update this to your production domain before deploying.
   url: "https://www.smartmortgagecalc.com",
   description:
-    "Free mortgage calculator with taxes, insurance, PMI and a full amortization schedule. Estimate your monthly payment and find out how much house you can afford.",
+    "Calculate your monthly mortgage payment instantly with taxes, insurance, and PMI. Free 2026 mortgage calculator with amortization schedule. Works for all 50 states.",
+  seo: {
+    calculatorTitle: "Free Mortgage Calculator 2026 – Estimate Monthly Payments",
+    calculatorH1: "Free Mortgage Calculator 2026",
+  },
   locale: "en_US",
   twitter: "@smartmortgagecalc",
   // Indicative national average used as a sensible default. Replace with a live

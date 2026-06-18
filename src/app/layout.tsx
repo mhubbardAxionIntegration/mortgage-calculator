@@ -28,7 +28,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `Mortgage Calculator: Estimate Monthly Payments & Affordability (${SITE.year} Rates)`,
+    default: SITE.seo.calculatorTitle,
     template: `%s | ${SITE.shortName}`,
   },
   description: SITE.description,
@@ -47,13 +47,13 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     locale: SITE.locale,
     url: SITE.url,
-    title: `Free Mortgage Calculator (${SITE.year})`,
+    title: SITE.seo.calculatorTitle,
     description: SITE.description,
   },
   twitter: {
     card: "summary_large_image",
     site: SITE.twitter,
-    title: `Free Mortgage Calculator (${SITE.year})`,
+    title: SITE.seo.calculatorTitle,
     description: SITE.description,
   },
   robots: {

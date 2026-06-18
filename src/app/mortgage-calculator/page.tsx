@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
 import { FaqSection } from "@/components/FaqSection";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -7,6 +8,8 @@ import { AdSlot } from "@/components/AdSlot";
 import { RateCta } from "@/components/RateCta";
 import { CompanyPromo } from "@/components/CompanyPromo";
 import { MORTGAGE_FAQS } from "@/lib/faqs";
+import { LOAN_TYPES } from "@/lib/loanTypes";
+import { STATES } from "@/lib/states";
 import {
   faqPageSchema,
   howToSchema,
@@ -17,14 +20,12 @@ import { absoluteUrl, SITE } from "@/lib/site";
 const PAGE_URL = absoluteUrl("/mortgage-calculator");
 
 export const metadata: Metadata = {
-  title: `Mortgage Calculator: Estimate Monthly Payments & Affordability (${SITE.year} Rates)`,
-  description:
-    "Free mortgage calculator with taxes, insurance, and PMI. Estimate your monthly payment, view a full amortization schedule, and see how much house you can afford.",
+  title: { absolute: SITE.seo.calculatorTitle },
+  description: SITE.description,
   alternates: { canonical: "/mortgage-calculator" },
   openGraph: {
-    title: `Mortgage Calculator (${SITE.year})`,
-    description:
-      "Estimate your monthly mortgage payment with taxes, insurance, PMI and a full amortization schedule.",
+    title: SITE.seo.calculatorTitle,
+    description: SITE.description,
     url: PAGE_URL,
   },
 };
@@ -58,12 +59,12 @@ export default function MortgageCalculatorPage() {
       <JsonLd
         data={[
           webApplicationSchema({
-            name: "Mortgage Calculator",
+            name: SITE.seo.calculatorH1,
             description: metadata.description as string,
             url: PAGE_URL,
           }),
           howToSchema({
-            name: "How to use the mortgage calculator",
+            name: "How to Use This Mortgage Calculator",
             description:
               "Estimate your monthly mortgage payment in five quick steps.",
             steps: HOW_TO_STEPS,
@@ -82,12 +83,12 @@ export default function MortgageCalculatorPage() {
 
         <header className="mt-6 max-w-3xl">
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-            Mortgage Calculator
+            {SITE.seo.calculatorH1}
           </h1>
           <p className="mt-3 text-lg text-slate-600">
-            Estimate your monthly mortgage payment — including principal,
-            interest, taxes, insurance, and PMI — and see a complete
-            amortization schedule. Updated for {SITE.year}.
+            Calculate your monthly mortgage payment instantly with taxes,
+            insurance, and PMI — then view a complete amortization schedule.
+            Works for all 50 states. Updated for {SITE.year}.
           </p>
         </header>
 
@@ -96,17 +97,31 @@ export default function MortgageCalculatorPage() {
         </div>
 
         <div className="mt-10">
-          <RateCta />
+          <AdSlot slot="inContent" />
         </div>
 
         <div className="mt-10">
-          <AdSlot slot="inContent" />
+          <RateCta heading="Current Mortgage Rates" />
         </div>
+
+        <section className="mt-10 max-w-3xl">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            Current Mortgage Rates
+          </h2>
+          <p className="mt-4 leading-relaxed text-slate-600">
+            As of {SITE.ratesAsOf}, the national average 30-year fixed mortgage
+            rate is around {SITE.defaultRate}%. Your actual rate depends on your
+            credit score, down payment, loan type, and lender. Adjust the
+            interest-rate slider above to see how even a small rate change
+            affects your monthly payment and total interest over the life of the
+            loan.
+          </p>
+        </section>
 
         <article className="prose-slate mt-14 max-w-3xl space-y-10">
           <section>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              How to use our mortgage calculator
+              How to Use This Mortgage Calculator
             </h2>
             <ol className="mt-4 space-y-3">
               {HOW_TO_STEPS.map((step, i) => (
@@ -230,6 +245,51 @@ export default function MortgageCalculatorPage() {
             </p>
           </section>
         </article>
+
+        <section className="mt-14">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            FHA, VA, and Refinance Calculators
+          </h2>
+          <p className="mt-3 max-w-3xl text-slate-600">
+            Need a loan-type-specific estimate? Each calculator below is
+            pre-configured with the right defaults for FHA, VA, refinance,
+            affordability, and ARM loans.
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {LOAN_TYPES.map((t) => (
+              <Link
+                key={t.slug}
+                href={`/calculators/${t.slug}`}
+                className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-md"
+              >
+                <h3 className="font-semibold text-slate-900">{t.title}</h3>
+                <p className="mt-2 text-sm text-slate-600">{t.tagline}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-14">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            Mortgage Calculators by State
+          </h2>
+          <p className="mt-3 max-w-3xl text-slate-600">
+            Property taxes and insurance costs vary by state. Choose yours for
+            localized defaults and a more accurate monthly payment estimate.
+          </p>
+          <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-3 lg:grid-cols-4">
+            {STATES.map((s) => (
+              <li key={s.slug}>
+                <Link
+                  href={`/mortgage-calculator/${s.slug}`}
+                  className="text-slate-600 hover:text-emerald-700"
+                >
+                  {s.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <div className="mt-14">
           <CompanyPromo />
