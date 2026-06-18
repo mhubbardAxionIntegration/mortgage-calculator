@@ -15,6 +15,7 @@ import { buildRateQuoteUrl } from "@/lib/monetization";
 import { MONETIZATION, isPremiumLocked } from "@/lib/site";
 import { copyOrShareText, isInAppBrowser } from "@/lib/clipboard";
 import { inputsFromSearchParams } from "@/lib/readCalculatorParams";
+import { APPLY_RATE_EVENT } from "@/lib/calculatorEvents";
 import { bindTap } from "@/lib/tap";
 import { PaymentDonut } from "./PaymentDonut";
 import { AmortizationSchedule } from "./AmortizationSchedule";
@@ -190,6 +191,18 @@ function MortgageCalculatorInner({
       /* ignore */
     }
   }, [searchParams]);
+
+  // “Use X% in calculator” — direct update (URL-only was unreliable on same-page clicks).
+  useEffect(() => {
+    const onApplyRate = (event: Event) => {
+      const rate = (event as CustomEvent<{ rate: number }>).detail?.rate;
+      if (!Number.isFinite(rate) || rate <= 0) return;
+      const rounded = Math.round(rate * 100) / 100;
+      setInputs((prev) => ({ ...prev, annualRate: rounded }));
+    };
+    window.addEventListener(APPLY_RATE_EVENT, onApplyRate);
+    return () => window.removeEventListener(APPLY_RATE_EVENT, onApplyRate);
+  }, []);
 
   const applyLicense = useCallback(async () => {
     const key = licenseInput.trim();

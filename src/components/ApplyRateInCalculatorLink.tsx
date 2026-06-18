@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import {
+  dispatchApplyRate,
+  isSameCalculatorPage,
+  scrollToCalculator,
+  syncRateInUrl,
+} from "@/lib/calculatorEvents";
 
 export function ApplyRateInCalculatorLink({
   calculatorHref,
@@ -11,28 +17,29 @@ export function ApplyRateInCalculatorLink({
   rate: number;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
   const base = calculatorHref.split("?")[0].split("#")[0] || "/";
-  const href = `${base}?rate=${rate}#calculator`;
+  const href = `${base}?rate=${rate.toFixed(2)}#calculator`;
   const label = `Use ${rate.toFixed(2)}% in calculator`;
   const className =
     "text-sm font-semibold text-emerald-700 underline-offset-2 hover:underline";
 
-  const applyRate = (e: React.MouseEvent) => {
+  const applyOnSamePage = (e: React.MouseEvent) => {
     e.preventDefault();
-    router.push(href, { scroll: true });
+    dispatchApplyRate(rate);
+    syncRateInUrl(rate);
+    scrollToCalculator();
   };
 
-  if (pathname === base) {
+  if (isSameCalculatorPage(pathname, calculatorHref)) {
     return (
-      <a href={href} onClick={applyRate} className={className}>
+      <button type="button" onClick={applyOnSamePage} className={className}>
         {label}
-      </a>
+      </button>
     );
   }
 
   return (
-    <Link href={href} className={className}>
+    <Link href={href} className={className} scroll>
       {label}
     </Link>
   );
