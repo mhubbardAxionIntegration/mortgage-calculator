@@ -24,5 +24,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/:path*",
+  // Skip static/SEO files — let Next.js serve them directly (ads.txt route handler).
+  matcher: [
+    "/((?!ads\\.txt|robots\\.txt|sitemap\\.xml|favicon\\.ico|icon\\.svg|icon\\.svg$).*)",
+  ],
 };
