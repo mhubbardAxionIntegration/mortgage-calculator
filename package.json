@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/sync-ads-txt.mjs",
     "build": "next build",
     "start": "next start -H 0.0.0.0",
     "lint": "eslint"
