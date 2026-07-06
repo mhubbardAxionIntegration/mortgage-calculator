@@ -84,13 +84,19 @@ export default function RootLayout({
             }}
           />
         )}
-        {/* AdSense — literal <script> in SSR HTML for crawler/tag detection. */}
+        {/* AdSense site verification + script — literal tags in SSR HTML for crawler detection. */}
         {isAdsEnabled() && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${MONETIZATION.adsenseClientId}`}
-            crossOrigin="anonymous"
-          />
+          <>
+            <meta
+              name="google-adsense-account"
+              content={MONETIZATION.adsenseClientId}
+            />
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${MONETIZATION.adsenseClientId}`}
+              crossOrigin="anonymous"
+            />
+          </>
         )}
         {/* GA4 — literal tags in SSR HTML so Tag Assistant / GA detect the tag. */}
         {isAnalyticsEnabled() && (
