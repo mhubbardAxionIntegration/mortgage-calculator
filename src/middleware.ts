@@ -1,10 +1,26 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getAdsTxtBody } from "@/lib/adsTxt";
 
 /** Canonical public origin — never use request.nextUrl.clone() for redirects on Hostinger (leaks :3000). */
 const CANONICAL = "https://www.smartmortgagecalc.com";
 
+const ADS_TXT_HEADERS = {
+  "Content-Type": "text/plain; charset=utf-8",
+  "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
+};
+
 export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Serve ads.txt on apex and www with consistent headers (before any redirect).
+  if (pathname === "/ads.txt" || pathname === "/ads.txt/") {
+    return new NextResponse(getAdsTxtBody(), {
+      status: 200,
+      headers: ADS_TXT_HEADERS,
+    });
+  }
+
   const host = request.headers.get("host")?.split(":")[0];
 
   // Apex → www, preserving path and query (e.g. Facebook fbclid).
@@ -24,8 +40,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Skip static/SEO files — let Next.js serve them directly (ads.txt route handler).
-  matcher: [
-    "/((?!ads\\.txt|robots\\.txt|sitemap\\.xml|favicon\\.ico|icon\\.svg|icon\\.svg$).*)",
-  ],
+  matcher: "/:path*",
 };
