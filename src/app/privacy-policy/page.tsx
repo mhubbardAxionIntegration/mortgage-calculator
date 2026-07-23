@@ -82,8 +82,8 @@ export default function PrivacyPage() {
       <p>
         Depending on your location, you may have rights to access, correct, or
         delete your personal information, or to opt out of certain processing.
-        To exercise these rights, contact us at{" "}
-        <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>.
+        To exercise these rights, contact us through our{" "}
+        <a href="/contact">contact page</a>.
       </p>
 
       <h2>Children&rsquo;s privacy</h2>
@@ -100,9 +100,7 @@ export default function PrivacyPage() {
 
       <h2>Contact</h2>
       <p>
-        Questions? Email us at{" "}
-        <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a> or visit our{" "}
-        <a href="/contact">contact page</a>.
+        Questions? Visit our <a href="/contact">contact page</a>.
       </p>
     </LegalShell>
   );

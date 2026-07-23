@@ -36,7 +36,6 @@ export const COMPANY = {
   name: "Axion Integration Services, LLC",
   shortName: "Axion Integration Services",
   state: "Georgia",
-  email: "hello@smartmortgagecalc.com",
   phone: "",
   addressLines: ["Franklin, Georgia", "United States"],
   /** External company site URL. Leave empty when that site is offline. */
