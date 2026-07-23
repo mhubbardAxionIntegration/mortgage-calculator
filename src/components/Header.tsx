@@ -49,6 +49,14 @@ export function Header() {
               Blog
             </Link>
           </li>
+          <li>
+            <Link
+              href="/how-we-calculate"
+              className="rounded-md px-3 py-2 hover:bg-slate-100 hover:text-slate-900"
+            >
+              Methodology
+            </Link>
+          </li>
         </ul>
 
         <Link

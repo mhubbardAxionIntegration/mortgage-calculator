@@ -4,7 +4,7 @@ export const SITE = {
   // Update this to your production domain before deploying.
   url: "https://www.smartmortgagecalc.com",
   description:
-    "Calculate your monthly mortgage payment instantly with taxes, insurance, and PMI. Free 2026 mortgage calculator with amortization schedule. Works for all 50 states.",
+    "Free mortgage calculator with taxes, insurance, and PMI — plus unique state guides, loan-type explainers, and transparent payment math. Updated for 2026.",
   seo: {
     calculatorTitle: "Free Mortgage Calculator 2026 – Estimate Monthly Payments",
     calculatorH1: "Free Mortgage Calculator 2026",
@@ -19,6 +19,7 @@ export const SITE = {
   author: {
     name: "Smart Mortgage Calculator Editorial Team",
     role: "Mortgage & home-finance writers",
+    bio: "Our editors build plain-English guides and transparent calculators for homebuyers. We explain payment math, local tax/insurance context, and loan-program tradeoffs — and we label estimates as educational, not loan offers.",
   },
 } as const;
 
@@ -82,8 +83,8 @@ export const MONETIZATION = {
     disclosure:
       "We may earn a commission if you get a quote or loan through our partners, at no extra cost to you.",
   },
-  // Show the Axion Integration Services cross-promo CTA.
-  showCompanyPromo: true,
+  // Off-topic cross-promo weakens mortgage topical focus for AdSense review.
+  showCompanyPromo: false,
   // Freemium premium features (e.g. branded PDF export of the amortization
   // schedule). When `locked` is false the feature is free for everyone, so it
   // works out of the box. Set `locked: true` and a `checkoutUrl` (Stripe,

@@ -77,6 +77,11 @@ export function Footer() {
               <Link href="/blog" className="hover:text-emerald-700">Blog</Link>
             </li>
             <li>
+              <Link href="/how-we-calculate" className="hover:text-emerald-700">
+                How we calculate
+              </Link>
+            </li>
+            <li>
               <Link href="/about" className="hover:text-emerald-700">About</Link>
             </li>
             <li>

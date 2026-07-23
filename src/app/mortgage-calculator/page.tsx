@@ -9,7 +9,6 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { AdSlot } from "@/components/AdSlot";
 import { RateCta } from "@/components/RateCta";
-import { CompanyPromo } from "@/components/CompanyPromo";
 import { MORTGAGE_FAQS } from "@/lib/faqs";
 import { LOAN_TYPES } from "@/lib/loanTypes";
 import { STATES } from "@/lib/states";
@@ -308,9 +307,21 @@ export default async function MortgageCalculatorPage() {
           </ul>
         </section>
 
-        <div className="mt-14">
-          <CompanyPromo />
-        </div>
+        <section className="mt-14 max-w-3xl rounded-2xl border border-emerald-100 bg-emerald-50/60 p-6">
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">
+            Transparent math
+          </h2>
+          <p className="mt-2 text-slate-600">
+            Want the formulas, PMI rules, and data sources behind every estimate?
+            Read our public methodology.
+          </p>
+          <Link
+            href="/how-we-calculate"
+            className="mt-4 inline-block text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+          >
+            How we calculate &rarr;
+          </Link>
+        </section>
 
         <div className="mt-14">
           <FaqSection faqs={MORTGAGE_FAQS} />

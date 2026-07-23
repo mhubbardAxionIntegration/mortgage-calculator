@@ -1,0 +1,577 @@
+/**
+ * One-shot generator for unique per-state guide copy.
+ * Run: node scripts/generate-state-guides.mjs
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const STATES = [
+  { slug: "alabama", name: "Alabama", abbr: "AL", propertyTaxRate: 0.39, medianHomePrice: 220000, avgInsurance: 1900 },
+  { slug: "alaska", name: "Alaska", abbr: "AK", propertyTaxRate: 1.04, medianHomePrice: 340000, avgInsurance: 1100 },
+  { slug: "arizona", name: "Arizona", abbr: "AZ", propertyTaxRate: 0.62, medianHomePrice: 430000, avgInsurance: 1400 },
+  { slug: "arkansas", name: "Arkansas", abbr: "AR", propertyTaxRate: 0.61, medianHomePrice: 210000, avgInsurance: 2000 },
+  { slug: "california", name: "California", abbr: "CA", propertyTaxRate: 0.71, medianHomePrice: 770000, avgInsurance: 1300 },
+  { slug: "colorado", name: "Colorado", abbr: "CO", propertyTaxRate: 0.51, medianHomePrice: 545000, avgInsurance: 1700 },
+  { slug: "connecticut", name: "Connecticut", abbr: "CT", propertyTaxRate: 1.79, medianHomePrice: 380000, avgInsurance: 1400 },
+  { slug: "delaware", name: "Delaware", abbr: "DE", propertyTaxRate: 0.58, medianHomePrice: 360000, avgInsurance: 900 },
+  { slug: "florida", name: "Florida", abbr: "FL", propertyTaxRate: 0.86, medianHomePrice: 410000, avgInsurance: 2400 },
+  { slug: "georgia", name: "Georgia", abbr: "GA", propertyTaxRate: 0.81, medianHomePrice: 340000, avgInsurance: 1600 },
+  { slug: "hawaii", name: "Hawaii", abbr: "HI", propertyTaxRate: 0.28, medianHomePrice: 840000, avgInsurance: 500 },
+  { slug: "idaho", name: "Idaho", abbr: "ID", propertyTaxRate: 0.56, medianHomePrice: 460000, avgInsurance: 1100 },
+  { slug: "illinois", name: "Illinois", abbr: "IL", propertyTaxRate: 2.05, medianHomePrice: 270000, avgInsurance: 1300 },
+  { slug: "indiana", name: "Indiana", abbr: "IN", propertyTaxRate: 0.81, medianHomePrice: 240000, avgInsurance: 1200 },
+  { slug: "iowa", name: "Iowa", abbr: "IA", propertyTaxRate: 1.50, medianHomePrice: 220000, avgInsurance: 1400 },
+  { slug: "kansas", name: "Kansas", abbr: "KS", propertyTaxRate: 1.34, medianHomePrice: 230000, avgInsurance: 2200 },
+  { slug: "kentucky", name: "Kentucky", abbr: "KY", propertyTaxRate: 0.80, medianHomePrice: 220000, avgInsurance: 1700 },
+  { slug: "louisiana", name: "Louisiana", abbr: "LA", propertyTaxRate: 0.55, medianHomePrice: 210000, avgInsurance: 2300 },
+  { slug: "maine", name: "Maine", abbr: "ME", propertyTaxRate: 1.24, medianHomePrice: 390000, avgInsurance: 1000 },
+  { slug: "maryland", name: "Maryland", abbr: "MD", propertyTaxRate: 1.05, medianHomePrice: 430000, avgInsurance: 1300 },
+  { slug: "massachusetts", name: "Massachusetts", abbr: "MA", propertyTaxRate: 1.14, medianHomePrice: 600000, avgInsurance: 1500 },
+  { slug: "michigan", name: "Michigan", abbr: "MI", propertyTaxRate: 1.38, medianHomePrice: 250000, avgInsurance: 1300 },
+  { slug: "minnesota", name: "Minnesota", abbr: "MN", propertyTaxRate: 1.05, medianHomePrice: 340000, avgInsurance: 1700 },
+  { slug: "mississippi", name: "Mississippi", abbr: "MS", propertyTaxRate: 0.79, medianHomePrice: 190000, avgInsurance: 2100 },
+  { slug: "missouri", name: "Missouri", abbr: "MO", propertyTaxRate: 0.97, medianHomePrice: 250000, avgInsurance: 1900 },
+  { slug: "montana", name: "Montana", abbr: "MT", propertyTaxRate: 0.74, medianHomePrice: 450000, avgInsurance: 1600 },
+  { slug: "nebraska", name: "Nebraska", abbr: "NE", propertyTaxRate: 1.54, medianHomePrice: 270000, avgInsurance: 2300 },
+  { slug: "nevada", name: "Nevada", abbr: "NV", propertyTaxRate: 0.55, medianHomePrice: 450000, avgInsurance: 1100 },
+  { slug: "new-hampshire", name: "New Hampshire", abbr: "NH", propertyTaxRate: 1.86, medianHomePrice: 460000, avgInsurance: 900 },
+  { slug: "new-jersey", name: "New Jersey", abbr: "NJ", propertyTaxRate: 2.23, medianHomePrice: 490000, avgInsurance: 1200 },
+  { slug: "new-mexico", name: "New Mexico", abbr: "NM", propertyTaxRate: 0.67, medianHomePrice: 300000, avgInsurance: 1500 },
+  { slug: "new-york", name: "New York", abbr: "NY", propertyTaxRate: 1.40, medianHomePrice: 470000, avgInsurance: 1400 },
+  { slug: "north-carolina", name: "North Carolina", abbr: "NC", propertyTaxRate: 0.70, medianHomePrice: 340000, avgInsurance: 1700 },
+  { slug: "north-dakota", name: "North Dakota", abbr: "ND", propertyTaxRate: 0.98, medianHomePrice: 280000, avgInsurance: 1700 },
+  { slug: "ohio", name: "Ohio", abbr: "OH", propertyTaxRate: 1.41, medianHomePrice: 230000, avgInsurance: 1100 },
+  { slug: "oklahoma", name: "Oklahoma", abbr: "OK", propertyTaxRate: 0.85, medianHomePrice: 210000, avgInsurance: 2700 },
+  { slug: "oregon", name: "Oregon", abbr: "OR", propertyTaxRate: 0.86, medianHomePrice: 490000, avgInsurance: 900 },
+  { slug: "pennsylvania", name: "Pennsylvania", abbr: "PA", propertyTaxRate: 1.41, medianHomePrice: 270000, avgInsurance: 1100 },
+  { slug: "rhode-island", name: "Rhode Island", abbr: "RI", propertyTaxRate: 1.30, medianHomePrice: 440000, avgInsurance: 1500 },
+  { slug: "south-carolina", name: "South Carolina", abbr: "SC", propertyTaxRate: 0.53, medianHomePrice: 300000, avgInsurance: 1700 },
+  { slug: "south-dakota", name: "South Dakota", abbr: "SD", propertyTaxRate: 1.08, medianHomePrice: 290000, avgInsurance: 2000 },
+  { slug: "tennessee", name: "Tennessee", abbr: "TN", propertyTaxRate: 0.56, medianHomePrice: 360000, avgInsurance: 1700 },
+  { slug: "texas", name: "Texas", abbr: "TX", propertyTaxRate: 1.60, medianHomePrice: 350000, avgInsurance: 2400 },
+  { slug: "utah", name: "Utah", abbr: "UT", propertyTaxRate: 0.52, medianHomePrice: 530000, avgInsurance: 1100 },
+  { slug: "vermont", name: "Vermont", abbr: "VT", propertyTaxRate: 1.78, medianHomePrice: 380000, avgInsurance: 900 },
+  { slug: "virginia", name: "Virginia", abbr: "VA", propertyTaxRate: 0.80, medianHomePrice: 400000, avgInsurance: 1200 },
+  { slug: "washington", name: "Washington", abbr: "WA", propertyTaxRate: 0.87, medianHomePrice: 600000, avgInsurance: 1100 },
+  { slug: "west-virginia", name: "West Virginia", abbr: "WV", propertyTaxRate: 0.55, medianHomePrice: 170000, avgInsurance: 1200 },
+  { slug: "wisconsin", name: "Wisconsin", abbr: "WI", propertyTaxRate: 1.51, medianHomePrice: 290000, avgInsurance: 1100 },
+  { slug: "wyoming", name: "Wyoming", abbr: "WY", propertyTaxRate: 0.55, medianHomePrice: 350000, avgInsurance: 1400 },
+  { slug: "district-of-columbia", name: "District of Columbia", abbr: "DC", propertyTaxRate: 0.55, medianHomePrice: 630000, avgInsurance: 1300 },
+];
+
+/** Unique local facts — not Mad-Libs. Keep factual tone; cite programs by name. */
+const FACTS = {
+  alabama: {
+    market: "Alabama remains one of the more affordable Southern housing markets, with metro demand concentrated around Birmingham, Huntsville, and coastal Mobile. Many buyers stretch for newer construction in growing tech corridors while rural counties still clear well below the statewide median.",
+    tax: "Alabama's effective property tax rates are among the lowest in the country. Homestead exemptions and senior exemptions can further reduce the taxable value of a primary residence — check your county revenue commissioner before budgeting escrow.",
+    insurance: "Severe weather and tornado risk keep homeowners premiums elevated relative to home values. Wind and hail deductibles are common on newer policies; ask for replacement-cost coverage on the dwelling.",
+    programs: ["Alabama Housing Finance Authority (AHFA) first-time buyer mortgages", "Down payment assistance through participating AHFA lenders", "USDA Rural Development loans in eligible counties"],
+    tips: ["Compare Birmingham vs. Huntsville tax and insurance quotes — they can differ by hundreds per year.", "Ask whether your county offers a homestead exemption on your primary residence.", "Factor higher HVAC and storm-related maintenance into affordability, not just PITI."],
+  },
+  alaska: {
+    market: "Alaska's housing stock is thin outside Anchorage, Fairbanks, and the Mat-Su Valley. Shipping and construction costs push prices higher than many Lower 48 buyers expect for similar square footage.",
+    tax: "Property taxes are set locally; some boroughs rely more on sales or severance taxes than mill rates. Confirm whether your borough assesses at full market value or a fraction.",
+    insurance: "Cold-climate construction, remote claims service, and earthquake exposure shape premiums. Flood and earthquake riders may be separate from a standard HO-3 policy.",
+    programs: ["Alaska Housing Finance Corporation (AHFC) loan programs", "AHFC energy-efficiency and rural housing options", "VA loans popular with military households near Joint Base Elmendorf-Richardson"],
+    tips: ["Budget for heating fuel or electricity — utility costs can rival escrow items in winter.", "Confirm road maintenance and septic responsibilities on rural parcels.", "Get a local appraisal early; comparable sales can be scarce."],
+  },
+  arizona: {
+    market: "Arizona demand remains strongest in Phoenix and Tucson metros, with retirees and remote workers competing for inventory in suburban master-planned communities.",
+    tax: "Arizona uses a limited property tax system with assessment ratios by property class. Primary residence classification and the Homeowner's Rebate can lower the effective bill versus investment property.",
+    insurance: "Wildfire risk near the urban wildland interface and monsoon storms affect underwriting. Roof age and claims history heavily influence quotes in the Valley.",
+    programs: ["Arizona Industrial Development Authority / Home Plus programs", "Down payment assistance via participating nonprofits", "FHA and conventional low-down options widely available in metro Phoenix"],
+    tips: ["Model HOA dues carefully — many newer Arizona communities have substantial monthly fees.", "Ask about roof and HVAC age before locking insurance.", "Summer cooling costs should sit in your budget alongside PITI."],
+  },
+  arkansas: {
+    market: "Arkansas offers lower entry prices than neighboring Texas metros, with Northwest Arkansas (Bentonville/Fayetteville) the clear exception where corporate growth has lifted values.",
+    tax: "Property taxes fund schools and counties at relatively moderate effective rates. Homestead credits may apply for owner-occupants — verify with your county collector.",
+    insurance: "Tornado and hail exposure keep premiums meaningful relative to home values. Shop wind/hail deductibles carefully.",
+    programs: ["Arkansas Development Finance Authority (ADFA) homeownership programs", "Down payment assistance through ADFA partners", "USDA loans in many rural counties"],
+    tips: ["Northwest Arkansas buyers should stress-test higher prices than the statewide median.", "Confirm flood zone status near rivers and low-lying areas.", "Get multiple insurance quotes; hail deductibles vary widely."],
+  },
+  california: {
+    market: "California's median price sits far above the national average, driven by coastal metros and constrained supply. Inland markets (Inland Empire, Central Valley, Sacramento) often offer more payment room than coastal counties — but still require careful DTI planning.",
+    tax: "Proposition 13 caps annual assessment growth for most owners, so tax bills can lag market value for longtime owners. New buyers typically pay tax based on the purchase price; supplemental bills after closing are common.",
+    insurance: "Wildfire risk has reshaped the homeowners market. FAIR Plan or surplus-line coverage may be necessary in some ZIP codes; non-renewals are not unusual in high-risk areas.",
+    programs: ["CalHFA first-time buyer and MyHome assistance programs", "Local city/county down payment assistance (varies widely)", "VA and FHA loans for qualifying buyers"],
+    tips: ["Always model supplemental property tax after purchase under Prop 13 reassessment.", "Obtain insurance quotes before removing contingencies in wildfire-exposed areas.", "Include Mello-Roos or special assessments when comparing listings."],
+  },
+  colorado: {
+    market: "Colorado pricing remains elevated along the Front Range (Denver, Boulder, Colorado Springs, Fort Collins). Mountain towns and resort areas trade on lifestyle premiums that can double typical metro payments.",
+    tax: "Colorado's Gallagher-era changes and local mill levies mean effective rates vary by county. TABOR constraints influence how quickly local governments can raise revenue.",
+    insurance: "Hail is a major claims driver along the Front Range. Wildfire risk affects foothill and mountain communities; roof materials and defensible space matter to underwriters.",
+    programs: ["CHFA (Colorado Housing and Finance Authority) first-mortgage and DPA programs", "Metro Denver local assistance funds", "Energy-efficient mortgage options through participating lenders"],
+    tips: ["Compare Denver metro HOA and metro-district fees — they can add hundreds monthly.", "Get hail-resistant roof discounts documented in writing.", "Altitude and commute tradeoffs change which suburb fits your budget."],
+  },
+  connecticut: {
+    market: "Connecticut mixes high-cost Fairfield County suburbs of New York with more moderate pricing inland and along the shoreline. Inventory and school-district preferences drive sharp local differences.",
+    tax: "Connecticut property taxes are relatively high by national standards and vary dramatically by municipality. There is no statewide homestead 'cap' like some neighbors — town mill rates matter.",
+    insurance: "Coastal wind and flood exposure affect shoreline towns. Older housing stock may need updates for insurance eligibility.",
+    programs: ["CHFA (Connecticut Housing Finance Authority) mortgages", "Down payment assistance through CHFA partners", "Municipal first-time buyer programs in select cities"],
+    tips: ["Always compare mill rates across neighboring towns before choosing a listing.", "Budget conveyance taxes and closing costs unique to Connecticut.", "Shoreline buyers should price flood insurance separately from HO-3."],
+  },
+  delaware: {
+    market: "Delaware attracts buyers seeking relative tax advantages and proximity to Philly and DC corridors, with beach communities (Sussex County) commanding seasonal premiums.",
+    tax: "Delaware has no sales tax, which helps overall cost of living, while property taxes remain moderate versus Mid-Atlantic peers. County assessment practices differ — verify the taxable assessment.",
+    insurance: "Coastal wind and flood risk rise toward the beaches. Inland New Castle County typically sees more standard suburban pricing.",
+    programs: ["Delaware State Housing Authority (DSHA) programs", "Preferred Plus and similar DSHA products", "Employer-assisted housing in some corporate corridors"],
+    tips: ["Sussex County beach towns need separate flood and wind analyses.", "Compare New Castle vs. Kent County tax assessments for similar homes.", "Ask about transfer taxes at closing — they are material in Delaware."],
+  },
+  florida: {
+    market: "Florida remains a high-migration market with strong demand in Tampa, Orlando, Jacksonville, and South Florida. Insurance and HOA costs often matter as much as the note rate for monthly affordability.",
+    tax: "Florida's homestead exemption and Save Our Homes assessment cap protect primary residences once claimed. Portability rules can transfer savings when you move within the state — plan with your county property appraiser.",
+    insurance: "Homeowners insurance is among the most expensive in the U.S. due to hurricanes and litigation history. Windstorm deductibles (often percentage-based) can be thousands of dollars.",
+    programs: ["Florida Housing Finance Corporation programs", "Local SHIP down payment assistance (county-administered)", "FHA and conventional options widely used by first-time buyers"],
+    tips: ["Get insurance quotes before finalizing contract — some roofs or ZIP codes are hard to insure.", "Model HOA/condo special assessments common after storms.", "Claim homestead promptly after closing to lock assessment protections."],
+  },
+  georgia: {
+    market: "Georgia's growth centers on metro Atlanta, with Savannah and coastal markets also competitive. Intown intown premiums contrast with more affordable outer counties along the I-85 and I-75 corridors.",
+    tax: "Georgia property taxes combine county, school, and city millages. Homestead exemptions (including Atlanta and DeKalb variations) can lower the bill for owner-occupants — file with your county tax commissioner.",
+    insurance: "Severe thunderstorms and occasional hurricane remnants affect premiums, especially south and coastal Georgia. Roof age is a frequent underwriting factor.",
+    programs: ["Georgia Dream Homeownership Program (DCA)", "Atlanta Housing and local DPA programs", "USDA loans outside metro boundaries"],
+    tips: ["Compare Cobb, Gwinnett, DeKalb, and Fulton tax bills for similar homes.", "Budget transfer taxes and Georgia-specific closing costs.", "Intown Atlanta buyers should model parking/HOA carefully."],
+  },
+  hawaii: {
+    market: "Hawaii has among the highest median prices nationally, with limited land and strong demand on Oahu. Neighbor islands can trade lower than Honolulu but still far above most Mainland markets.",
+    tax: "Effective property tax rates are low as a percentage of value, but absolute bills still matter because assessed values are high. County rates differ across Honolulu, Maui, Hawaii, and Kauai.",
+    insurance: "Hurricane and lava (on Hawaii Island) exposures are unique. Hurricane insurance is often separate; some lenders require it.",
+    programs: ["Hula Mae / HHFDC affordable homeownership programs", "County employee and first-time buyer initiatives", "VA loans used by military households"],
+    tips: ["Always separate hurricane coverage from standard homeowners quotes.", "Leasehold vs. fee-simple tenure changes both price and financing.", "Shipping and living costs should sit beside PITI in your budget."],
+  },
+  idaho: {
+    market: "Idaho saw rapid price growth in Boise and surrounding Treasure Valley communities. Recreation-adjacent markets (Coeur d'Alene, Sun Valley area) carry lifestyle premiums.",
+    tax: "Property taxes are moderate statewide, with local levies funding schools and services. Homeowner exemptions may reduce taxable value for primary residences.",
+    insurance: "Wildfire risk in forested and interface areas affects underwriting. Winter weather and older roofs also influence claims history.",
+    programs: ["Idaho Housing and Finance Association (IHFA) programs", "Homeownership assistance through IHFA partners", "Rural Development loans in eligible areas"],
+    tips: ["Treasure Valley buyers should stress-test HOA and irrigation assessments.", "Verify water rights and well status on rural properties.", "Get wildfire insurance clarity before bidding in foothill areas."],
+  },
+  illinois: {
+    market: "Illinois pricing is bifurcated: Cook County and North Shore suburbs differ sharply from downstate markets. Chicago condo and single-family dynamics each need their own payment models.",
+    tax: "Illinois has among the highest effective property tax rates nationally. Cook County assessment practices and appeal cycles are a major budget item — do not use national averages for Chicago-area escrow.",
+    insurance: "Standard Midwestern severe weather drives claims. Older urban housing may need updates for insurability.",
+    programs: ["Illinois Housing Development Authority (IHDA) programs", "City of Chicago and suburban DPA initiatives", "FHA loans common for first-time buyers"],
+    tips: ["Pull the actual tax bill, not just the rate — assessments drive the dollar amount.", "Condo buyers must review special assessment history.", "Compare collar-county taxes carefully against city living costs."],
+  },
+  indiana: {
+    market: "Indiana offers comparatively approachable prices in Indianapolis and most secondary cities, with suburban growth along major corridors.",
+    tax: "Property tax caps and circuit-breaker protections limit how high bills can rise relative to value in many cases, but local rates still vary by township and school district.",
+    insurance: "Severe storms and tornado exposure are the main premium drivers. Flood risk along rivers should be checked separately.",
+    programs: ["Indiana Housing and Community Development Authority (IHCDA) programs", "First-time buyer products through IHCDA lenders", "USDA loans across much of the state"],
+    tips: ["Compare township tax rates inside the same metro.", "Ask about homestead deductions when you occupy the home.", "Factory and logistics job centers can tighten local inventory quickly."],
+  },
+  iowa: {
+    market: "Iowa's housing costs are generally moderate, with Des Moines and university towns (Iowa City, Ames) commanding premiums over rural counties.",
+    tax: "Iowa property taxes are relatively high versus some neighbors. Credits and rollback calculations affect the taxable value — your county treasurer's estimate beats a national average.",
+    insurance: "Severe thunderstorms, hail, and tornadoes drive Midwest premiums. Older farmhouses may need modernization for preferred rates.",
+    programs: ["Iowa Finance Authority (IFA) homeownership programs", "Down payment assistance via IFA partners", "USDA Rural Development in eligible areas"],
+    tips: ["Model escrow carefully — Iowa tax bills can surprise buyers used to low-tax states.", "Check flood plains near rivers and agricultural drainage areas.", "University-town rentals vs. owner-occupancy rules affect financing."],
+  },
+  kansas: {
+    market: "Kansas City metro suburbs and Wichita anchor most demand. Rural and western Kansas remain far more affordable than the statewide median suggests.",
+    tax: "Property taxes fund local schools heavily; effective rates are above the national midpoint in many counties. Homestead programs exist for qualifying owners.",
+    insurance: "Hail and tornado risk keep premiums elevated. Straight-line wind deductibles are common.",
+    programs: ["Kansas Housing Resources Corporation programs", "First-time buyer assistance through state partners", "USDA loans widely available outside metros"],
+    tips: ["Get multiple hail-insurance quotes before locking a rate.", "Compare Johnson County vs. Wyandotte tax environments carefully.", "Rural buyers should verify well, septic, and road maintenance."],
+  },
+  kentucky: {
+    market: "Louisville and Lexington lead Kentucky pricing, with Northern Kentucky suburbs tied to the Cincinnati metro. Eastern and western counties remain significantly more affordable.",
+    tax: "Property tax rates are moderate. Local school and county levies create variation — pull the parcel's prior-year bill when possible.",
+    insurance: "Severe weather and, in some areas, mine-subsidence or flood considerations affect coverage. Ask about optional endorsements.",
+    programs: ["Kentucky Housing Corporation (KHC) programs", "Down payment assistance through KHC", "VA loans popular near Fort Knox and other installations"],
+    tips: ["Northern Kentucky buyers should model Ohio-border commute and tax differences.", "Confirm flood insurance needs along the Ohio River.", "Newer HOA communities around Louisville can add material monthly cost."],
+  },
+  louisiana: {
+    market: "Louisiana housing costs vary from New Orleans and Baton Rouge premiums to much lower prices in many parishes. Flood history and insurance availability heavily influence where buyers can actually close.",
+    tax: "Louisiana's homestead exemption can meaningfully reduce the taxable assessed value of a primary residence. Parish assessors administer the details — file after you occupy.",
+    insurance: "Wind and flood are central. NFIP or private flood policies are often required; wind deductibles can be percentage-based in coastal parishes.",
+    programs: ["Louisiana Housing Corporation programs", "Parish-level recovery and assistance initiatives (where available)", "FHA loans frequently used after insurance is sorted"],
+    tips: ["Never skip elevation certificates and flood-zone determination.", "Budget wind/flood separately from the standard HO-3 quote.", "Homestead exemption paperwork should be on your post-closing checklist."],
+  },
+  maine: {
+    market: "Maine's coastal and southern markets (Portland metro) are competitive, while northern and inland areas remain more affordable. Second-home demand affects inventory in scenic regions.",
+    tax: "Property taxes are relatively high in many municipalities. Maine's homestead exemption and property tax fairness credit can help year-round residents.",
+    insurance: "Coastal wind and winter weather shape premiums. Older housing stock may need updates for preferred carriers.",
+    programs: ["MaineHousing first-time buyer and assistance programs", "Energy-efficiency related incentives through state partners", "Rural Development loans in eligible towns"],
+    tips: ["Confirm year-round occupancy rules if buying near tourist areas.", "Septic and well inspections are critical outside municipal systems.", "Compare mill rates across Portland-area suburbs."],
+  },
+  maryland: {
+    market: "Maryland pricing is strongest around the Washington, D.C. suburbs and parts of Baltimore. Eastern Shore and western Maryland offer relative value with different commute tradeoffs.",
+    tax: "Property taxes vary by county; some high-cost counties still have moderate rates while others combine high values and meaningful millages. Homestead credit programs can cap growth for owner-occupants.",
+    insurance: "Coastal and Bay-adjacent flood risk matters. Older rowhomes may need insurance updates for roof and electrical.",
+    programs: ["Maryland Mortgage Program (MMP)", "Down payment and closing cost assistance via MMP", "Local county assistance overlays"],
+    tips: ["Model ground rent (where applicable) separately from PITI.", "Compare Montgomery, Howard, and Prince George's tax + HOA packages.", "Condo special assessments are common in older mid-rise stock."],
+  },
+  massachusetts: {
+    market: "Massachusetts is a high-cost state led by Greater Boston. Gateway cities and western Massachusetts can offer lower prices but still require careful rate and tax modeling.",
+    tax: "Proposition 2½ limits how fast municipal tax levies grow, but high assessed values mean dollar bills remain large in many towns. Residential exemptions exist in some cities (notably Boston).",
+    insurance: "Coastal wind and winter storm exposure affect eastern Massachusetts. Older triple-deckers need careful underwriting.",
+    programs: ["MassHousing mortgage and assistance programs", "ONE Mortgage and similar affordable products", "Municipal first-time buyer programs"],
+    tips: ["Always check whether a residential exemption applies in your city.", "Condo fees in Greater Boston can rival principal and interest.", "Budget for Massachusetts-specific closing customs and taxes."],
+  },
+  michigan: {
+    market: "Michigan's market is led by metro Detroit suburbs, Grand Rapids, and Ann Arbor. Many legacy cities still offer entry prices far below coastal metros.",
+    tax: "Michigan's taxable value system (Proposal A) limits growth for continuing owners; new buyers typically see taxable value reset toward state equalized value after transfer — escrow can jump after purchase.",
+    insurance: "Severe storms and older housing stock drive claims. Flood risk near the Great Lakes and rivers should be reviewed.",
+    programs: ["Michigan State Housing Development Authority (MSHDA) programs", "Down payment assistance through MSHDA partners", "Local land-bank and revitalization incentives in select cities"],
+    tips: ["Model the post-purchase taxable value reset — do not assume the seller's tax bill.", "Ann Arbor and Grand Rapids premiums differ sharply from statewide medians.", "Get a thorough inspection on older Midwestern homes."],
+  },
+  minnesota: {
+    market: "Twin Cities pricing leads the state, with Rochester and other regional centers close behind. Rural Minnesota remains comparatively affordable.",
+    tax: "Property taxes are moderate-to-high depending on city. Homestead classification lowers the class rate versus non-homestead property — file for homestead with your county.",
+    insurance: "Hail, wind, and winter claims affect premiums. Ice dam history can matter on older roofs.",
+    programs: ["Minnesota Housing finance programs", "Start Up / Step Up and related products", "Down payment assistance via Minnesota Housing partners"],
+    tips: ["Claim homestead status promptly after occupying.", "Compare Minneapolis vs. suburban property tax packages.", "Budget for heating and potential special assessments."],
+  },
+  mississippi: {
+    market: "Mississippi offers some of the lowest median prices in the U.S., with Jackson metro and coastal counties the main exceptions for demand concentration.",
+    tax: "Effective property tax rates are moderate. Homestead exemptions can reduce the tax burden for owner-occupants — confirm with your county tax assessor.",
+    insurance: "Hurricane exposure on the Gulf Coast and severe inland storms keep insurance material relative to home values. Wind deductibles deserve close reading.",
+    programs: ["Mississippi Home Corporation programs", "Down payment assistance through state partners", "USDA loans across much of the state"],
+    tips: ["Coastal buyers must price wind and flood coverage early.", "Verify homestead exemption eligibility after closing.", "Rural properties need well/septic and access due diligence."],
+  },
+  missouri: {
+    market: "Kansas City and St. Louis metros dominate Missouri demand, with Springfield and mid-Missouri offering middle-ground pricing.",
+    tax: "Property tax rates vary by locality; some suburbs have notably different school levies. Missouri's homestead preservation credit may help qualifying owners.",
+    insurance: "Tornado and hail risk is significant. Floodplain determination along major rivers is essential.",
+    programs: ["Missouri Housing Development Commission (MHDC) programs", "First-place and related homeownership products", "Local DPA in select cities"],
+    tips: ["Compare Kansas-side vs. Missouri-side KC tax and insurance packages.", "Review hail deductible options carefully.", "City earnings taxes (where applicable) affect true affordability."],
+  },
+  montana: {
+    market: "Montana's desirable mountain and recreation towns have seen sharp price growth, while agricultural communities remain more affordable. Inventory can be thin outside Billings, Missoula, and Bozeman.",
+    tax: "Property taxes are moderate but have drawn attention amid rising values. Residential property tax relief programs may apply — check current DOR guidance.",
+    insurance: "Wildfire risk is a major underwriting factor in forested areas. Winter access and older cabins can complicate coverage.",
+    programs: ["Board of Housing / Montana homeownership programs", "Rural Development loans", "Local workforce housing initiatives in high-cost towns"],
+    tips: ["Bozeman and resort-adjacent buyers should not rely on statewide medians.", "Confirm wildfire insurance availability before waiving contingencies.", "Water rights and septic capacity matter on acreage."],
+  },
+  nebraska: {
+    market: "Omaha and Lincoln drive most of Nebraska's housing activity. Rural counties remain far more affordable but with thinner resale markets.",
+    tax: "Property taxes are relatively high, reflecting local school funding. Homestead exemptions exist for qualifying seniors and disabled veterans in many cases.",
+    insurance: "Hail and tornado exposure elevate premiums. Straight-line wind claims are common in underwriting reviews.",
+    programs: ["Nebraska Investment Finance Authority (NIFA) programs", "Homebuyer assistance through NIFA lenders", "USDA loans outside metro areas"],
+    tips: ["Model escrow with actual county tax estimates — Nebraska bills can be heavy.", "Get multiple hail quotes.", "Compare Omaha suburban school-district levies."],
+  },
+  nevada: {
+    market: "Las Vegas and Reno-Sparks dominate Nevada housing. Rapid population growth periods have left some suburban inventories sensitive to rate changes.",
+    tax: "Nevada's property tax system includes abatements that can limit year-over-year increases for existing owners. New purchases still need careful assessment estimates.",
+    insurance: "Desert heat, wildfire interface in some areas, and occasional flash flood risk shape coverage. HOA-governed communities are common in newer Vegas suburbs.",
+    programs: ["Nevada Housing Division programs", "Home Is Possible and related products", "Local assistance in Clark and Washoe Counties"],
+    tips: ["Always model HOA dues in master-planned Vegas communities.", "Confirm solar lease vs. owned solar impacts on financing.", "Check flash-flood zones in desert washes."],
+  },
+  "new-hampshire": {
+    market: "New Hampshire attracts buyers seeking relative tax advantages near the Boston employment shed. Seacoast and southern towns are competitive; northern markets are quieter.",
+    tax: "No general sales or income tax elevates the role of property taxes, which are high in many towns. Local school budgets heavily influence mill rates.",
+    insurance: "Winter weather and older New England housing stock affect premiums. Coastal wind exposure rises near the seacoast.",
+    programs: ["New Hampshire Housing finance programs", "First-time buyer assistance products", "Workforce housing initiatives in high-cost towns"],
+    tips: ["Compare town tax rates before falling in love with a listing.", "Budget heating costs for oil or propane homes.", "Condo and PUD docs need careful review in southern NH."],
+  },
+  "new-jersey": {
+    market: "New Jersey is a high-cost, high-tax state with strong demand in NYC and Philadelphia commuter belts. Shore towns add seasonal pricing dynamics.",
+    tax: "Effective property tax rates are among the highest in the U.S. Absolute tax bills often rival principal and interest — never estimate from national averages.",
+    insurance: "Coastal wind and flood risk affect the Shore. Older housing may need updates; HO-3 availability can vary by carrier appetite.",
+    programs: ["NJ Housing and Mortgage Finance Agency (HMFA) programs", "Down payment assistance through HMFA", "Local municipal assistance overlays"],
+    tips: ["Pull the exact tax bill and any added assessments.", "Shore buyers must price flood and wind separately.", "Closing costs and realty transfer fees are material — budget early."],
+  },
+  "new-mexico": {
+    market: "Albuquerque and Santa Fe anchor New Mexico demand, with Santa Fe carrying a distinct lifestyle premium. Rural and border communities trade differently.",
+    tax: "Property tax rates are moderate. Yield control and local mill levies shape bills; primary residence valuations should be confirmed with the county assessor.",
+    insurance: "Wildfire risk in forested and foothill areas matters. Hail and monsoon storms also drive claims.",
+    programs: ["New Mexico Mortgage Finance Authority (MFA) programs", "Down payment assistance via MFA", "Local workforce housing in select cities"],
+    tips: ["Santa Fe buyers should stress-test prices above the statewide median.", "Confirm adobe or unique construction insurance eligibility.", "Check wildfire interface zones carefully."],
+  },
+  "new-york": {
+    market: "New York State spans ultra-high-cost NYC boroughs and comparatively affordable upstate markets. Long Island and Westchester behave more like high-cost suburbs than the statewide median implies.",
+    tax: "Property taxes are high in many suburban counties. NYC has its own assessment system and abatements; upstate towns vary widely. STAR exemptions can help primary residences.",
+    insurance: "Coastal wind/flood on Long Island and older urban housing stock are key factors. Co-op and condo policies differ from HO-3.",
+    programs: ["State of New York Mortgage Agency (SONYMA) programs", "NYC HomeFirst and similar local DPA", "Affordable homeownership lotteries and restricted units"],
+    tips: ["Never use statewide medians for NYC or Long Island budgeting.", "Co-op maintenance fees can exceed the mortgage payment.", "Apply for STAR if you occupy as a primary residence."],
+  },
+  "north-carolina": {
+    market: "Research Triangle, Charlotte, and the Triad lead growth, with mountain and coastal markets adding lifestyle premiums. In-migration has kept many metros competitive.",
+    tax: "Property tax rates are moderate by national standards. County rates differ — compare Wake, Mecklenburg, and surrounding counties when shopping.",
+    insurance: "Coastal wind/hurricane risk and inland severe storms affect premiums. Condo and townhome master policies need review in urban cores.",
+    programs: ["NC Housing Finance Agency programs", "Down payment assistance through NCHFA", "Local city assistance in Charlotte, Raleigh, and others"],
+    tips: ["Model HOA dues in newer suburban Charlotte/Raleigh communities.", "Coastal buyers need wind coverage clarity early.", "Check whether city limits vs. county-only affects taxes and services."],
+  },
+  "north-dakota": {
+    market: "North Dakota's housing markets track energy and agriculture cycles, with Fargo the most consistent demand center. Boomtown dynamics can still appear in oil-producing regions.",
+    tax: "Property taxes are moderate. Local school and park levies create variation — use county estimates.",
+    insurance: "Severe cold, wind, and summer storms shape claims. Older housing may need updates for preferred rates.",
+    programs: ["North Dakota Housing Finance Agency programs", "First-time buyer products through NDHFA", "Rural Development loans"],
+    tips: ["Energy-region buyers should stress-test price volatility.", "Confirm heating systems and insulation in winter inspections.", "Thin comparable sales can complicate appraisals outside Fargo."],
+  },
+  ohio: {
+    market: "Ohio offers broadly approachable prices versus coastal states, with Columbus growing fastest and Cincinnati/Cleveland suburbs showing steady demand.",
+    tax: "Effective property tax rates are relatively high in many counties. Local school levies matter; homestead exemptions may help qualifying seniors.",
+    insurance: "Severe storms and older housing stock drive Midwest premiums. Flood risk along rivers should be checked.",
+    programs: ["Ohio Housing Finance Agency (OHFA) programs", "Down payment assistance through OHFA partners", "Local land-bank and revitalization programs"],
+    tips: ["Compare school-district levies inside the same metro.", "Budget for potential municipal income taxes where applicable.", "Get thorough inspections on older homes common in Ohio stock."],
+  },
+  oklahoma: {
+    market: "Oklahoma City and Tulsa lead pricing, with much of the state remaining affordable. Tornado risk is a defining underwriting and construction consideration.",
+    tax: "Property tax rates are moderate. Homestead exemptions can reduce taxable value for primary residences — file with your county assessor.",
+    insurance: "Tornado and hail risk make Oklahoma insurance among the higher-cost inland markets. Safe rooms and roof credits may help.",
+    programs: ["Oklahoma Housing Finance Agency programs", "Assistance through OHFA lenders", "USDA loans across much of the state"],
+    tips: ["Shop insurance aggressively — quotes vary widely after hail seasons.", "Ask about storm-shelter credits and roof age requirements.", "Confirm homestead exemption after you occupy."],
+  },
+  oregon: {
+    market: "Portland metro and desirable Willamette Valley / coastal communities lead Oregon pricing. Land-use constraints contribute to limited supply in many urban growth boundaries.",
+    tax: "Oregon has no general sales tax; property taxes are shaped by Measure 5/50 limits. New construction and certain levies can still surprise buyers.",
+    insurance: "Wildfire risk has become a major factor in many counties. Coastal wind exposure affects shoreline communities.",
+    programs: ["Oregon Housing and Community Services / homeownership programs", "Local Portland-metro assistance initiatives", "Bond-financed first-time buyer products via partners"],
+    tips: ["Pull wildfire risk reports before waiving contingencies.", "Model Portland-area HOA and parking costs.", "Understand how assessed value differs from market value under Oregon limits."],
+  },
+  pennsylvania: {
+    market: "Philadelphia and Pittsburgh metros bookend the state, with college towns and suburbs in between. Eastern PA often prices differently than western markets.",
+    tax: "Property taxes vary sharply by school district. Transfer taxes (state + local) are a notable closing cost — budget them explicitly.",
+    insurance: "Older housing stock and severe storms drive claims. Mine-subsidence insurance is relevant in parts of western PA.",
+    programs: ["Pennsylvania Housing Finance Agency (PHFA) programs", "Keystone Home Loan and related products", "Local city assistance programs"],
+    tips: ["Always compare school-district taxes, not just county averages.", "Budget realty transfer taxes early in your cash-to-close estimate.", "Ask about mine-subsidence coverage where applicable."],
+  },
+  "rhode-island": {
+    market: "Rhode Island's small geography means Providence metro and coastal communities dominate. Proximity to Boston employment supports demand.",
+    tax: "Property taxes are relatively high in many municipalities. Homestead exemptions or owner-occupant classifications may apply depending on the city.",
+    insurance: "Coastal wind and flood exposure affect shoreline and bay communities. Older triple-deckers need careful underwriting.",
+    programs: ["Rhode Island Housing programs", "First-time homebuyer mortgages and assistance", "Local municipal initiatives"],
+    tips: ["Compare Providence vs. suburban mill rates carefully.", "Coastal buyers should price flood coverage separately.", "Condo fees can be substantial in converted mills and urban buildings."],
+  },
+  "south-carolina": {
+    market: "Charleston, Greenville, and Myrtle Beach area markets lead demand. Inland counties remain more affordable than coastal lifestyle markets.",
+    tax: "Owner-occupied primary residences often receive a favorable assessment ratio versus other property — confirming owner-occupancy status matters for escrow.",
+    insurance: "Coastal wind/hurricane risk and inland severe storms drive premiums. Wind pools or specialized carriers may be needed near the coast.",
+    programs: ["South Carolina Housing / SC Housing programs", "Down payment assistance through state partners", "Local Charleston-area workforce initiatives"],
+    tips: ["Coastal buyers must lock insurance feasibility before closing timelines slip.", "Verify owner-occupied assessment classification.", "HOA/POA fees are common in newer Lowcountry communities."],
+  },
+  "south-dakota": {
+    market: "Sioux Falls leads South Dakota growth, with Rapid City serving the western side near the Black Hills. Much of the state remains low-density and affordable.",
+    tax: "Property taxes are moderate-to-meaningful depending on locality. Owner-occupant classifications and exemptions can apply — check your county.",
+    insurance: "Severe storms, hail, and winter weather drive claims. Rural claims service response times can affect carrier choice.",
+    programs: ["South Dakota Housing Development Authority programs", "First-time buyer assistance", "USDA Rural Development loans"],
+    tips: ["Sioux Falls buyers should not rely solely on statewide medians.", "Verify well/septic on rural acreage.", "Get hail deductible clarity in writing."],
+  },
+  tennessee: {
+    market: "Nashville's premium pricing contrasts with more approachable markets in Knoxville, Chattanooga, Memphis, and smaller cities. No state income tax on wages influences some relocation decisions.",
+    tax: "Property tax rates are relatively moderate. County and city rates differ — Davidson County buyers should pull parcel-level estimates.",
+    insurance: "Severe storms and tornado risk affect premiums. Flood risk along rivers should be reviewed.",
+    programs: ["Tennessee Housing Development Agency (THDA) programs", "Great Choice and related THDA products", "Local Metro Nashville assistance overlays"],
+    tips: ["Nashville HOA and infill premiums need separate stress tests.", "Compare surrounding counties for tax and commute tradeoffs.", "Confirm flood history on older neighborhoods near creeks."],
+  },
+  texas: {
+    market: "Texas spans high-growth metros (Dallas–Fort Worth, Austin, Houston, San Antonio) and far more affordable secondary markets. No state income tax shifts more of the housing cost into property taxes and insurance.",
+    tax: "Texas property taxes are among the higher effective rates nationally. Homestead exemptions (general, over-65, disability) and appraisal caps for homesteads can help — file with your county appraisal district.",
+    insurance: "Hail in North Texas, wind/hurricane on the Gulf Coast, and rising premiums statewide make insurance a first-class budget item. Percentage wind/hail deductibles are common.",
+    programs: ["Texas State Affordable Housing Corporation / TDHCA programs", "Local bond and DPA programs in major metros", "VA loans widely used near large military installations"],
+    tips: ["File for homestead exemption after closing — it materially affects escrow.", "Get insurance quotes before option periods expire, especially on the coast.", "Model MUD/PID taxes in suburban master-planned communities."],
+  },
+  utah: {
+    market: "Wasatch Front pricing (Salt Lake, Utah County, Davis, Weber) leads the state after years of strong in-migration. Recreation-adjacent towns carry additional premiums.",
+    tax: "Property tax rates are comparatively moderate. Primary residence valuations and local levies still warrant parcel-level checks.",
+    insurance: "Wildfire risk in foothill and mountain communities matters. Earthquake coverage is often a separate consideration in Utah.",
+    programs: ["Utah Housing Corporation programs", "First-time buyer assistance through UHC", "Local assistance in high-cost Wasatch Front cities"],
+    tips: ["Ask about earthquake endorsement availability and cost.", "HOA dues in newer suburban Utah County communities add up.", "Wildfire interface homes need insurance clarity early."],
+  },
+  vermont: {
+    market: "Vermont's housing supply is constrained, with Chittenden County (Burlington area) the most competitive. Rural inventory can be quirky (seasonal roads, older farms).",
+    tax: "Property taxes are high and closely tied to school funding. Homestead vs. non-homestead declarations affect the education tax rate — file correctly with the state.",
+    insurance: "Winter weather, older housing, and rural claims service shape premiums. Flood risk along rivers should be checked.",
+    programs: ["Vermont Housing Finance Agency (VHFA) programs", "Down payment assistance through VHFA", "Local community land trust options"],
+    tips: ["Declare homestead status accurately — it changes your tax rate.", "Budget for heating systems common in older Vermont homes.", "Confirm year-round access on hill and dirt-road properties."],
+  },
+  virginia: {
+    market: "Northern Virginia prices track the D.C. market, while Richmond, Hampton Roads, and western Virginia offer more moderate entry points. Military demand is strong near Norfolk and other installations.",
+    tax: "Property tax rates are moderate; high NoVA values drive large dollar bills. Local assessments reset with market conditions — check your county's site.",
+    insurance: "Coastal wind/flood in Hampton Roads and older urban housing elsewhere affect coverage. HOA communities are common in Northern Virginia suburbs.",
+    programs: ["Virginia Housing programs", "Down payment assistance through Virginia Housing", "Military-friendly VA loan usage statewide"],
+    tips: ["Do not use statewide medians for Arlington/Fairfax budgeting.", "Model HOA and condo fees common in NoVA.", "Coastal buyers need flood determination early."],
+  },
+  washington: {
+    market: "Seattle–Tacoma and other Puget Sound markets dominate Washington pricing. Eastern Washington (Spokane and beyond) is comparatively approachable but still rate-sensitive.",
+    tax: "Washington has no state income tax; property taxes and other levies fund many services. Local levy lids and special levies create city-by-city differences.",
+    insurance: "Earthquake risk is a notable add-on consideration in western Washington. Wildfire affects some eastern and interface areas.",
+    programs: ["Washington State Housing Finance Commission programs", "Home Advantage and related products", "Local Seattle/King County assistance overlays"],
+    tips: ["Ask for earthquake coverage quotes separately from HO-3.", "Model Seattle-area HOA and parking costs.", "Eastern vs. western Washington insurance profiles differ — get local quotes."],
+  },
+  "west-virginia": {
+    market: "West Virginia remains one of the most affordable states by median price, with Morgantown and select employment centers above the statewide average.",
+    tax: "Property tax rates are relatively moderate. Homestead exemptions may apply for owner-occupants — confirm with the county assessor/sheriff.",
+    insurance: "Older housing stock and mountainous terrain can affect underwriting. Flood risk in valleys and hollows is a frequent due-diligence item.",
+    programs: ["West Virginia Housing Development Fund programs", "First-time buyer assistance", "USDA loans across much of the state"],
+    tips: ["Always check flood history in valley properties.", "Confirm septic/well and access rights on rural parcels.", "Appraisals can be tricky where comps are scarce — allow time."],
+  },
+  wisconsin: {
+    market: "Milwaukee, Madison, and Green Bay lead Wisconsin demand. Lake and vacation markets introduce seasonal pricing not visible in statewide medians.",
+    tax: "Property taxes are relatively high in many municipalities. School district boundaries matter as much as county lines.",
+    insurance: "Winter weather, ice dams, and severe summer storms drive claims. Flood risk near rivers and lakes should be reviewed.",
+    programs: ["Wisconsin Housing and Economic Development Authority (WHEDA) programs", "Easy Close / down payment help via WHEDA", "Local city assistance programs"],
+    tips: ["Compare Milwaukee suburban tax packages carefully.", "Madison buyers should stress-test prices above the statewide median.", "Ask about ice-dam history and attic insulation on older homes."],
+  },
+  wyoming: {
+    market: "Wyoming markets are thin and localized — Cheyenne, Casper, and energy towns differ from Jackson Hole's resort pricing, which sits far above statewide medians.",
+    tax: "Property tax rates are relatively low. Local assessments still warrant parcel checks, especially where values have risen quickly.",
+    insurance: "Wind, wildfire in some areas, and cold-weather construction affect coverage. Rural claims service can limit carrier choice.",
+    programs: ["Wyoming Community Development Authority (WCDA) programs", "First-time buyer assistance", "Rural Development loans"],
+    tips: ["Jackson Hole and Teton County require a completely separate budget model.", "Confirm propane/heating costs on rural properties.", "Thin comps can slow appraisals — build timeline cushion."],
+  },
+  "district-of-columbia": {
+    market: "Washington, D.C. is a high-cost urban market with strong condo inventory and competitive single-family rows in desirable neighborhoods. Suburban alternatives in MD/VA often enter the comparison set.",
+    tax: "D.C. property taxes include homestead benefits for owner-occupants. Assessment appeals and homestead deductions can change the bill — review OTR guidance after purchase.",
+    insurance: "Urban row/condo insurance differs from suburban HO-3. Flood risk exists in some low-lying areas; condo master policies need careful reading.",
+    programs: ["DC Housing Finance Agency programs", "Home Purchase Assistance Program (HPAP) and related aid", "Employer-assisted housing for some federal/nonprofit workers"],
+    tips: ["Model condo fees — they often rival the mortgage payment.", "Apply for homestead benefits after you occupy.", "Compare DC tax + fee stacks against MD/VA suburbs for the same commute."],
+  },
+};
+
+function esc(s) {
+  return s.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+}
+
+function taxTier(rate) {
+  if (rate < 0.7) return "low";
+  if (rate < 1.2) return "moderate";
+  return "high";
+}
+
+function priceTier(price) {
+  if (price < 280000) return "entry";
+  if (price < 450000) return "mid";
+  return "premium";
+}
+
+function insuranceTier(ins) {
+  if (ins < 1200) return "lower";
+  if (ins < 1800) return "typical";
+  return "elevated";
+}
+
+let out = `/**
+ * Unique editorial guides for each state calculator page.
+ * Generated to avoid thin Mad-Libs duplication for AdSense quality.
+ * Review periodically against state housing-finance agency updates.
+ */
+import type { StateData } from "./states";
+import type { Faq } from "./faqs";
+import { calculatePayment } from "./mortgage";
+import { DEFAULT_INPUTS } from "./defaults";
+import { formatCurrency, formatPercent } from "./mortgage";
+import { SITE } from "./site";
+
+export interface StateGuide {
+  marketOverview: string;
+  taxAndHomestead: string;
+  insuranceNotes: string;
+  paymentWalkthrough: string;
+  affordabilityNote: string;
+  buyerPrograms: string[];
+  localTips: string[];
+  closingNote: string;
+  faqs: Faq[];
+}
+
+function scenario(state: StateData) {
+  const homePrice = state.medianHomePrice;
+  const down20 = Math.round(homePrice * 0.2);
+  const down5 = Math.round(homePrice * 0.05);
+  const with20 = calculatePayment({
+    ...DEFAULT_INPUTS,
+    homePrice,
+    downPayment: down20,
+    propertyTaxRate: state.propertyTaxRate,
+    annualHomeInsurance: state.avgInsurance,
+    pmiRate: 0,
+  });
+  const with5 = calculatePayment({
+    ...DEFAULT_INPUTS,
+    homePrice,
+    downPayment: down5,
+    propertyTaxRate: state.propertyTaxRate,
+    annualHomeInsurance: state.avgInsurance,
+    pmiRate: 0.55,
+  });
+  return { homePrice, down20, down5, with20, with5 };
+}
+
+`;
+
+for (const s of STATES) {
+  const f = FACTS[s.slug];
+  if (!f) throw new Error("Missing facts for " + s.slug);
+  const tt = taxTier(s.propertyTaxRate);
+  const pt = priceTier(s.medianHomePrice);
+  const it = insuranceTier(s.avgInsurance);
+
+  const taxCompare =
+    tt === "low"
+      ? `${s.name}'s average effective property tax rate of roughly ${s.propertyTaxRate}% sits below the national midpoint, so taxes often take a smaller slice of PITI than in high-tax states — though your county can still differ.`
+      : tt === "moderate"
+        ? `${s.name}'s average effective property tax rate of roughly ${s.propertyTaxRate}% is near the middle of the U.S. range. The dollar amount still scales with purchase price, so escrow on a median-priced home is material.`
+        : `${s.name}'s average effective property tax rate of roughly ${s.propertyTaxRate}% ranks among the higher statewide averages nationally. On a median-priced home, taxes can rival or exceed the insurance line item in your payment.`;
+
+  const priceCompare =
+    pt === "entry"
+      ? `At an indicative median near $${s.medianHomePrice.toLocaleString("en-US")}, ${s.name} remains more approachable than coastal high-cost states — but rate, insurance, and taxes still determine whether a payment fits.`
+      : pt === "mid"
+        ? `With an indicative median near $${s.medianHomePrice.toLocaleString("en-US")}, ${s.name} sits in the middle of the national price distribution. Small rate changes move the payment more than many first-time buyers expect.`
+        : `An indicative median near $${s.medianHomePrice.toLocaleString("en-US")} places ${s.name} in a higher-cost cohort. Down payment size and PMI (or MIP) choices often matter as much as the note rate.`;
+
+  const insCompare =
+    it === "lower"
+      ? `Indicative average homeowners insurance around $${s.avgInsurance.toLocaleString("en-US")}/year is comparatively contained, but shop quotes for your ZIP — carriers price risk locally.`
+      : it === "typical"
+        ? `Indicative average homeowners insurance around $${s.avgInsurance.toLocaleString("en-US")}/year is in a typical U.S. band. Roof age, claims history, and deductibles still swing real quotes.`
+        : `Indicative average homeowners insurance around $${s.avgInsurance.toLocaleString("en-US")}/year is elevated versus many states. Treat insurance shopping as part of your offer strategy, not an afterthought.`;
+
+  out += `const ${s.abbr}_GUIDE = (state: StateData): StateGuide => {
+  const sc = scenario(state);
+  return {
+    marketOverview: \`${esc(f.market)} ${esc(priceCompare)}\`,
+    taxAndHomestead: \`${esc(taxCompare)} ${esc(f.tax)}\`,
+    insuranceNotes: \`${esc(insCompare)} ${esc(f.insurance)}\`,
+    paymentWalkthrough: \`Using ${s.name}'s indicative median of \${formatCurrency(sc.homePrice)}, a 20% down payment of \${formatCurrency(sc.down20)}, a \${SITE.defaultRate}% rate, and local tax/insurance defaults, principal and interest is about \${formatCurrency(sc.with20.principalAndInterest)} with a full monthly payment near \${formatCurrency(sc.with20.totalMonthly)} (including roughly \${formatCurrency(sc.with20.monthlyTax)} tax and \${formatCurrency(sc.with20.monthlyInsurance)} insurance). With only 5% down (\${formatCurrency(sc.down5)}), the same price point jumps to about \${formatCurrency(sc.with5.totalMonthly)} per month because the loan is larger and PMI is typically required — roughly \${formatCurrency(sc.with5.monthlyPmi)} of that total.\`,
+    affordabilityNote: \`A common comfort check is keeping total housing cost near 28% of gross income. At \${formatCurrency(sc.with20.totalMonthly)}/month, that implies ballpark gross income around \${formatCurrency(Math.round((sc.with20.totalMonthly / 0.28) * 12))} per year before other debts. Run your real income and debts through our home affordability calculator rather than relying on this rule of thumb alone.\`,
+    buyerPrograms: ${JSON.stringify(f.programs, null, 6)},
+    localTips: ${JSON.stringify(f.tips, null, 6)},
+    closingNote: \`Figures on this page are educational estimates for ${s.name}, not a lender quote. County tax assessors, insurance agents, and licensed mortgage professionals can confirm the numbers for a specific address. See our methodology page for the formulas and assumptions behind every estimate.\`,
+    faqs: [
+      {
+        question: \`What is the average property tax rate in ${s.name}?\`,
+        answer: \`${s.name}'s indicative average effective property tax rate is about \${formatPercent(state.propertyTaxRate)} of home value per year. On a \${formatCurrency(state.medianHomePrice)} home, that is roughly \${formatCurrency((state.medianHomePrice * state.propertyTaxRate) / 100)} annually, usually collected monthly through escrow. Your county bill can differ — and homestead programs may reduce what you owe.\`,
+      },
+      {
+        question: \`How much is a typical mortgage payment in ${s.name}?\`,
+        answer: \`On the indicative median of \${formatCurrency(sc.homePrice)} with 20% down, local tax/insurance defaults, and a \${SITE.defaultRate}% rate, a full monthly payment is about \${formatCurrency(sc.with20.totalMonthly)}. Your quote will differ with price, credit, loan type, and exact escrow items.\`,
+      },
+      {
+        question: \`Does this calculator include ${s.name} homeowners insurance?\`,
+        answer: \`Yes. We default to an indicative ${s.name} average near \${formatCurrency(state.avgInsurance)} per year (\${formatCurrency(state.avgInsurance / 12)}/month). Replace it with a real quote for your address — especially if you need wind, hurricane, wildfire, or flood endorsements.\`,
+      },
+      {
+        question: \`What assistance programs should ${s.name} buyers know about?\`,
+        answer: \`${f.programs[0]}. Also explore: ${f.programs.slice(1).join("; ")}. Program rules change — confirm eligibility with the agency or a participating lender.\`,
+      },
+    ],
+  };
+};
+
+`;
+}
+
+out += `const BUILDERS: Record<string, (state: StateData) => StateGuide> = {\n`;
+for (const s of STATES) {
+  out += `  "${s.slug}": ${s.abbr}_GUIDE,\n`;
+}
+out += `};
+
+export function getStateGuide(state: StateData): StateGuide {
+  const build = BUILDERS[state.slug];
+  if (!build) {
+    throw new Error(\`Missing state guide for \${state.slug}\`);
+  }
+  return build(state);
+}
+`;
+
+const dest = path.join(__dirname, "..", "src", "lib", "stateGuides.ts");
+fs.writeFileSync(dest, out);
+console.log("Wrote", dest, "bytes", out.length);

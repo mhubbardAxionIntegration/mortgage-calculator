@@ -77,7 +77,44 @@ export default async function Home() {
         </Suspense>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-12">
+      <section className="border-y border-slate-200 bg-white">
+        <div className="mx-auto max-w-3xl px-4 py-12">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            More than a payment widget
+          </h2>
+          <p className="mt-4 leading-relaxed text-slate-600">
+            {SITE.name} is built for buyers and homeowners who want the full
+            monthly picture — principal, interest, taxes, insurance, PMI, and
+            HOA — plus plain-English guides that explain what those numbers mean.
+            We publish worked examples for every state, loan-type deep dives for
+            FHA, VA, refinance, affordability, and ARMs, and a public{" "}
+            <Link
+              href="/how-we-calculate"
+              className="font-medium text-emerald-700 hover:text-emerald-800"
+            >
+              methodology page
+            </Link>{" "}
+            so you can see the formulas behind every estimate.
+          </p>
+          <p className="mt-4 leading-relaxed text-slate-600">
+            Use the calculator above for a fast national estimate, open a{" "}
+            <a href="#states" className="font-medium text-emerald-700 hover:text-emerald-800">
+              state page
+            </a>{" "}
+            when local taxes and insurance matter, or read our{" "}
+            <Link
+              href="/blog"
+              className="font-medium text-emerald-700 hover:text-emerald-800"
+            >
+              buying guides
+            </Link>{" "}
+            before you shop. Estimates are educational — always confirm pricing
+            with a licensed lender.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-12">
         <h2 className="text-center text-2xl font-bold tracking-tight text-slate-900">
           FHA, VA, and Refinance Calculators
         </h2>

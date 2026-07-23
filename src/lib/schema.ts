@@ -108,3 +108,19 @@ export function financialProductSchema(opts: {
     provider: { "@type": "Organization", name: SITE.name, url: SITE.url },
   };
 }
+
+export function webPageSchema(opts: {
+  name: string;
+  description: string;
+  url: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: opts.name,
+    description: opts.description,
+    url: opts.url,
+    isPartOf: { "@type": "WebSite", name: SITE.name, url: SITE.url },
+    publisher: { "@type": "Organization", name: SITE.name, url: SITE.url },
+  };
+}

@@ -4,7 +4,8 @@ import { getState } from "./states";
 export type Block =
   | { type: "p"; html: string }
   | { type: "h2"; text: string }
-  | { type: "ul"; items: string[] };
+  | { type: "ul"; items: string[] }
+  | { type: "ol"; items: string[] };
 
 export interface BlogCategory {
   slug: string;
@@ -48,14 +49,14 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "rates",
     published: "2026-01-15",
     updated: "2026-06-01",
-    readingMinutes: 6,
+    readingMinutes: 10,
     tags: ["Rates", "Market"],
     relatedCalculators: [
       { href: "/mortgage-calculator", label: "Mortgage Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
-      { type: "p", html: `Mortgage rates are the single biggest lever on what your home costs over time. In 2026, the national average for a 30-year fixed loan has hovered around ${SITE.defaultRate}%, though your personal rate can land well above or below that depending on your profile. This guide explains what's behind today's rates and how to position yourself for the best possible offer.` },
+      { type: "p", html: `Mortgage rates are the single biggest lever on what your home costs over time. In 2026, the national average for a 30-year fixed loan has hovered around ${SITE.defaultRate}% (indicative as of ${SITE.ratesAsOf}), though your personal rate can land well above or below that depending on credit, down payment, points, and loan type. This guide explains what moves rates, why your quote differs from the headline, and how to shop without guessing.` },
       { type: "h2", text: "What moves mortgage rates" },
       { type: "p", html: "Mortgage rates aren't set by any single institution. They reflect a mix of forces, the most important being:" },
       { type: "ul", items: [
@@ -63,20 +64,25 @@ export const BLOG_POSTS: BlogPost[] = [
         "The 10-year Treasury yield, which mortgage rates tend to track closely.",
         "Inflation expectations — higher expected inflation generally pushes rates up.",
         "The bond market's appetite for mortgage-backed securities.",
-        "Your own credit profile, loan type, and down payment.",
+        "Your own credit profile, loan type, occupancy, and down payment.",
       ] },
+      { type: "h2", text: "Worked payment sensitivity" },
+      { type: "p", html: "On a $350,000 loan amount with a 30-year term, a one-percentage-point rate change typically moves principal and interest by roughly $200 per month. That is before taxes and insurance. Over 30 years, the interest difference can reach tens of thousands of dollars. Use our <a href=\"/mortgage-calculator\">mortgage calculator</a> and nudge the rate slider to see your own sensitivity — including PMI if your down payment is under 20%." },
       { type: "h2", text: "Why your rate differs from the headline number" },
-      { type: "p", html: "The rates you see advertised are best-case scenarios. Lenders price your loan based on risk, so a 760+ credit score, a 20% down payment, and a conforming loan amount will earn a noticeably lower rate than a 640 score with 5% down. Even the type of property and whether it's your primary residence matter." },
-      { type: "h2", text: "How to get a lower rate in 2026" },
+      { type: "p", html: "The rates you see advertised are often best-case scenarios for highly qualified borrowers. Lenders price risk, so a 760+ credit score, a 20% down payment, and a conforming primary-residence loan will usually earn a lower rate than a 640 score with 5% down on the same day. Property type (condo vs. single-family), cash-out refinance vs. purchase, and discount points also change the note rate." },
+      { type: "h2", text: "How to shop rates the smart way" },
       { type: "ul", items: [
-        "Raise your credit score before applying — even a 20-point jump can move your rate.",
-        "Save for a larger down payment to cut both your rate and your PMI.",
-        "Compare at least three lenders; rate spreads of 0.25–0.5% between lenders are common.",
-        "Consider paying discount points if you'll stay in the home long enough to break even.",
-        "Lock your rate once you're under contract to protect against increases.",
+        "Compare Loan Estimates from at least three lenders on the same day with the same loan amount, points, and lock period.",
+        "Separate the interest rate from lender credits and discount points so you can calculate break-even.",
+        "Raise your credit score before applying — even a 20-point jump can move pricing tiers.",
+        "Save for a larger down payment to cut both rate risk and PMI.",
+        "Lock once you are under contract if your risk tolerance for floating is low.",
       ] },
-      { type: "p", html: "Small differences add up fast. On a $350,000 loan, dropping your rate by a single percentage point can save you roughly $200 a month and tens of thousands over the life of the loan. Plug your own numbers into our <a href=\"/mortgage-calculator\">mortgage calculator</a> to see exactly how sensitive your payment is, and if you already own a home, our <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a> shows whether today's rates make refinancing worthwhile." },
-      { type: "p", html: "Remember that rates change daily. Treat any figure here as indicative and confirm current pricing with a licensed lender before making decisions." },
+      { type: "h2", text: "Fixed vs ARM in a 2026 context" },
+      { type: "p", html: "A 30-year fixed loan buys payment certainty. A 5/1 or 7/1 ARM may start lower, then adjust with an index plus margin after the intro period. If you expect to move or refinance before the first adjustment — and you can afford the capped payment later — an ARM can be rational. If certainty matters more than the lowest payment today, stress-test both in the <a href=\"/calculators/arm-mortgage-calculator\">ARM calculator</a> and the main fixed-rate tool." },
+      { type: "h2", text: "Refinancing when rates move" },
+      { type: "p", html: "If you already have a mortgage, compare your current principal and interest to a new quote using the <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a>. Divide closing costs by monthly savings for break-even months, and watch whether a new 30-year term erases interest savings by restarting the clock." },
+      { type: "p", html: "Rates change daily. Treat any figure here as educational and confirm current pricing with a licensed loan officer before making decisions. For the formulas behind our estimates, see <a href=\"/how-we-calculate\">how we calculate</a>." },
     ],
   },
   {
@@ -127,28 +133,39 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "loan-types",
     published: "2026-03-10",
     updated: "2026-05-28",
-    readingMinutes: 6,
+    readingMinutes: 9,
     tags: ["Loan terms", "Strategy"],
     relatedCalculators: [
       { href: "/mortgage-calculator", label: "Mortgage Calculator" },
     ],
     body: [
-      { type: "p", html: "The loan term you choose shapes both your monthly budget and your long-term wealth. The two most common options — 15-year and 30-year fixed-rate mortgages — represent a classic trade-off between cash flow and total cost." },
+      { type: "p", html: "The loan term you choose shapes both your monthly budget and your long-term wealth. The two most common options — 15-year and 30-year fixed-rate mortgages — represent a classic trade-off between cash flow and total cost. This guide walks through the math with a concrete example, then helps you decide without treating either term as universally \"best.\"" },
       { type: "h2", text: "The case for a 30-year mortgage" },
       { type: "ul", items: [
         "Lower monthly payments, which improves cash flow and qualifying power.",
         "More flexibility — you can pay extra toward principal when you choose without being locked into a higher required payment.",
         "Easier to afford more home, or to invest the monthly savings elsewhere.",
+        "Useful when you want payment cushion for variable income or upcoming expenses.",
       ] },
       { type: "h2", text: "The case for a 15-year mortgage" },
       { type: "ul", items: [
-        "A lower interest rate than a comparable 30-year loan.",
+        "A lower interest rate than a comparable 30-year loan in most rate sheets.",
         "Dramatically less total interest paid over the life of the loan.",
         "You build equity faster and own your home outright in half the time.",
+        "Forces a savings habit — if you can comfortably afford it.",
       ] },
-      { type: "h2", text: "Seeing the difference" },
-      { type: "p", html: "On a $300,000 loan, a 15-year term carries a much higher monthly payment than a 30-year term, but the total interest can be less than half. The 30-year keeps more cash in your pocket each month; the 15-year keeps far more in your pocket over the long run. There's no universally \"correct\" answer — it depends on your income stability, other financial goals, and how you'd use the monthly difference." },
-      { type: "p", html: "The fastest way to decide is to see both side by side. Open the <a href=\"/mortgage-calculator\">mortgage calculator</a>, switch the loan term between 15 and 30 years, and compare the monthly payment and total interest directly. Many buyers split the difference by taking a 30-year loan and making occasional extra principal payments." },
+      { type: "h2", text: "Worked example: $300,000 loan" },
+      { type: "p", html: "Assume a $300,000 loan amount (after down payment) at illustrative fixed rates near today's market. A 30-year term produces a lower principal-and-interest payment but accrues interest for decades. A 15-year term raises the monthly bill substantially while cutting total interest — often by well over half depending on the rate gap between the two products. The exact dollars change with your rate quote, so treat this as a pattern, not a promise." },
+      { type: "ul", items: [
+        "30-year: lower required payment, slower equity build, higher lifetime interest.",
+        "15-year: higher required payment, faster equity build, much lower lifetime interest.",
+        "Hybrid approach: take 30-year flexibility, then schedule extra principal payments when cash flow allows.",
+      ] },
+      { type: "h2", text: "How to decide in practice" },
+      { type: "p", html: "Start with the payment you could still make after a temporary income shock. If the 15-year payment only works in a perfect month, the 30-year (with optional extra payments) is usually safer. If the 15-year payment fits with room to spare and you value being debt-free sooner, the shorter term can be an excellent forced-savings plan." },
+      { type: "h2", text: "Taxes, insurance, and the full PITI picture" },
+      { type: "p", html: "Term choice only changes principal and interest. Property taxes, homeowners insurance, PMI, and HOA dues stay in the payment either way. Always compare terms inside a full PITI estimate — especially on a <a href=\"/mortgage-calculator\">state-aware mortgage calculator</a> — so you are not choosing a term based on an incomplete number." },
+      { type: "p", html: "Open the <a href=\"/mortgage-calculator\">mortgage calculator</a>, switch the loan term between 15 and 30 years, and compare monthly payment and total interest directly. For the amortization formula we use, see <a href=\"/how-we-calculate\">how we calculate</a>." },
     ],
   },
   {
@@ -161,7 +178,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "guides",
     published: "2026-04-02",
     updated: "2026-06-05",
-    readingMinutes: 5,
+    readingMinutes: 8,
     tags: ["PMI", "Down payment"],
     relatedCalculators: [
       { href: "/mortgage-calculator", label: "Mortgage Calculator" },
@@ -174,13 +191,16 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "h2", text: "How to remove PMI" },
       { type: "ul", items: [
         "Reach 20% equity and request cancellation in writing from your servicer.",
-        "Let it cancel automatically — by law, conventional PMI terminates once your balance reaches 78% of the original value.",
-        "Get a new appraisal if your home has appreciated enough to push you past 20% equity sooner.",
+        "Let it cancel automatically — by law, conventional PMI terminates once your balance reaches 78% of the original value on many loans.",
+        "Get a new appraisal if your home has appreciated enough to push you past 20% equity sooner (lender rules apply).",
         "Refinance into a new loan once you have enough equity, which can also lower your rate.",
+        "Make extra principal payments to hit the equity target faster.",
       ] },
       { type: "h2", text: "FHA loans are different" },
       { type: "p", html: "FHA loans use mortgage insurance premiums (MIP) instead of PMI, and on most FHA loans the annual premium lasts the life of the loan when you put down less than 10%. That's why many FHA borrowers refinance into a conventional loan once they reach 20% equity. You can compare the two in our <a href=\"/calculators/fha-mortgage-calculator\">FHA mortgage calculator</a>." },
-      { type: "p", html: "Our main <a href=\"/mortgage-calculator\">mortgage calculator</a> automatically adds PMI when your down payment is under 20% and removes it at 20% or above, so you can see the real impact on your monthly payment instantly." },
+      { type: "h2", text: "Is avoiding PMI always the right move?" },
+      { type: "p", html: "Not always. Waiting years to save a full 20% down can cost more in rent than paying PMI for a period — especially if prices are rising in your market. Model three scenarios: buy sooner with PMI, wait for 20% down, or buy a less expensive home. The best choice is the one that fits your timeline and cash reserves, not a blanket rule." },
+      { type: "p", html: "Our main <a href=\"/mortgage-calculator\">mortgage calculator</a> automatically adds PMI when your down payment is under 20% and removes it at 20% or above. For the exact rule in our math, see <a href=\"/how-we-calculate\">how we calculate</a>." },
     ],
   },
   {
@@ -396,26 +416,33 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "rates",
     published: "2026-06-15",
     updated: "2026-06-15",
-    readingMinutes: 5,
+    readingMinutes: 8,
     tags: ["Rates", "June 2026", "Market"],
     relatedCalculators: [
       { href: "/mortgage-calculator", label: "Mortgage Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
-      { type: "p", html: `Mortgage rates in June 2026 continue to reflect a market balancing slower inflation against a still-tight Federal Reserve policy stance. The national average for a 30-year fixed loan is around ${SITE.defaultRate}% as of ${SITE.ratesAsOf}, though the rate you actually qualify for depends on your credit, down payment, and loan type.` },
+      { type: "p", html: `This June 2026 snapshot complements our broader <a href="/blog/current-mortgage-rates-2026">2026 mortgage rates guide</a>. The national average for a 30-year fixed loan is around ${SITE.defaultRate}% as of ${SITE.ratesAsOf}. Use it as a budgeting anchor — not a locked quote — then pressure-test your purchase price with taxes and insurance included.` },
       { type: "h2", text: "Where rates stand this month" },
-      { type: "p", html: "Headline averages are a starting point, not a quote. In June 2026, well-qualified borrowers with strong credit and 20% down often see rates near or slightly below the national average, while buyers with smaller down payments or lower scores may land higher. Fifteen-year fixed loans typically price 0.5–0.75% below comparable 30-year terms, which lowers total interest but raises the monthly payment." },
+      { type: "p", html: "Headline averages are a starting point. In June 2026, well-qualified borrowers with strong credit and 20% down often see rates near or slightly below the national average, while buyers with smaller down payments or lower scores may land higher. Fifteen-year fixed loans typically price below comparable 30-year terms, which lowers total interest but raises the monthly payment." },
       { type: "ul", items: [
         `30-year fixed: roughly ${SITE.defaultRate}% national average (indicative).`,
-        "15-year fixed: typically 0.5–0.75% below the 30-year average for similar profiles.",
+        "15-year fixed: typically priced below the 30-year average for similar profiles.",
         "5/1 and 7/1 ARMs: often start lower than fixed rates, then adjust after the initial period.",
-        "FHA and VA loans: rates can be competitive, but mortgage insurance or funding fees affect total cost.",
+        "FHA and VA loans: note rates can look competitive, but MIP or funding fees change total cost.",
       ] },
       { type: "h2", text: "What moved rates in June 2026" },
-      { type: "p", html: "Mortgage rates track the broader bond market more closely than any single Fed announcement. This month, traders are weighing inflation reports, jobs data, and expectations for future rate cuts. When the 10-year Treasury yield rises, mortgage rates tend to follow within days. Geopolitical news and Treasury auction demand can also push rates up or down independent of housing fundamentals." },
+      { type: "p", html: "Mortgage rates track the broader bond market more closely than any single Fed announcement. This month, traders are weighing inflation reports, jobs data, and expectations for future policy easing. When the 10-year Treasury yield rises, mortgage rates tend to follow within days. Geopolitical news and Treasury auction demand can also push rates independently of housing demand." },
+      { type: "h2", text: "A practical June budgeting workflow" },
+      { type: "ol", items: [
+        "Pick a target home price and down payment for the ZIP you will actually shop.",
+        "Run a full PITI estimate in the <a href=\"/mortgage-calculator\">mortgage calculator</a> at today's indicative rate and again 1% higher.",
+        "If you already own, compare your current P&I to a new quote in the <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a> and compute break-even months.",
+        "Only then request Loan Estimates so you can compare apples-to-apples fees and points.",
+      ] },
       { type: "h2", text: "How to use today's rates in your budget" },
-      { type: "p", html: "Don't shop for a home based on a rate you saw in an ad. Run your own numbers with the home price, down payment, and term you're actually considering. Our <a href=\"/mortgage-calculator\">mortgage calculator</a> includes taxes, insurance, and PMI so you see a full monthly payment — not just principal and interest. If you already own a home, compare your current loan to today's market in the <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a>." },
+      { type: "p", html: "Don't shop for a home based on a rate you saw in an ad. Run your own numbers with the home price, down payment, and term you're actually considering — including local taxes and insurance on a state page when those costs dominate escrow. Our tools show a full monthly payment, not just principal and interest." },
       { type: "h2", text: "Tips to get a better rate in June 2026" },
       { type: "ul", items: [
         "Compare Loan Estimates from at least three lenders on the same day.",
@@ -424,7 +451,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "Lock your rate once you're under contract if you expect rates to rise.",
         "Ask about lender credits versus discount points and run the break-even math.",
       ] },
-      { type: "p", html: "Rates change daily. Treat any figure here as educational and confirm current pricing with a licensed loan officer before making decisions." },
+      { type: "p", html: "Rates change daily. Treat any figure here as educational and confirm current pricing with a licensed loan officer. Methodology details: <a href=\"/how-we-calculate\">how we calculate</a>." },
     ],
   },
   {

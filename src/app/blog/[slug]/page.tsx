@@ -112,6 +112,18 @@ export default async function BlogPostPage({
             {post.updated !== post.published && <> &middot; Updated {formatDate(post.updated)}</>}{" "}
             &middot; {post.readingMinutes} min read
           </p>
+          <p className="mt-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-600">
+            <strong className="text-slate-900">{SITE.author.name}</strong>
+            {" — "}
+            {SITE.author.bio}{" "}
+            <Link
+              href="/how-we-calculate"
+              className="font-medium text-emerald-700 hover:text-emerald-800"
+            >
+              See our methodology
+            </Link>
+            .
+          </p>
         </header>
 
         <div className="mt-8">

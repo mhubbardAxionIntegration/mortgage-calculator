@@ -29,6 +29,19 @@ export function BlogContent({ blocks }: { blocks: Block[] }) {
             </ul>
           );
         }
+        if (block.type === "ol") {
+          return (
+            <ol key={i} className="list-decimal space-y-2 pl-6 text-slate-600">
+              {block.items.map((item, j) => (
+                <li
+                  key={j}
+                  className="leading-relaxed [&_a]:font-medium [&_a]:text-emerald-700 [&_a]:underline"
+                  dangerouslySetInnerHTML={{ __html: item }}
+                />
+              ))}
+            </ol>
+          );
+        }
         return (
           <p
             key={i}
