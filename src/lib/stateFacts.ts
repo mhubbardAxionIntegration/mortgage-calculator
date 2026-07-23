@@ -306,7 +306,7 @@ export const STATE_FACTS: Record<string, StateFacts> = {
     tips: ["Nashville HOA and infill premiums need separate stress tests.", "Compare surrounding counties for tax and commute tradeoffs.", "Confirm flood history on older neighborhoods near creeks."],
   },
   texas: {
-    market: "Texas spans high-growth metros (Dallasâ€“Fort Worth, Austin, Houston, San Antonio) and far more affordable secondary markets. No state income tax shifts more of the housing cost into property taxes and insurance.",
+    market: "Texas spans high-growth metros (Dallas - Fort Worth, Austin, Houston, San Antonio) and far more affordable secondary markets. No state income tax shifts more of the housing cost into property taxes and insurance.",
     tax: "Texas property taxes are among the higher effective rates nationally. Homestead exemptions (general, over-65, disability) and appraisal caps for homesteads can help - file with your county appraisal district.",
     insurance: "Hail in North Texas, wind/hurricane on the Gulf Coast, and rising premiums statewide make insurance a first-class budget item. Percentage wind/hail deductibles are common.",
     programs: ["Texas State Affordable Housing Corporation / TDHCA programs", "Local bond and DPA programs in major metros", "VA loans widely used near large military installations"],
@@ -334,7 +334,7 @@ export const STATE_FACTS: Record<string, StateFacts> = {
     tips: ["Do not use statewide medians for Arlington/Fairfax budgeting.", "Model HOA and condo fees common in NoVA.", "Coastal buyers need flood determination early."],
   },
   washington: {
-    market: "Seattleâ€“Tacoma and other Puget Sound markets dominate Washington pricing. Eastern Washington (Spokane and beyond) is comparatively approachable but still rate-sensitive.",
+    market: "Seattle - Tacoma and other Puget Sound markets dominate Washington pricing. Eastern Washington (Spokane and beyond) is comparatively approachable but still rate-sensitive.",
     tax: "Washington has no state income tax; property taxes and other levies fund many services. Local levy lids and special levies create city-by-city differences.",
     insurance: "Earthquake risk is a notable add-on consideration in western Washington. Wildfire affects some eastern and interface areas.",
     programs: ["Washington State Housing Finance Commission programs", "Home Advantage and related products", "Local Seattle/King County assistance overlays"],
