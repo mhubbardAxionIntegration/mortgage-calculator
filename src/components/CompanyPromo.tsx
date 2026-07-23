@@ -1,12 +1,18 @@
 import { COMPANY, MONETIZATION } from "@/lib/site";
 
 /**
- * Cross-promotion for the operating company (Axion Integration Services).
- * Useful for funneling high-intent home-buyer traffic to your own services.
- * Toggle with MONETIZATION.showCompanyPromo.
+ * Optional cross-promotion for the operating company.
+ * Toggle with MONETIZATION.showCompanyPromo. Hidden when website/promo copy
+ * is empty (e.g. while an external company site is offline).
  */
 export function CompanyPromo({ className = "" }: { className?: string }) {
-  if (!MONETIZATION.showCompanyPromo) return null;
+  if (
+    !MONETIZATION.showCompanyPromo ||
+    !COMPANY.website.trim() ||
+    !COMPANY.promoHeadline.trim()
+  ) {
+    return null;
+  }
 
   return (
     <section
@@ -19,9 +25,11 @@ export function CompanyPromo({ className = "" }: { className?: string }) {
             From {COMPANY.shortName}
           </p>
           <h2 className="mt-1 text-lg font-bold">{COMPANY.promoHeadline}</h2>
-          <p className="mt-1 max-w-md text-sm text-slate-300">
-            {COMPANY.promoText}
-          </p>
+          {COMPANY.promoText ? (
+            <p className="mt-1 max-w-md text-sm text-slate-300">
+              {COMPANY.promoText}
+            </p>
+          ) : null}
         </div>
         <a
           href={COMPANY.website}
@@ -29,7 +37,7 @@ export function CompanyPromo({ className = "" }: { className?: string }) {
           rel="noopener"
           className="shrink-0 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500"
         >
-          Explore our services
+          Learn more
         </a>
       </div>
     </section>

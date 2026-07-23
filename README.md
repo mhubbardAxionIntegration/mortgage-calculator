@@ -55,7 +55,7 @@ All monetization is **config-driven and off by default** — nothing renders wit
 
 - **Display ads (Google AdSense):** set `MONETIZATION.adsenseClientId` (e.g. `ca-pub-...`) and the per-slot IDs in `MONETIZATION.ads`. The AdSense script loads only when an ID is present; `<AdSlot>` renders real units in production and labeled placeholders in development. Placements sit above the fold below the calculator and mid-content.
 - **Affiliate / lead generation:** set `MONETIZATION.affiliate.rateQuoteUrl` to your LendingTree / Rocket Mortgage / FlexOffers tracking link. "Get personalized rates" CTAs then appear in the calculator results (pre-filled with the user's price, down payment, rate, term, state, and loan type as query params), on each page, and use `rel="sponsored nofollow"`. An FTC disclosure is shown automatically.
-- **Company cross-promo:** `COMPANY` powers the Axion Integration Services CTA (toggle with `MONETIZATION.showCompanyPromo`) and the legal pages.
+- **Company cross-promo:** optional CTA powered by `COMPANY` / `MONETIZATION.showCompanyPromo` (disabled when no external website is configured) plus legal-page company details.
 
 Trust/compliance pages required for AdSense approval are included: `/about`, `/contact`, `/privacy-policy` (covers ad + affiliate cookies), `/terms`, and `/disclaimer`.
 

@@ -29,22 +29,20 @@ export function absoluteUrl(path = ""): string {
 }
 
 /**
- * Operating company behind the site. Used on legal pages and the cross-promo
- * CTA. Update these placeholders with your real LLC details before launch.
+ * Operating company behind the site. Used on legal pages and optional
+ * cross-promo CTAs. Keep website empty while external company sites are offline.
  */
 export const COMPANY = {
   name: "Axion Integration Services, LLC",
   shortName: "Axion Integration Services",
   state: "Georgia",
-  // TODO: replace with your real business contact details.
-  email: "hello@axionintegration.com",
+  email: "hello@smartmortgagecalc.com",
   phone: "",
   addressLines: ["Franklin, Georgia", "United States"],
-  // External site to promote (home/business automation services).
-  website: "https://www.axionintegration.com",
-  promoHeadline: "Automating a new home in Georgia?",
-  promoText:
-    "Axion Integration Services designs smart-home and business automation systems across Georgia. Ask us about wiring your new home for the future.",
+  /** External company site URL. Leave empty when that site is offline. */
+  website: "",
+  promoHeadline: "",
+  promoText: "",
 } as const;
 
 /**
