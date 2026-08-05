@@ -57,6 +57,14 @@ export function Header() {
               Methodology
             </Link>
           </li>
+          <li>
+            <Link
+              href="/about"
+              className="rounded-md px-3 py-2 hover:bg-slate-100 hover:text-slate-900"
+            >
+              About
+            </Link>
+          </li>
         </ul>
 
         <Link

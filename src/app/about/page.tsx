@@ -5,7 +5,7 @@ import { SITE, COMPANY } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: `Learn about ${SITE.name} and ${COMPANY.name}: our calculator methodology, editorial standards, and how we keep tools free for homebuyers.`,
+  description: `Learn about ${SITE.name}, editor ${SITE.author.name}, and ${COMPANY.name}: calculator methodology, editorial standards, and how we keep tools free for homebuyers.`,
   alternates: { canonical: "/about" },
 };
 
@@ -23,9 +23,34 @@ export default function AboutPage() {
       <h2>Who we are</h2>
       <p>
         The Site is operated by {COMPANY.name}, a {COMPANY.state}-based company.
-        Our {SITE.author.role.toLowerCase()} publish calculators and guides under
-        the {SITE.author.name} byline. {SITE.author.bio}
+        Content and tools are edited by{" "}
+        <strong>{SITE.author.name}</strong>, {SITE.author.role.toLowerCase()}.
       </p>
+      <p>{SITE.author.credentials}</p>
+
+      <h2>Editorial standards</h2>
+      <ul>
+        <li>
+          Payment math follows the standard amortization formula published on{" "}
+          <Link href="/how-we-calculate">How we calculate</Link>. When defaults
+          change (rates, tax/insurance starting points), we update the labeled{" "}
+          &ldquo;as of&rdquo; date ({SITE.ratesAsOf}).
+        </li>
+        <li>
+          Specialized pages use scenario-specific models: refinance break-even,
+          FHA upfront and annual MIP, and ARM intro vs. stress payments — not
+          copy-paste of a single form with swapped labels.
+        </li>
+        <li>
+          Guides prioritize worked examples and decision frameworks over
+          keyword filler. We do not present educational estimates as personalized
+          loan offers or guarantees of approval.
+        </li>
+        <li>
+          Corrections and methodology questions are welcome via the{" "}
+          <Link href="/contact">contact form</Link>.
+        </li>
+      </ul>
 
       <h2>What makes our content different</h2>
       <ul>
@@ -39,9 +64,8 @@ export default function AboutPage() {
           comparison tables, checklists, and multi-section explainers.
         </li>
         <li>
-          We maintain a public{" "}
-          <Link href="/how-we-calculate">How we calculate</Link> methodology
-          page documenting formulas, PMI rules, and data limits.
+          We maintain a public methodology page documenting formulas, PMI rules,
+          and data limits so reviewers and readers can verify the math.
         </li>
       </ul>
 
@@ -49,7 +73,7 @@ export default function AboutPage() {
       <ul>
         <li>
           Calculations use the standard amortization formula and clearly
-          separate principal, interest, taxes, insurance, PMI, and HOA dues.
+          separate principal, interest, taxes, insurance, PMI/MIP, and HOA dues.
         </li>
         <li>
           Default interest rates are indicative and labeled with an

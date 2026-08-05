@@ -108,7 +108,8 @@ export default async function BlogPostPage({
             {post.title}
           </h1>
           <p className="mt-3 text-sm text-slate-500">
-            By {SITE.author.name} &middot; Published {formatDate(post.published)}
+            By {SITE.author.name}, {SITE.author.role} &middot; Published{" "}
+            {formatDate(post.published)}
             {post.updated !== post.published && <> &middot; Updated {formatDate(post.updated)}</>}{" "}
             &middot; {post.readingMinutes} min read
           </p>
@@ -117,10 +118,17 @@ export default async function BlogPostPage({
             {" — "}
             {SITE.author.bio}{" "}
             <Link
+              href="/about"
+              className="font-medium text-emerald-700 hover:text-emerald-800"
+            >
+              About the editor
+            </Link>
+            {" · "}
+            <Link
               href="/how-we-calculate"
               className="font-medium text-emerald-700 hover:text-emerald-800"
             >
-              See our methodology
+              Methodology
             </Link>
             .
           </p>

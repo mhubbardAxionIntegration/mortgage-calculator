@@ -4,10 +4,18 @@ export const SITE = {
   // Update this to your production domain before deploying.
   url: "https://www.smartmortgagecalc.com",
   description:
-    "Free mortgage calculator with taxes, insurance, and PMI — plus unique state guides, loan-type explainers, and transparent payment math. Updated for 2026.",
+    "Free mortgage tools for payment, affordability, refinance, FHA MIP, and ARM stress testing — plus unique state guides and public methodology. Updated for 2026.",
   seo: {
+    /** Home hub — product toolkit, not payment-keyword clone of /mortgage-calculator. */
+    homeTitle: "Smart Mortgage Calculator — Free Payment & Affordability Tools (2026)",
+    homeH1: "Mortgage tools for the full monthly cost",
+    homeDescription:
+      "Free mortgage calculators for monthly payment, affordability, refinance break-even, FHA MIP, and ARM stress tests — with unique state guides and transparent methodology for 2026.",
+    /** Deep payment calculator / guide page. */
     calculatorTitle: "Free Mortgage Calculator 2026 – Estimate Monthly Payments",
     calculatorH1: "Free Mortgage Calculator 2026",
+    calculatorDescription:
+      "Estimate your monthly mortgage payment with taxes, insurance, and PMI. Includes amortization schedule, affordability mode, PITI explainers, and FAQs — updated for 2026.",
   },
   locale: "en_US",
   twitter: "@smartmortgagecalc",
@@ -17,9 +25,13 @@ export const SITE = {
   ratesAsOf: "June 2026",
   year: 2026,
   author: {
-    name: "Smart Mortgage Calculator Editorial Team",
-    role: "Mortgage & home-finance writers",
-    bio: "Our editors build plain-English guides and transparent calculators for homebuyers. We explain payment math, local tax/insurance context, and loan-program tradeoffs — and we label estimates as educational, not loan offers.",
+    name: "Michael Hubbard",
+    role: "Founder & editor",
+    /** Short byline used on blog posts. */
+    bio: "Founder of Smart Mortgage Calculator and operator of Axion Integration Services, LLC. Builds educational mortgage tools and plain-English guides — estimates are educational, not loan offers.",
+    /** Longer About-page credentials without inventing licenses. */
+    credentials:
+      "Michael designs the calculators, state guides, and editorial standards for this site. Content is reviewed for formula accuracy against the public methodology page; personal rate quotes and underwriting decisions always require a licensed lender.",
   },
 } as const;
 

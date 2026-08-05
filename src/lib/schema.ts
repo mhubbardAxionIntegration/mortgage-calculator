@@ -1,4 +1,4 @@
-import { SITE, absoluteUrl } from "./site";
+import { SITE, COMPANY, absoluteUrl } from "./site";
 import type { Faq } from "./faqs";
 
 /** WebApplication schema marks the page as an interactive financial tool. */
@@ -64,6 +64,23 @@ export function organizationSchema() {
     url: SITE.url,
     description: SITE.description,
     logo: absoluteUrl("/icon.svg"),
+    parentOrganization: {
+      "@type": "Organization",
+      name: COMPANY.name,
+    },
+  };
+}
+
+export function personAuthorSchema() {
+  return {
+    "@type": "Person" as const,
+    name: SITE.author.name,
+    jobTitle: SITE.author.role,
+    description: SITE.author.bio,
+    worksFor: {
+      "@type": "Organization",
+      name: COMPANY.name,
+    },
   };
 }
 
@@ -83,7 +100,7 @@ export function blogPostingSchema(opts: {
     mainEntityOfPage: opts.url,
     datePublished: opts.published,
     dateModified: opts.updated,
-    author: { "@type": "Organization", name: SITE.author.name },
+    author: personAuthorSchema(),
     publisher: {
       "@type": "Organization",
       name: SITE.name,

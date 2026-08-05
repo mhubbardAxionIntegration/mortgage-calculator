@@ -20,10 +20,14 @@ export async function generateMetadata({
   const { category } = await params;
   const cat = getCategory(category);
   if (!cat) return {};
+  const posts = getPostsByCategory(cat.slug);
+  /** Sparse category hubs get noindex until they have enough unique posts. */
+  const thin = posts.length < 2;
   return {
     title: `${cat.name} — Mortgage Guides`,
     description: cat.description,
     alternates: { canonical: `/blog/category/${cat.slug}` },
+    ...(thin ? { robots: { index: false, follow: true } } : {}),
   };
 }
 
@@ -61,7 +65,22 @@ export default async function BlogCategoryPage({
           {cat.name}
         </h1>
         <p className="mt-3 text-lg text-slate-600">{cat.description}</p>
+        <p className="mt-4 leading-relaxed text-slate-600">{cat.intro}</p>
       </header>
+
+      {cat.relatedTools.length > 0 && (
+        <aside className="mt-6 flex flex-wrap gap-2">
+          {cat.relatedTools.map((tool) => (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800 hover:border-emerald-300"
+            >
+              {tool.label} &rarr;
+            </Link>
+          ))}
+        </aside>
+      )}
 
       <nav aria-label="Blog categories" className="mt-8 flex flex-wrap gap-2">
         <Link

@@ -11,14 +11,68 @@ export interface BlogCategory {
   slug: string;
   name: string;
   description: string;
+  /** Longer intro shown on the category landing page. */
+  intro: string;
+  /** Related calculator CTAs for the category page. */
+  relatedTools: { href: string; label: string }[];
 }
 
 export const BLOG_CATEGORIES: BlogCategory[] = [
-  { slug: "rates", name: "Rates & Market", description: "Where mortgage rates are headed and what moves them." },
-  { slug: "affordability", name: "Affordability", description: "How much house you can afford and how to budget for it." },
-  { slug: "loan-types", name: "Loan Types", description: "Comparing FHA, VA, conventional, ARM, and fixed-rate loans." },
-  { slug: "refinancing", name: "Refinancing", description: "When and how to refinance your mortgage." },
-  { slug: "guides", name: "Buying Guides", description: "Step-by-step guidance for every stage of buying a home." },
+  {
+    slug: "rates",
+    name: "Rates & Market",
+    description: "Where mortgage rates are headed and what moves them.",
+    intro:
+      "Rate guides here cover what moves national averages, how your personal quote can differ, and when monthly snapshots add context without repeating the same shopping checklist. Pair any rate article with a full PITI estimate — taxes and insurance often move the payment more than a small rate change.",
+    relatedTools: [
+      { href: "/mortgage-calculator", label: "Mortgage calculator" },
+      { href: "/calculators/refinance-mortgage-calculator", label: "Refinance break-even" },
+    ],
+  },
+  {
+    slug: "affordability",
+    name: "Affordability",
+    description: "How much house you can afford and how to budget for it.",
+    intro:
+      "Affordability is more than a DTI rule of thumb. These guides walk through income, debts, and local tax/insurance friction — then point you to calculators that work backward from a comfortable payment instead of stretching to a lender maximum.",
+    relatedTools: [
+      { href: "/calculators/home-affordability-calculator", label: "Affordability calculator" },
+      { href: "/mortgage-calculator", label: "Payment calculator" },
+    ],
+  },
+  {
+    slug: "loan-types",
+    name: "Loan Types",
+    description: "Comparing FHA, VA, conventional, ARM, and fixed-rate loans.",
+    intro:
+      "Loan-type articles compare underwriting tradeoffs and insurance structures (PMI vs FHA MIP, VA funding fee, ARM caps). Use them alongside the specialized calculators for FHA MIP and ARM stress testing so the choice is about total cost and risk, not a single headline rate.",
+    relatedTools: [
+      { href: "/calculators/fha-mortgage-calculator", label: "FHA MIP calculator" },
+      { href: "/calculators/va-mortgage-calculator", label: "VA calculator" },
+      { href: "/calculators/arm-mortgage-calculator", label: "ARM stress calculator" },
+    ],
+  },
+  {
+    slug: "refinancing",
+    name: "Refinancing",
+    description: "When and how to refinance your mortgage.",
+    intro:
+      "Refinancing only helps if you recover closing costs and the new term does not erase interest savings. Start with break-even months and lifetime interest — not payment alone — then confirm fees on a Loan Estimate.",
+    relatedTools: [
+      { href: "/calculators/refinance-mortgage-calculator", label: "Refinance break-even calculator" },
+    ],
+  },
+  {
+    slug: "guides",
+    name: "Buying Guides",
+    description: "Step-by-step guidance for every stage of buying a home.",
+    intro:
+      "Buying guides cover credit timing, down payments, closing costs, and points with worked break-even examples. They assume you will verify numbers with a licensed loan officer and use our calculators for scenarios, not as personalized advice.",
+    relatedTools: [
+      { href: "/mortgage-calculator", label: "Mortgage calculator" },
+      { href: "/how-we-calculate", label: "How we calculate" },
+    ],
+  },
 ];
 
 export interface BlogPost {
@@ -281,28 +335,45 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "loan-types",
     published: "2026-05-22",
     updated: "2026-06-09",
-    readingMinutes: 7,
+    readingMinutes: 9,
     tags: ["FHA", "Conventional", "Comparison"],
     relatedCalculators: [
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
       { href: "/mortgage-calculator", label: "Mortgage Calculator" },
     ],
     body: [
-      { type: "p", html: "FHA and conventional loans are the two most common paths to homeownership, and the right choice depends on your credit, savings, and long-term plans." },
+      { type: "p", html: "FHA and conventional loans are the two most common paths to homeownership. The right choice depends on credit, cash to close, how long you expect to keep the loan, and whether mortgage insurance will stick for years or drop off once you build equity." },
+      { type: "h2", text: "Side-by-side snapshot" },
+      { type: "ul", items: [
+        "Down payment: FHA often 3.5% (580+ FICO); conventional can start near 3% for strong profiles, with 20% removing PMI.",
+        "Credit flexibility: FHA is typically more forgiving; conventional pricing improves sharply with higher scores.",
+        "Insurance: FHA charges upfront MIP plus monthly annual MIP; conventional uses PMI that can cancel near 20% equity.",
+        "Property rules: FHA appraisals emphasize safety/condition; conventional follows agency/investor overlays.",
+      ] },
       { type: "h2", text: "FHA loans at a glance" },
+      { type: "p", html: "FHA loans are insured by the Federal Housing Administration. Most purchase borrowers finance about 1.75% upfront MIP into the loan and pay monthly annual MIP (often near 0.55% of the base loan for many scenarios). When you put down less than 10%, annual MIP usually lasts for the life of the loan unless you refinance out. That structure is why FHA can win on cash-to-close while losing on long-horizon cost." },
       { type: "ul", items: [
         "Down payments as low as 3.5% with a 580+ credit score.",
-        "More forgiving credit requirements.",
-        "Mortgage insurance premiums (MIP) that often last the life of the loan with low down payments.",
+        "More forgiving credit requirements for many lenders.",
+        "MIP duration rules matter as much as the monthly premium.",
       ] },
       { type: "h2", text: "Conventional loans at a glance" },
+      { type: "p", html: "Conventional loans follow Fannie Mae / Freddie Mac guidelines (or jumbo investor overlays). PMI rates depend on LTV and credit; the key advantage is that PMI is usually cancellable once you reach about 20% equity through paydown or appreciation — unlike many FHA low-down scenarios." },
       { type: "ul", items: [
         "Down payments as low as 3% for qualified buyers, but 20% avoids PMI entirely.",
         "Typically require a higher credit score for the best rates.",
-        "PMI can be cancelled once you reach about 20% equity — unlike FHA MIP.",
+        "PMI can usually be cancelled near 20% equity.",
       ] },
+      { type: "h2", text: "Worked mindset (not a quote)" },
+      { type: "p", html: "On a $350,000 purchase with 3.5% down, an FHA loan finances most of the price and adds monthly MIP on top of P&amp;I, taxes, and insurance. A conventional 5% down loan may show lower mortgage insurance after a few years once PMI can cancel, but may price worse on day one if credit is thin. Run both for a 5–7 year hold: if you expect to refinance to conventional once equity and credit improve, FHA can still be the bridge." },
       { type: "h2", text: "How to decide" },
-      { type: "p", html: "If your credit is still improving or your savings are limited, an FHA loan can get you into a home sooner. If you have strong credit and can put down more, a conventional loan often costs less over time because you can shed mortgage insurance. Many FHA borrowers refinance into a conventional loan once they build equity. Model both with our <a href=\"/calculators/fha-mortgage-calculator\">FHA calculator</a> and the <a href=\"/mortgage-calculator\">standard mortgage calculator</a> to compare the monthly payment and lifetime cost." },
+      { type: "ol", items: [
+        "Model FHA with financed upfront MIP in the <a href=\"/calculators/fha-mortgage-calculator\">FHA calculator</a>.",
+        "Model a conventional scenario at the same price in the <a href=\"/mortgage-calculator\">mortgage calculator</a> with realistic PMI.",
+        "Compare cash to close, month-1 payment, and whether insurance can fall off.",
+        "Ask for Loan Estimates with the same purchase price, points, and lock period.",
+      ] },
+      { type: "p", html: "Many FHA borrowers later refinance into a conventional loan. Use the <a href=\"/calculators/refinance-mortgage-calculator\">refinance break-even calculator</a> when that day comes so closing costs do not erase the gain." },
     ],
   },
   {
@@ -315,23 +386,34 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "refinancing",
     published: "2026-05-30",
     updated: "2026-06-11",
-    readingMinutes: 5,
+    readingMinutes: 9,
     tags: ["Refinancing", "Strategy"],
     relatedCalculators: [
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
-      { type: "p", html: "Refinancing replaces your current mortgage with a new one — usually to lower your rate, shorten your term, or tap equity. The key question isn't just \"can I get a lower rate?\" but \"will I stay long enough to come out ahead?\"" },
+      { type: "p", html: "Refinancing replaces your current mortgage with a new one — usually to lower your rate, shorten your term, switch from an ARM to a fixed rate, or tap equity. The key question isn't just \"can I get a lower rate?\" but \"will I stay long enough to come out ahead on closing costs <em>and</em> lifetime interest?\"" },
       { type: "h2", text: "The break-even method" },
-      { type: "p", html: "Refinancing has closing costs, typically 2–5% of the loan amount. To find your break-even point, divide those costs by your expected monthly savings. If your new loan saves $200 a month and costs $5,000 to close, you break even in 25 months. Stay in the home longer than that and you profit." },
+      { type: "p", html: "Refinancing has closing costs, typically 2–5% of the loan amount unless you take a lender credit for a higher rate. Divide total costs by monthly P&amp;I savings to find break-even months. If the new loan saves $200 a month and costs $5,000 to close, you break even in 25 months. Stay longer than that and payment savings look profitable — then still check whether restarting a 30-year term added more interest than you saved." },
+      { type: "h2", text: "Worked example" },
+      { type: "p", html: "Suppose you owe $280,000 at 8% with 300 months left, and you are offered 6.75% for a new 30-year loan with $6,500 in closing costs. Current P&amp;I is higher than the new P&amp;I; monthly savings might look attractive, but lifetime interest on the longer clock can shrink the win. Plug the same inputs into the <a href=\"/calculators/refinance-mortgage-calculator\">refinance break-even calculator</a> to see break-even months and interest on both paths before you pay appraisal or lock fees." },
       { type: "h2", text: "Good reasons to refinance" },
       { type: "ul", items: [
-        "You can lower your rate by roughly 0.5–1% or more.",
-        "You want to switch from an adjustable to a fixed rate for stability.",
-        "You want to shorten your term and pay off the home faster.",
-        "You've built enough equity to drop mortgage insurance.",
+        "You can lower your rate by roughly 0.5–1% or more and will outlast the break-even.",
+        "You want to switch from an adjustable to a fixed rate for payment certainty.",
+        "You want to shorten the term and can afford the higher payment.",
+        "You've built enough equity to drop PMI/MIP via a conventional rate-and-term refi.",
       ] },
-      { type: "p", html: "Run your specific numbers in the <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a> to see your new payment and estimated savings before you commit." },
+      { type: "h2", text: "When not to refinance" },
+      { type: "ul", items: [
+        "You may sell or move before recovering closing costs.",
+        "The payment drop comes only from stretching the term while total interest rises.",
+        "Cash-out pricing is worse than a HELOC for a short-term project.",
+        "You are chasing a teaser ARM without modeling the post-reset payment.",
+      ] },
+      { type: "h2", text: "Rate-and-term vs cash-out" },
+      { type: "p", html: "Rate-and-term refinances change rate, term, or loan type. Cash-out adds to the balance and often prices slightly worse. If you need cash for a defined project, compare cash-out against a HELOC so you do not put your entire first mortgage rate at risk for a short need." },
+      { type: "p", html: "Run your numbers in the <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a> (current balance, rates, remaining months, closing costs) before you commit to an application fee." },
     ],
   },
   {
@@ -344,14 +426,14 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "guides",
     published: "2026-06-04",
     updated: "2026-06-12",
-    readingMinutes: 6,
+    readingMinutes: 8,
     tags: ["Closing", "Costs"],
     relatedCalculators: [
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
       { href: "/mortgage-calculator", label: "Mortgage Calculator" },
     ],
     body: [
-      { type: "p", html: "Closing costs are the fees you pay to finalize your mortgage, and they're easy to underestimate. Budgeting for them up front keeps your home purchase on track." },
+      { type: "p", html: "Closing costs are the fees you pay to finalize your mortgage, and they're easy to underestimate. Budgeting for them up front keeps your home purchase on track — they sit on top of the down payment, not inside it." },
       { type: "h2", text: "What's typically included" },
       { type: "ul", items: [
         "Loan origination and underwriting fees.",
@@ -361,13 +443,15 @@ export const BLOG_POSTS: BlogPost[] = [
         "Recording fees and, in some areas, transfer taxes.",
       ] },
       { type: "h2", text: "How much to expect" },
-      { type: "p", html: "Closing costs generally run 2–5% of the loan amount. On a $280,000 loan, that's roughly $5,600 to $14,000 — separate from your down payment. Your lender must provide a Loan Estimate early in the process and a Closing Disclosure before signing; compare them carefully." },
+      { type: "p", html: "Closing costs generally run 2–5% of the loan amount. On a $280,000 loan, that's roughly $5,600 to $14,000 — separate from your down payment. Your lender must provide a Loan Estimate early in the process and a Closing Disclosure before signing; compare them carefully. Prepaid escrow items can look large in high-tax or high-insurance counties even when lender fees are competitive." },
+      { type: "h2", text: "Cash to close vs monthly payment" },
+      { type: "p", html: "A lower monthly payment does not mean lower cash to close. Points, larger prepaid taxes, and HOA move-in fees can spike day-of funding. Use the <a href=\"/mortgage-calculator\">mortgage calculator</a> for the recurring payment and keep a separate closing-cost worksheet for cash at the table." },
       { type: "h2", text: "Ways to reduce them" },
       { type: "ul", items: [
         "Shop multiple lenders and compare their Loan Estimates line by line.",
-        "Ask the seller to contribute toward closing costs (seller concessions).",
-        "Look into lender credits, though they usually come with a slightly higher rate.",
-        "Check for first-time buyer and down-payment-assistance programs.",
+        "Ask the seller to contribute toward closing costs (seller concessions), within program limits.",
+        "Look into lender credits, though they usually come with a slightly higher rate — run the same break-even math used for discount points.",
+        "Check for first-time buyer and down-payment-assistance programs that may cover fees.",
       ] },
       { type: "p", html: "Factor closing costs into your overall budget alongside the monthly payment — our <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a> helps you keep the full picture in view." },
     ],
@@ -382,28 +466,33 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "rates",
     published: "2026-06-10",
     updated: "2026-06-13",
-    readingMinutes: 5,
+    readingMinutes: 8,
     tags: ["Points", "Rates"],
     relatedCalculators: [
       { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
-      { type: "p", html: "\"Discount points\" let you pay extra at closing in exchange for a lower interest rate. One point costs 1% of your loan amount and typically lowers your rate by about 0.25%, though the exact amount varies by lender." },
+      { type: "p", html: "\"Discount points\" let you pay extra at closing in exchange for a lower interest rate. One point costs 1% of your loan amount and typically lowers your rate by about 0.25%, though the exact amount varies by lender and market day. Origination points (lender fees expressed as points) are different — clarify which you're being offered." },
       { type: "h2", text: "The break-even on points" },
-      { type: "p", html: "Buying points only pays off if you keep the loan long enough to recoup the upfront cost through lower monthly payments. On a $300,000 loan, one point costs $3,000. If it saves you $45 a month, you break even in about 67 months — a little over five and a half years." },
+      { type: "p", html: "Buying points only pays off if you keep the loan long enough to recoup the upfront cost through lower monthly payments. On a $300,000 loan, one point costs $3,000. If it saves you $45 a month, you break even in about 67 months — a little over five and a half years. If you refinance or sell in year three, you likely lost money on those points." },
+      { type: "h2", text: "Worked comparison" },
+      { type: "p", html: `At an indicative ${SITE.defaultRate}% 30-year rate on $300,000, small rate cuts change P&amp;I by dozens of dollars per month — meaningful over a decade, modest over two years. Use the <a href="/mortgage-calculator">mortgage calculator</a> twice: once at the no-points rate and once at the bought-down rate. Divide the cash paid for points by the monthly difference. That is your personal break-even, independent of marketing slogans.` },
       { type: "h2", text: "When points make sense" },
       { type: "ul", items: [
         "You plan to stay in the home well past the break-even point.",
-        "You have cash to spare at closing without draining your reserves.",
-        "You want to lock in the lowest possible long-term payment.",
+        "You have cash to spare at closing without draining emergency reserves.",
+        "You want the lowest durable payment and are unlikely to refinance soon.",
       ] },
       { type: "h2", text: "When to skip them" },
       { type: "ul", items: [
         "You might move or refinance within a few years.",
         "You'd rather put the cash toward a larger down payment to avoid PMI.",
-        "Your closing budget is already tight.",
+        "Your closing budget is already tight after earnest money and prepaid escrow.",
       ] },
-      { type: "p", html: "Try both scenarios — with and without points — in the <a href=\"/mortgage-calculator\">mortgage calculator</a> by adjusting the interest rate to see how the monthly payment and total interest change." },
+      { type: "h2", text: "Points vs lender credits" },
+      { type: "p", html: "Lender credits work in the other direction: you accept a higher rate so the lender pays part of your closing costs. Use the same break-even logic. Credits help cash-constrained buyers; points help long-horizon owners. Never mix quotes that include different point/credit assumptions without recalculating." },
+      { type: "p", html: "Already considering a refinance? Model whether leftover points from a recent purchase would be wasted if you refinance early — then use the <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a> for the new loan's costs." },
     ],
   },
   {
@@ -423,13 +512,13 @@ export const BLOG_POSTS: BlogPost[] = [
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
-      { type: "p", html: `This June 2026 snapshot complements our broader <a href="/blog/current-mortgage-rates-2026">2026 mortgage rates guide</a>. The national average for a 30-year fixed loan is around ${SITE.defaultRate}% as of ${SITE.ratesAsOf}. Use it as a budgeting anchor — not a locked quote — then pressure-test your purchase price with taxes and insurance included.` },
+      { type: "p", html: `This June 2026 snapshot complements our broader <a href="/blog/current-mortgage-rates-2026">2026 mortgage rates guide</a> (which covers what moves rates and how to shop quotes). Here we focus on the month’s indicative levels and a budgeting workflow — not a second copy of the evergreen shopping list.` },
       { type: "h2", text: "Where rates stand this month" },
       { type: "p", html: "Headline averages are a starting point. In June 2026, well-qualified borrowers with strong credit and 20% down often see rates near or slightly below the national average, while buyers with smaller down payments or lower scores may land higher. Fifteen-year fixed loans typically price below comparable 30-year terms, which lowers total interest but raises the monthly payment." },
       { type: "ul", items: [
         `30-year fixed: roughly ${SITE.defaultRate}% national average (indicative).`,
         "15-year fixed: typically priced below the 30-year average for similar profiles.",
-        "5/1 and 7/1 ARMs: often start lower than fixed rates, then adjust after the initial period.",
+        "5/1 and 7/1 ARMs: often start lower than fixed rates, then adjust after the initial period — stress-test the reset with the <a href=\"/calculators/arm-mortgage-calculator\">ARM calculator</a>.",
         "FHA and VA loans: note rates can look competitive, but MIP or funding fees change total cost.",
       ] },
       { type: "h2", text: "What moved rates in June 2026" },
@@ -441,17 +530,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "If you already own, compare your current P&I to a new quote in the <a href=\"/calculators/refinance-mortgage-calculator\">refinance calculator</a> and compute break-even months.",
         "Only then request Loan Estimates so you can compare apples-to-apples fees and points.",
       ] },
-      { type: "h2", text: "How to use today's rates in your budget" },
-      { type: "p", html: "Don't shop for a home based on a rate you saw in an ad. Run your own numbers with the home price, down payment, and term you're actually considering — including local taxes and insurance on a state page when those costs dominate escrow. Our tools show a full monthly payment, not just principal and interest." },
-      { type: "h2", text: "Tips to get a better rate in June 2026" },
-      { type: "ul", items: [
-        "Compare Loan Estimates from at least three lenders on the same day.",
-        "Improve your credit score before applying — even 20 points can matter.",
-        "Consider a larger down payment to reduce PMI and improve pricing.",
-        "Lock your rate once you're under contract if you expect rates to rise.",
-        "Ask about lender credits versus discount points and run the break-even math.",
-      ] },
-      { type: "p", html: "Rates change daily. Treat any figure here as educational and confirm current pricing with a licensed loan officer. Methodology details: <a href=\"/how-we-calculate\">how we calculate</a>." },
+      { type: "h2", text: "How this snapshot differs from the evergreen guide" },
+      { type: "p", html: "Use this page for a dated level check and the month’s macro narrative. Use the <a href=\"/blog/current-mortgage-rates-2026\">2026 rates guide</a> for why your quote differs from the headline and how to compare Loan Estimates. Methodology: <a href=\"/how-we-calculate\">how we calculate</a>." },
     ],
   },
   {

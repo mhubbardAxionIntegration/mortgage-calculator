@@ -24,11 +24,11 @@ const PAGE_URL = absoluteUrl("/mortgage-calculator");
 
 export const metadata: Metadata = {
   title: { absolute: SITE.seo.calculatorTitle },
-  description: SITE.description,
+  description: SITE.seo.calculatorDescription,
   alternates: { canonical: "/mortgage-calculator" },
   openGraph: {
     title: SITE.seo.calculatorTitle,
-    description: SITE.description,
+    description: SITE.seo.calculatorDescription,
     url: PAGE_URL,
   },
 };
@@ -65,7 +65,7 @@ export default async function MortgageCalculatorPage() {
         data={[
           webApplicationSchema({
             name: SITE.seo.calculatorH1,
-            description: metadata.description as string,
+            description: SITE.seo.calculatorDescription,
             url: PAGE_URL,
           }),
           howToSchema({
@@ -92,8 +92,9 @@ export default async function MortgageCalculatorPage() {
           </h1>
           <p className="mt-3 text-lg text-slate-600">
             Calculate your monthly mortgage payment instantly with taxes,
-            insurance, and PMI — then view a complete amortization schedule.
-            Works for all 50 states. Updated for {SITE.year}.
+            insurance, and PMI — then view a complete amortization schedule,
+            PMI explainers, and FAQs. Works for all 50 states. Updated for{" "}
+            {SITE.year}.
           </p>
         </header>
 
