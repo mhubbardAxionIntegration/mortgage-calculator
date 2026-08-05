@@ -10,6 +10,14 @@ const ADS_TXT_HEADERS = {
   "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
 };
 
+function isInsecureRequest(request: NextRequest): boolean {
+  const proto = (
+    request.headers.get("x-forwarded-proto") ||
+    request.nextUrl.protocol.replace(":", "")
+  ).toLowerCase();
+  return proto === "http";
+}
+
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
@@ -21,12 +29,20 @@ export function middleware(request: NextRequest) {
     });
   }
 
-  const host = request.headers.get("host")?.split(":")[0];
+  const host = request.headers.get("host")?.split(":")[0]?.toLowerCase() ?? "";
+  const pathAndQuery = request.nextUrl.pathname + request.nextUrl.search;
+
+  // Force HTTPS when the edge still forwards cleartext (Hostinger x-forwarded-proto).
+  if (
+    isInsecureRequest(request) &&
+    (host === "www.smartmortgagecalc.com" || host === "smartmortgagecalc.com")
+  ) {
+    return NextResponse.redirect(new URL(pathAndQuery || "/", CANONICAL), 308);
+  }
 
   // Apex → www, preserving path and query (e.g. Facebook fbclid).
   if (host === "smartmortgagecalc.com") {
-    const path = request.nextUrl.pathname + request.nextUrl.search;
-    return NextResponse.redirect(new URL(path || "/", CANONICAL), 308);
+    return NextResponse.redirect(new URL(pathAndQuery || "/", CANONICAL), 308);
   }
 
   // Hostinger CDN may normalize "/?fbclid=…" to "?fbclid=…" (empty pathname). Rewrite internally.
