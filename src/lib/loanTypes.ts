@@ -4,6 +4,7 @@
  * (AdSense quality: avoid thin duplicated paragraphs).
  */
 import type { MortgageInputs } from "./mortgage";
+import type { Faq } from "./faqs";
 
 export interface LoanTypeContent {
   heading: string;
@@ -30,6 +31,10 @@ export interface LoanType {
   checklist: string[];
   /** Comparison rows for an on-page table. */
   comparison: { label: string; value: string }[];
+  /** Real editorial FAQs (not pasted section headings). */
+  faqs: Faq[];
+  /** Optional FAQ section intro overriding the generic PITI blurb. */
+  faqIntro: string;
 }
 
 export const LOAN_TYPES: LoanType[] = [
@@ -85,6 +90,30 @@ export const LOAN_TYPES: LoanType[] = [
         text: "If you will likely stay five or more years and can reach 20% equity, model both an FHA payment today and a future conventional refinance. If you need the lowest possible cash to close and your conventional pricing is expensive, FHA may win short-term even with MIP. Always compare Loan Estimates with the same purchase price, prepaid items, and discount-point assumptions so you are not mixing apples and oranges.",
       },
     ],
+    faqIntro:
+      "Answers about FHA mortgage insurance, down payments, and how this calculator models MIP — not generic PITI tips.",
+    faqs: [
+      {
+        question: "Does FHA mortgage insurance ever go away?",
+        answer:
+          "Often not on low-down purchases. When you put down less than 10%, annual MIP usually lasts for the life of the FHA loan unless you refinance into another product. With 10% or more down, MIP may drop off after a set number of years under current rules — confirm the duration on your Loan Estimate.",
+      },
+      {
+        question: "Is upfront MIP the same as monthly MIP?",
+        answer:
+          "No. Upfront MIP (often about 1.75% of the base loan) is charged once and is frequently financed into the loan. Annual MIP is a separate premium collected monthly through escrow. This calculator shows both lines so you can see cash-to-close vs payment impact.",
+      },
+      {
+        question: "When is FHA cheaper than conventional?",
+        answer:
+          "FHA can win on credit flexibility and cash to close. Conventional can win long-term if PMI cancels near 20% equity and your rate is competitive. Compare a 5–7 year hold: month-1 payment, whether insurance can fall off, and refinance plans — not headline rates alone.",
+      },
+      {
+        question: "What should I check before choosing an FHA loan?",
+        answer:
+          "Confirm the property meets FHA appraisal standards, budget for both UFMIP and annual MIP, compare a conventional quote with PMI over the same timeline, and ask when a refinance to conventional might make sense once equity and credit improve.",
+      },
+    ],
   },
   {
     slug: "va-mortgage-calculator",
@@ -102,9 +131,9 @@ export const LOAN_TYPES: LoanType[] = [
     ],
     defaults: { downPayment: 0, pmiRate: 0 },
     highlights: [
-      "$0 down payment for eligible veterans and service members",
-      "No private mortgage insurance (PMI) required",
-      "One-time VA funding fee may apply (can be financed)",
+      "Models the one-time VA funding fee with first-use vs subsequent tiers",
+      "Toggle disability exemption and finance-fee into the loan",
+      "No monthly PMI — escrow still includes taxes and insurance",
     ],
     comparison: [
       { label: "Typical down payment", value: "$0 for eligible borrowers" },
@@ -127,15 +156,39 @@ export const LOAN_TYPES: LoanType[] = [
       },
       {
         heading: "Who qualifies for a VA loan",
-        text: "Eligible active-duty service members, veterans, and certain surviving spouses can use VA loan benefits, often more than once if entitlement remains. Lenders still underwrite residual income, credit, and the property’s VA appraisal requirements. Because there is no down payment requirement and no monthly mortgage insurance, this calculator sets PMI to zero — remember to budget for the funding fee (unless exempt) and normal closing costs.",
+        text: "Eligible active-duty service members, veterans, and certain surviving spouses can use VA loan benefits, often more than once if entitlement remains. Lenders still underwrite residual income, credit, and the property’s VA appraisal requirements. Because there is no down payment requirement and no monthly mortgage insurance, remember to budget for the funding fee (unless exempt) and normal closing costs.",
       },
       {
-        heading: "Funding fee and entitlement, in plain English",
-        text: "The funding fee percentage depends on factors such as first-time vs. subsequent use and whether you put money down. Disability-related exemptions can remove the fee entirely. Entitlement determines how much guaranty you still have if you keep a previous VA loan or recently sold. Before shopping, ask a VA-experienced lender to map your COE and remaining entitlement onto the price range you want.",
+        heading: "How this calculator models the funding fee",
+        text: "Choose first-use vs subsequent use and enter any voluntary down payment. The tool applies common purchase funding-fee percentage tiers (and a 0% rate when you mark a disability exemption), then optionally finances the fee into the loan balance before calculating principal and interest. Percentages are illustrative — confirm the current VA schedule and your COE status with a VA-experienced lender.",
       },
       {
         heading: "When a down payment still helps",
-        text: "Even though VA allows $0 down, a voluntary down payment can reduce the loan amount, lower the funding fee in some cases, and improve offer strength in competitive markets. Run the calculator at $0 down and again with 5–10% down to see how payment and total interest change before you decide how much cash to bring to closing.",
+        text: "Even though VA allows $0 down, a voluntary down payment can reduce the loan amount, move you into a lower funding-fee tier in some cases, and improve offer strength in competitive markets. Run the calculator at $0 down and again with 5–10% down before you decide how much cash to bring to closing.",
+      },
+    ],
+    faqIntro:
+      "Questions about the VA funding fee, entitlement, and $0-down payments for eligible borrowers.",
+    faqs: [
+      {
+        question: "Do VA loans have monthly mortgage insurance?",
+        answer:
+          "No. VA loans do not charge PMI or FHA-style monthly MIP. The main program cost for most borrowers is a one-time funding fee (unless you are exempt), which can often be financed into the loan.",
+      },
+      {
+        question: "How is the VA funding fee calculated?",
+        answer:
+          "The fee is a percentage of the base loan amount. The percentage depends on first-use vs subsequent use and how much you put down. Disability-related exemptions can set the fee to zero. This calculator uses common purchase tiers as editable educational defaults — your Loan Estimate reflects the official schedule.",
+      },
+      {
+        question: "Does $0 down mean $0 cash to close?",
+        answer:
+          "No. You still need earnest money in many markets, prepaid taxes/insurance, and other closing costs unless covered by seller credits or lender credits. Model the monthly payment here, then review cash-to-close on the Loan Estimate separately.",
+      },
+      {
+        question: "What is a Certificate of Eligibility (COE)?",
+        answer:
+          "A COE documents your VA loan entitlement for lenders. Get it early, especially if you have used a VA loan before and need to confirm remaining entitlement for the price range you want.",
       },
     ],
   },
@@ -191,6 +244,30 @@ export const LOAN_TYPES: LoanType[] = [
         text: "Rate-and-term refinances focus on payment, rate type, or term length. Cash-out refinances add debt and often price slightly worse. If you need cash for a finite project, compare a cash-out refinance against a HELOC or home equity loan so you do not put your primary mortgage rate at risk for a short-term need.",
       },
     ],
+    faqIntro:
+      "Break-even math, closing costs, and when a lower payment still fails the lifetime-interest test.",
+    faqs: [
+      {
+        question: "How do I calculate refinance break-even?",
+        answer:
+          "Divide total closing costs by your monthly principal-and-interest savings. If costs are $6,000 and you save $200/month, break-even is 30 months. Stay longer than that for payment savings to cover fees — then still check whether a longer term increased lifetime interest.",
+      },
+      {
+        question: "Why can my payment drop but interest go up?",
+        answer:
+          "Restarting a 30-year term stretches amortization. A lower rate can cut the monthly bill while you pay interest for more years. This calculator shows lifetime interest on the current path vs the new loan so you do not refinance on payment alone.",
+      },
+      {
+        question: "Should I do a cash-out refinance?",
+        answer:
+          "Cash-out increases the balance and often prices worse than rate-and-term. For a short-term cash need, compare a HELOC or home equity loan so you do not put your entire first-mortgage rate at risk.",
+      },
+      {
+        question: "What inputs do I need before using this tool?",
+        answer:
+          "Current remaining balance, current rate, months left, a realistic new rate and term, and a full closing-cost estimate from a Loan Estimate — not just an advertised rate.",
+      },
+    ],
   },
   {
     slug: "home-affordability-calculator",
@@ -244,6 +321,30 @@ export const LOAN_TYPES: LoanType[] = [
         text: "Self-employed borrowers, recent job changes, and variable overtime need extra documentation — the calculator cannot see underwriting nuances. Use it to set a personal ceiling, then let a licensed loan officer translate that into a pre-approval that sellers will trust.",
       },
     ],
+    faqIntro:
+      "How much house you can afford under DTI guidelines — and why lender maximums are not comfort ceilings.",
+    faqs: [
+      {
+        question: "What is the 28/36 rule?",
+        answer:
+          "A common guideline: housing costs stay under about 28% of gross monthly income, and total debt payments under about 36%. Some programs allow higher ratios with compensating factors, but stretching to the underwriting max is how buyers become house-poor.",
+      },
+      {
+        question: "Why is my pre-approval higher than this calculator?",
+        answer:
+          "Lenders may use different DTI caps, residual-income tests, or compensating factors. This tool targets a comfortable ceiling. Prefer the lower number when planning — leave room for maintenance, utilities, and rate or insurance surprises.",
+      },
+      {
+        question: "Should I include taxes and insurance?",
+        answer:
+          "Yes. Affordability without escrow is misleading. Enter realistic tax and insurance for the ZIP you will shop, or use the main calculator’s state selector for indicative defaults before you fine-tune.",
+      },
+      {
+        question: "What debts count toward DTI?",
+        answer:
+          "Typically car loans, student loans, personal loans, and minimum credit-card payments, plus the projected housing payment. Child support and other recurring obligations may also count — ask your loan officer what underwriting includes.",
+      },
+    ],
   },
   {
     slug: "arm-mortgage-calculator",
@@ -295,6 +396,30 @@ export const LOAN_TYPES: LoanType[] = [
       {
         heading: "ARM vs fixed in today’s decision frame",
         text: "Choose an ARM for a planned short horizon and a fixed loan when payment certainty matters more than the lowest payment today. Run both quotes with identical loan amounts and closing-cost assumptions. If the ARM savings over the fixed period do not exceed the risk you are taking after reset, the fixed loan may be the better lifestyle fit even when the ARM looks cheaper on month one.",
+      },
+    ],
+    faqIntro:
+      "Introductory ARM payments, lifetime caps, and how to stress-test the payment after reset.",
+    faqs: [
+      {
+        question: "What does 5/1 or 7/1 ARM mean?",
+        answer:
+          "The first number is years the start rate stays fixed; the second is how often the rate can adjust afterward (often annually). A 5/1 is fixed for five years, then typically adjusts once per year subject to caps.",
+      },
+      {
+        question: "What rate should I use for the stress test?",
+        answer:
+          "Start with your lifetime cap from the Loan Estimate, or add 2–5 percentage points to the intro rate if caps are unclear. Budget for that payment — not only the teaser — before you choose an ARM.",
+      },
+      {
+        question: "When does an ARM make sense?",
+        answer:
+          "When you expect to sell or refinance before the first adjustment, or you can comfortably afford the stress payment afterward. Long-horizon owners who need payment certainty often prefer a fixed rate even if the ARM starts lower.",
+      },
+      {
+        question: "Does this tool simulate every future adjustment?",
+        answer:
+          "No. It compares today’s intro payment with a single higher stress rate on the current balance — a conservative budgeting check. Actual resets follow your index, margin, caps, and remaining schedule.",
       },
     ],
   },

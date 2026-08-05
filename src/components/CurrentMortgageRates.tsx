@@ -24,7 +24,7 @@ export async function CurrentMortgageRates({
   return (
     <section
       aria-label="Current US mortgage rates"
-      className={`rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 sm:p-6 ${className}`}
+      className={`rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white p-5 sm:p-6 ${className}`}
     >
       {showHeading ? (
         <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
@@ -33,8 +33,8 @@ export async function CurrentMortgageRates({
       ) : null}
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-emerald-100 bg-white px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+        <div className="rounded-xl border border-sky-100 bg-white px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
             30-year fixed
           </p>
           <p className="mt-1 text-3xl font-extrabold tabular-nums text-slate-900">
@@ -42,8 +42,8 @@ export async function CurrentMortgageRates({
           </p>
           <p className="mt-1 text-xs text-slate-500">As of {asOfLabel}</p>
         </div>
-        <div className="rounded-xl border border-emerald-100 bg-white px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+        <div className="rounded-xl border border-sky-100 bg-white px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
             15-year fixed
           </p>
           <p className="mt-1 text-3xl font-extrabold tabular-nums text-slate-900">
@@ -66,7 +66,7 @@ export async function CurrentMortgageRates({
           href={RATE_SOURCE_LINKS.fred30}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
+          className="inline-flex items-center gap-1 rounded-lg bg-sky-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
         >
           View live rates on FRED
           <span aria-hidden="true">&rarr;</span>
@@ -75,7 +75,7 @@ export async function CurrentMortgageRates({
           href={RATE_SOURCE_LINKS.freddieMac}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700"
+          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-sky-300 hover:text-sky-800"
         >
           Freddie Mac PMMS
           <span aria-hidden="true">&rarr;</span>

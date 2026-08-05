@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SITE, COMPANY } from "@/lib/site";
 import { RATE_SOURCE_LINKS } from "@/lib/mortgageRates";
 import { LOAN_TYPES } from "@/lib/loanTypes";
-import { STATES } from "@/lib/states";
+import { STATES, stateCalculatorHref } from "@/lib/states";
 import { CookiePreferencesButton } from "@/components/consent/CookiePreferencesButton";
 
 export function Footer() {
@@ -19,7 +19,7 @@ export function Footer() {
           <div className="flex items-center gap-2 text-lg font-bold text-slate-900">
             <span
               aria-hidden
-              className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-600 text-white"
+              className="grid h-7 w-7 place-items-center rounded-lg bg-sky-800 text-white"
             >
               $
             </span>
@@ -35,13 +35,13 @@ export function Footer() {
           <h2 className="text-sm font-semibold text-slate-900">Calculators</h2>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
             <li>
-              <Link href="/mortgage-calculator" className="hover:text-emerald-700">
+              <Link href="/mortgage-calculator" className="hover:text-sky-800">
                 Mortgage Calculator
               </Link>
             </li>
             {LOAN_TYPES.map((t) => (
               <li key={t.slug}>
-                <Link href={`/calculators/${t.slug}`} className="hover:text-emerald-700">
+                <Link href={`/calculators/${t.slug}`} className="hover:text-sky-800">
                   {t.title}
                 </Link>
               </li>
@@ -55,15 +55,15 @@ export function Footer() {
             {featuredStates.map((s) => (
               <li key={s.slug}>
                 <Link
-                  href={`/mortgage-calculator/${s.slug}`}
-                  className="hover:text-emerald-700"
+                  href={stateCalculatorHref(s.slug)}
+                  className="hover:text-sky-800"
                 >
                   {s.name} Mortgage Calculator
                 </Link>
               </li>
             ))}
             <li>
-              <Link href="/mortgage-calculator#states" className="font-medium hover:text-emerald-700">
+              <Link href="/mortgage-calculator#states" className="font-medium hover:text-sky-800">
                 All 50 states &rarr;
               </Link>
             </li>
@@ -74,37 +74,37 @@ export function Footer() {
           <h2 className="text-sm font-semibold text-slate-900">Company</h2>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
             <li>
-              <Link href="/blog" className="hover:text-emerald-700">Blog</Link>
+              <Link href="/blog" className="hover:text-sky-800">Blog</Link>
             </li>
             <li>
-              <Link href="/how-we-calculate" className="hover:text-emerald-700">
+              <Link href="/how-we-calculate" className="hover:text-sky-800">
                 How we calculate
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-emerald-700">About</Link>
+              <Link href="/about" className="hover:text-sky-800">About</Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-emerald-700">Contact</Link>
+              <Link href="/contact" className="hover:text-sky-800">Contact</Link>
             </li>
             <li>
-              <Link href="/privacy-policy" className="hover:text-emerald-700">Privacy Policy</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-800">Privacy Policy</Link>
             </li>
             <li>
-              <Link href="/terms" className="hover:text-emerald-700">Terms of Use</Link>
+              <Link href="/terms" className="hover:text-sky-800">Terms of Use</Link>
             </li>
             <li>
-              <Link href="/disclaimer" className="hover:text-emerald-700">Disclaimer</Link>
+              <Link href="/disclaimer" className="hover:text-sky-800">Disclaimer</Link>
             </li>
             <li>
-              <CookiePreferencesButton className="text-left hover:text-emerald-700" />
+              <CookiePreferencesButton className="text-left hover:text-sky-800" />
             </li>
             <li>
               <a
                 href={RATE_SOURCE_LINKS.fred30}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-emerald-700"
+                className="hover:text-sky-800"
               >
                 Live US mortgage rates (FRED)
               </a>

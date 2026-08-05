@@ -1,8 +1,18 @@
 import type { NextConfig } from "next";
+import { STATES } from "./src/lib/states";
+
+const stateRedirects = STATES.map((s) => ({
+  source: `/mortgage-calculator/${s.slug}`,
+  destination: `/mortgage-calculator?state=${s.slug}`,
+  permanent: true,
+}));
 
 const nextConfig: NextConfig = {
   // Avoid trailing-slash redirects that fight Hostinger hcdn canonicalization on "/".
   skipTrailingSlashRedirect: true,
+  async redirects() {
+    return stateRedirects;
+  },
   async headers() {
     return [
       {

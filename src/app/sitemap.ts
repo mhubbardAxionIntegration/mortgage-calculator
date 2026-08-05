@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { STATES } from "@/lib/states";
 import { LOAN_TYPES } from "@/lib/loanTypes";
 import { BLOG_POSTS, BLOG_CATEGORIES } from "@/lib/blog";
 import { absoluteUrl } from "@/lib/site";
@@ -63,17 +62,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const statePages: MetadataRoute.Sitemap = STATES.map((s) => ({
-    url: absoluteUrl(`/mortgage-calculator/${s.slug}`),
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
   return [
     ...staticPages,
     ...loanTypePages,
-    ...statePages,
     ...blogPages,
     ...blogCategoryPages,
     ...infoPages,

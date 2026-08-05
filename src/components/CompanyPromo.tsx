@@ -21,7 +21,7 @@ export function CompanyPromo({ className = "" }: { className?: string }) {
     >
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-400">
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-400">
             From {COMPANY.shortName}
           </p>
           <h2 className="mt-1 text-lg font-bold">{COMPANY.promoHeadline}</h2>
@@ -35,7 +35,7 @@ export function CompanyPromo({ className = "" }: { className?: string }) {
           href={COMPANY.website}
           target="_blank"
           rel="noopener"
-          className="shrink-0 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500"
+          className="shrink-0 rounded-lg bg-sky-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
         >
           Learn more
         </a>

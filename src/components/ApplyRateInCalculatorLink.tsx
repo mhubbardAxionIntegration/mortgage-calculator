@@ -21,7 +21,7 @@ export function ApplyRateInCalculatorLink({
   const href = `${base}?rate=${rate.toFixed(2)}#calculator`;
   const label = `Use ${rate.toFixed(2)}% in calculator`;
   const className =
-    "text-sm font-semibold text-emerald-700 underline-offset-2 hover:underline";
+    "text-sm font-semibold text-sky-800 underline-offset-2 hover:underline";
 
   const applyOnSamePage = (e: React.MouseEvent) => {
     e.preventDefault();

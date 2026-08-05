@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
 import { CurrentMortgageRates } from "@/components/CurrentMortgageRates";
 import { LOAN_TYPES } from "@/lib/loanTypes";
-import { STATES } from "@/lib/states";
+import { STATES, stateCalculatorHref } from "@/lib/states";
 import { BLOG_POSTS_SORTED } from "@/lib/blog";
 import { JsonLd } from "@/components/JsonLd";
 import { RateCta } from "@/components/RateCta";
@@ -60,10 +60,10 @@ export default async function Home() {
         })}
       />
 
-      <section className="bg-gradient-to-b from-emerald-50 to-white">
+      <section className="bg-gradient-to-b from-sky-50 to-white">
         <div className="mx-auto max-w-6xl px-4 pb-10 pt-12 sm:pt-16">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+            <p className="inline-flex items-center rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-800">
               Updated for {SITE.year}
               {isLive
                 ? ` · 30-yr avg ${rates.rate30.toFixed(2)}% (${formatRateDate(rates.asOf30)})`
@@ -117,7 +117,7 @@ export default async function Home() {
             Formulas and assumptions are documented on our{" "}
             <Link
               href="/how-we-calculate"
-              className="font-medium text-emerald-700 hover:text-emerald-800"
+              className="font-medium text-sky-800 hover:text-sky-900"
             >
               methodology page
             </Link>
@@ -125,7 +125,7 @@ export default async function Home() {
             FAQs, open the{" "}
             <Link
               href="/mortgage-calculator"
-              className="font-medium text-emerald-700 hover:text-emerald-800"
+              className="font-medium text-sky-800 hover:text-sky-900"
             >
               full mortgage calculator guide
             </Link>
@@ -147,7 +147,7 @@ export default async function Home() {
           </div>
           <Link
             href="/mortgage-calculator"
-            className="text-sm font-medium text-emerald-700 hover:text-emerald-800"
+            className="text-sm font-medium text-sky-800 hover:text-sky-900"
           >
             All payment tools &rarr;
           </Link>
@@ -158,13 +158,13 @@ export default async function Home() {
               <Link
                 key={t.slug}
                 href={`/calculators/${t.slug}`}
-                className="group rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-md"
+                className="group rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-300 hover:shadow-md"
               >
-                <h3 className="text-lg font-semibold text-slate-900 group-hover:text-emerald-700">
+                <h3 className="text-lg font-semibold text-slate-900 group-hover:text-sky-800">
                   {t.title}
                 </h3>
                 <p className="mt-2 text-sm text-slate-600">{t.tagline}</p>
-                <span className="mt-3 inline-block text-sm font-medium text-emerald-700">
+                <span className="mt-3 inline-block text-sm font-medium text-sky-800">
                   Open calculator &rarr;
                 </span>
               </Link>
@@ -177,7 +177,7 @@ export default async function Home() {
               <li key={t.slug}>
                 <Link
                   href={`/calculators/${t.slug}`}
-                  className="hover:text-emerald-700"
+                  className="hover:text-sky-800"
                 >
                   {t.label} calculator
                 </Link>
@@ -201,7 +201,7 @@ export default async function Home() {
             </div>
             <Link
               href="/mortgage-calculator#states"
-              className="text-sm font-medium text-emerald-700 hover:text-emerald-800"
+              className="text-sm font-medium text-sky-800 hover:text-sky-900"
             >
               All 50 states &rarr;
             </Link>
@@ -211,8 +211,8 @@ export default async function Home() {
               s ? (
                 <li key={s.slug}>
                   <Link
-                    href={`/mortgage-calculator/${s.slug}`}
-                    className="font-medium text-slate-700 hover:text-emerald-700"
+                    href={stateCalculatorHref(s.slug)}
+                    className="font-medium text-slate-700 hover:text-sky-800"
                   >
                     {s.name}
                   </Link>
@@ -228,7 +228,7 @@ export default async function Home() {
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
             From the blog
           </h2>
-          <Link href="/blog" className="text-sm font-medium text-emerald-700 hover:text-emerald-800">
+          <Link href="/blog" className="text-sm font-medium text-sky-800 hover:text-sky-900">
             View all guides &rarr;
           </Link>
         </div>
@@ -237,14 +237,14 @@ export default async function Home() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-md"
+              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-300 hover:shadow-md"
             >
-              <span className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+              <span className="text-xs font-semibold uppercase tracking-wide text-sky-800">
                 {post.tags[0]}
               </span>
               <h3 className="mt-2 font-semibold text-slate-900">{post.title}</h3>
               <p className="mt-2 flex-1 text-sm text-slate-600">{post.excerpt}</p>
-              <span className="mt-3 text-sm font-medium text-emerald-700">
+              <span className="mt-3 text-sm font-medium text-sky-800">
                 Read more &rarr;
               </span>
             </Link>
@@ -262,7 +262,7 @@ export default async function Home() {
         </p>
         <Link
           href="/mortgage-calculator"
-          className="mt-5 inline-block rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+          className="mt-5 inline-block rounded-lg bg-sky-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-800"
         >
           Open the mortgage calculator guide
         </Link>

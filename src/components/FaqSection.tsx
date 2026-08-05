@@ -3,19 +3,19 @@ import type { Faq } from "@/lib/faqs";
 export function FaqSection({
   faqs,
   heading = "Frequently asked questions",
+  intro = "Common questions about estimating your monthly mortgage payment, PITI, PMI, and affordability.",
 }: {
   faqs: Faq[];
   heading?: string;
+  /** Override the generic PITI blurb on specialized loan pages. */
+  intro?: string;
 }) {
   return (
     <section aria-labelledby="faq-heading" className="mx-auto max-w-3xl">
       <h2 id="faq-heading" className="text-2xl font-bold tracking-tight text-slate-900">
         {heading}
       </h2>
-      <p className="mt-3 text-slate-600">
-        Common questions about estimating your monthly mortgage payment, PITI,
-        PMI, and affordability.
-      </p>
+      {intro ? <p className="mt-3 text-slate-600">{intro}</p> : null}
       <div className="mt-6 space-y-6">
         {faqs.map((faq) => (
           <article key={faq.question} className="rounded-2xl border border-slate-200 bg-white p-5">

@@ -5,6 +5,7 @@ import { MortgageCalculator } from "@/components/MortgageCalculator";
 import { RefinanceCalculator } from "@/components/RefinanceCalculator";
 import { FhaCalculator } from "@/components/FhaCalculator";
 import { ArmCalculator } from "@/components/ArmCalculator";
+import { VaCalculator } from "@/components/VaCalculator";
 import { FaqSection } from "@/components/FaqSection";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
@@ -17,7 +18,6 @@ import {
   webApplicationSchema,
 } from "@/lib/schema";
 import { absoluteUrl } from "@/lib/site";
-import type { Faq } from "@/lib/faqs";
 
 export function generateStaticParams() {
   return LOAN_TYPES.map((t) => ({ type: t.slug }));
@@ -56,17 +56,7 @@ export default async function LoanTypePage({
   const pageUrl = absoluteUrl(`/calculators/${data.slug}`);
   const isAffordability = data.slug === "home-affordability-calculator";
 
-  const faqs: Faq[] = [
-    ...data.sections.slice(0, 2).map((s) => ({
-      question: s.heading,
-      answer: s.text,
-    })),
-    {
-      question: `What should I check before choosing a ${data.label} loan?`,
-      answer: data.checklist.join(" "),
-    },
-  ];
-
+  const faqs = data.faqs;
   const otherTypes = LOAN_TYPES.filter((t) => t.slug !== data.slug);
 
   return (
@@ -104,7 +94,7 @@ export default async function LoanTypePage({
           <ul className="mt-5 space-y-2">
             {data.highlights.map((h) => (
               <li key={h} className="flex items-start gap-2 text-sm text-slate-600">
-                <span aria-hidden className="mt-0.5 text-emerald-600">
+                <span aria-hidden className="mt-0.5 text-sky-800">
                   &#10003;
                 </span>
                 {h}
@@ -120,6 +110,8 @@ export default async function LoanTypePage({
             <FhaCalculator />
           ) : data.slug === "arm-mortgage-calculator" ? (
             <ArmCalculator />
+          ) : data.slug === "va-mortgage-calculator" ? (
+            <VaCalculator />
           ) : (
             <MortgageCalculator
               initialInputs={data.defaults}
@@ -184,7 +176,7 @@ export default async function LoanTypePage({
               For the formulas behind every estimate, see{" "}
               <Link
                 href="/how-we-calculate"
-                className="font-medium text-emerald-700 hover:text-emerald-800"
+                className="font-medium text-sky-800 hover:text-sky-900"
               >
                 how we calculate
               </Link>
@@ -202,7 +194,7 @@ export default async function LoanTypePage({
               <Link
                 key={t.slug}
                 href={`/calculators/${t.slug}`}
-                className="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-emerald-300 hover:shadow-sm"
+                className="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-sky-300 hover:shadow-sm"
               >
                 <h3 className="font-semibold text-slate-900">{t.title}</h3>
                 <p className="mt-1 text-sm text-slate-600">{t.tagline}</p>
@@ -212,7 +204,11 @@ export default async function LoanTypePage({
         </section>
 
         <div className="mt-14">
-          <FaqSection faqs={faqs} heading={`${data.title} FAQs`} />
+          <FaqSection
+            faqs={faqs}
+            heading={`${data.title} FAQs`}
+            intro={data.faqIntro}
+          />
         </div>
       </div>
     </>

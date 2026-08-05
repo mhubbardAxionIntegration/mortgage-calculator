@@ -15,7 +15,7 @@ export function Header() {
         >
           <span
             aria-hidden
-            className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-600 text-white"
+            className="grid h-8 w-8 place-items-center rounded-lg bg-sky-900 text-white"
           >
             $
           </span>
@@ -69,7 +69,7 @@ export function Header() {
 
         <Link
           href="/calculators/home-affordability-calculator"
-          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+          className="rounded-lg bg-sky-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-800"
         >
           What can I afford?
         </Link>

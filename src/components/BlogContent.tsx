@@ -35,7 +35,7 @@ export function BlogContent({ blocks }: { blocks: Block[] }) {
               {block.items.map((item, j) => (
                 <li
                   key={j}
-                  className="leading-relaxed [&_a]:font-medium [&_a]:text-emerald-700 [&_a]:underline"
+                  className="leading-relaxed [&_a]:font-medium [&_a]:text-sky-800 [&_a]:underline"
                   dangerouslySetInnerHTML={{ __html: item }}
                 />
               ))}
@@ -45,7 +45,7 @@ export function BlogContent({ blocks }: { blocks: Block[] }) {
         return (
           <p
             key={i}
-            className="leading-relaxed text-slate-600 [&_a]:font-medium [&_a]:text-emerald-700 [&_a]:underline"
+            className="leading-relaxed text-slate-600 [&_a]:font-medium [&_a]:text-sky-800 [&_a]:underline"
             dangerouslySetInnerHTML={{ __html: block.html }}
           />
         );

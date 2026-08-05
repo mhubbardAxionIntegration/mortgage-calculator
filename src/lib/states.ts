@@ -1,5 +1,5 @@
 /**
- * State-level data powering programmatic "/mortgage-calculator/[state]" pages.
+ * State-level defaults for the single mortgage calculator hub (?state= slug).
  * Property-tax rates are approximate effective averages and median home prices
  * are indicative; refresh from an authoritative source on a schedule for E-E-A-T.
  */
@@ -71,4 +71,19 @@ export const STATES: StateData[] = [
 
 export function getState(slug: string): StateData | undefined {
   return STATES.find((s) => s.slug === slug);
+}
+
+/** Hub deep-link for a state (replaces old /mortgage-calculator/[slug] paths). */
+export function stateCalculatorHref(slug: string): string {
+  return `/mortgage-calculator?state=${encodeURIComponent(slug)}`;
+}
+
+/** Calculator defaults derived from a state's tax, insurance, and median price. */
+export function inputsFromState(state: StateData) {
+  return {
+    homePrice: state.medianHomePrice,
+    downPayment: Math.round(state.medianHomePrice * 0.2),
+    propertyTaxRate: state.propertyTaxRate,
+    annualHomeInsurance: state.avgInsurance,
+  };
 }

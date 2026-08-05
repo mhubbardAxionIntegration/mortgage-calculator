@@ -74,7 +74,7 @@ export default async function BlogCategoryPage({
             <Link
               key={tool.href}
               href={tool.href}
-              className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800 hover:border-emerald-300"
+              className="rounded-lg border border-sky-200 bg-sky-50 px-3 py-1.5 text-sm font-medium text-sky-900 hover:border-sky-300"
             >
               {tool.label} &rarr;
             </Link>
@@ -85,7 +85,7 @@ export default async function BlogCategoryPage({
       <nav aria-label="Blog categories" className="mt-8 flex flex-wrap gap-2">
         <Link
           href="/blog"
-          className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:border-emerald-300 hover:text-emerald-700"
+          className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:border-sky-300 hover:text-sky-800"
         >
           All
         </Link>
@@ -96,8 +96,8 @@ export default async function BlogCategoryPage({
             aria-current={c.slug === cat.slug ? "page" : undefined}
             className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${
               c.slug === cat.slug
-                ? "border-emerald-600 bg-emerald-50 text-emerald-700"
-                : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-emerald-700"
+                ? "border-sky-800 bg-sky-50 text-sky-800"
+                : "border-slate-200 bg-white text-slate-600 hover:border-sky-300 hover:text-sky-800"
             }`}
           >
             {c.name}
@@ -110,7 +110,7 @@ export default async function BlogCategoryPage({
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-md"
+            className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-300 hover:shadow-md"
           >
             <h2 className="text-lg font-semibold text-slate-900">{post.title}</h2>
             <p className="mt-2 flex-1 text-sm text-slate-600">{post.excerpt}</p>

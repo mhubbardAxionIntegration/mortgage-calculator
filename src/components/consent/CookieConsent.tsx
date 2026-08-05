@@ -27,7 +27,7 @@ export function CookieConsent() {
         <p className="text-sm leading-relaxed text-slate-600">
           We use cookies for analytics and advertising to keep this calculator
           free. You can accept or decline non-essential cookies. See our{" "}
-          <Link href="/privacy-policy" className="font-medium text-emerald-700 underline">
+          <Link href="/privacy-policy" className="font-medium text-sky-800 underline">
             Privacy Policy
           </Link>
           .
@@ -43,7 +43,7 @@ export function CookieConsent() {
           <button
             type="button"
             onClick={() => setConsent("granted")}
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
+            className="rounded-lg bg-sky-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
           >
             Accept
           </button>

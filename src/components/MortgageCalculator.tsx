@@ -53,11 +53,11 @@ async function verifyLicenseKey(key: string): Promise<boolean> {
 }
 
 const DONUT_COLORS = {
-  pi: "#059669",
-  tax: "#0ea5e9",
-  insurance: "#f59e0b",
-  pmi: "#ef4444",
-  hoa: "#8b5cf6",
+  pi: "#0c4a6e",      // deep blue
+  tax: "#0284c7",     // lighter blue
+  insurance: "#0f766e", // muted teal positive
+  pmi: "#b45309",     // sparingly warm (amber) warning, not red
+  hoa: "#64748b",     // slate neutral
 };
 
 export function MortgageCalculator(props: Props) {
@@ -413,7 +413,7 @@ function MortgageCalculatorInner({
                       {...bindTap(() => set("termYears", yrs))}
                       className={`rounded-lg border px-4 py-2 text-sm font-medium transition ${
                         inputs.termYears === yrs
-                          ? "border-emerald-600 bg-emerald-50 text-emerald-700"
+                          ? "border-sky-800 bg-sky-50 text-sky-800"
                           : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
                       }`}
                     >
@@ -515,7 +515,7 @@ function MortgageCalculatorInner({
                       {...bindTap(() => setAfford((p) => ({ ...p, maxDtiRatio: opt.v })))}
                       className={`rounded-lg border px-3 py-2 text-sm font-medium transition ${
                         afford.maxDtiRatio === opt.v
-                          ? "border-emerald-600 bg-emerald-50 text-emerald-700"
+                          ? "border-sky-800 bg-sky-50 text-sky-800"
                           : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
                       }`}
                     >
@@ -562,7 +562,7 @@ function MortgageCalculatorInner({
                     href={rateQuoteUrl}
                     target="_blank"
                     rel="sponsored nofollow noopener"
-                    className="block rounded-lg bg-emerald-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                    className="block rounded-lg bg-sky-900 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-sky-800"
                   >
                     Get personalized rates &rarr;
                   </a>
@@ -627,7 +627,7 @@ function MortgageCalculatorInner({
                   value={`${formatCurrency(affordResult.estimatedMonthlyPI)}/mo`}
                 />
               </dl>
-              <p className="rounded-lg bg-emerald-50 p-3 text-xs leading-relaxed text-emerald-800">
+              <p className="rounded-lg bg-sky-50 p-3 text-xs leading-relaxed text-sky-900">
                 Based on the {Math.round(afford.maxDtiRatio * 100)}% debt-to-income
                 guideline. Lenders also weigh credit score, employment history,
                 and cash reserves.
@@ -638,7 +638,7 @@ function MortgageCalculatorInner({
                     href={rateQuoteUrl}
                     target="_blank"
                     rel="sponsored nofollow noopener"
-                    className="block rounded-lg bg-emerald-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                    className="block rounded-lg bg-sky-900 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-sky-800"
                   >
                     Get pre-qualified with a lender &rarr;
                   </a>
@@ -660,7 +660,7 @@ function MortgageCalculatorInner({
               type="button"
               {...bindTap(() => setShowSchedule((s) => !s))}
               aria-expanded={showSchedule}
-              className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+              className="text-sm font-semibold text-sky-800 hover:text-sky-900"
             >
               {showSchedule ? "Hide" : "Show"} amortization schedule
             </button>
@@ -669,7 +669,7 @@ function MortgageCalculatorInner({
               <button
                 type="button"
                 {...bindTap(handleDownloadPdf)}
-                className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-400 hover:text-emerald-700"
+                className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-sky-400 hover:text-sky-800"
               >
                 <span aria-hidden>&#8595;</span> Download PDF report
               </button>
@@ -703,7 +703,7 @@ function MortgageCalculatorInner({
                 <button
                   type="button"
                   onClick={() => setShowLicenseEntry((s) => !s)}
-                  className="font-medium text-emerald-700 underline hover:text-emerald-800"
+                  className="font-medium text-sky-800 underline hover:text-sky-900"
                 >
                   Have a license key?
                 </button>
@@ -720,13 +720,13 @@ function MortgageCalculatorInner({
                     value={licenseInput}
                     onChange={(e) => setLicenseInput(e.target.value)}
                     placeholder="Paste your license key"
-                    className="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600"
                   />
                   <button
                     type="button"
                     onClick={applyLicense}
                     disabled={applyingLicense || !licenseInput.trim()}
-                    className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-70"
+                    className="rounded-lg bg-sky-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-70"
                   >
                     {applyingLicense ? "Checking…" : "Apply"}
                   </button>
@@ -775,7 +775,7 @@ function ModeTab({
       onClick={onClick}
       className={`flex-1 px-4 py-3 text-sm font-semibold transition ${
         active
-          ? "border-b-2 border-emerald-600 text-emerald-700"
+          ? "border-b-2 border-sky-800 text-sky-800"
           : "text-slate-500 hover:text-slate-700"
       }`}
     >
@@ -814,7 +814,7 @@ function NumberField({
       <label htmlFor={id} className="mb-1 block text-xs font-medium text-slate-600">
         {label}
       </label>
-      <div className="flex items-center rounded-lg border border-slate-300 bg-white focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500">
+      <div className="flex items-center rounded-lg border border-slate-300 bg-white focus-within:border-sky-600 focus-within:ring-1 focus-within:ring-sky-600">
         {prefix && <span className="pl-2.5 text-sm text-slate-400">{prefix}</span>}
         <input
           id={id}

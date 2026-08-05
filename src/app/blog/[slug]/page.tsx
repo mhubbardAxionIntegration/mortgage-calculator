@@ -90,7 +90,7 @@ export default async function BlogPostPage({
             {category && (
               <Link
                 href={`/blog/category/${category.slug}`}
-                className="rounded-full bg-emerald-600 px-2.5 py-0.5 text-xs font-semibold text-white hover:bg-emerald-700"
+                className="rounded-full bg-sky-900 px-2.5 py-0.5 text-xs font-semibold text-white hover:bg-sky-800"
               >
                 {category.name}
               </Link>
@@ -98,7 +98,7 @@ export default async function BlogPostPage({
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700"
+                className="rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-medium text-sky-800"
               >
                 {tag}
               </span>
@@ -119,14 +119,14 @@ export default async function BlogPostPage({
             {SITE.author.bio}{" "}
             <Link
               href="/about"
-              className="font-medium text-emerald-700 hover:text-emerald-800"
+              className="font-medium text-sky-800 hover:text-sky-900"
             >
               About the editor
             </Link>
             {" · "}
             <Link
               href="/how-we-calculate"
-              className="font-medium text-emerald-700 hover:text-emerald-800"
+              className="font-medium text-sky-800 hover:text-sky-900"
             >
               Methodology
             </Link>
@@ -146,7 +146,7 @@ export default async function BlogPostPage({
                 <li key={c.href}>
                   <Link
                     href={c.href}
-                    className="inline-block rounded-lg border border-emerald-200 bg-white px-3 py-1.5 text-sm font-medium text-emerald-700 hover:border-emerald-400"
+                    className="inline-block rounded-lg border border-sky-200 bg-white px-3 py-1.5 text-sm font-medium text-sky-800 hover:border-sky-400"
                   >
                     {c.label} &rarr;
                   </Link>
@@ -172,7 +172,7 @@ export default async function BlogPostPage({
                 <Link
                   key={p.slug}
                   href={`/blog/${p.slug}`}
-                  className="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-emerald-300 hover:shadow-sm"
+                  className="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-sky-300 hover:shadow-sm"
                 >
                   <h3 className="font-semibold text-slate-900">{p.title}</h3>
                   <p className="mt-1 text-sm text-slate-600">{p.excerpt}</p>
@@ -186,7 +186,7 @@ export default async function BlogPostPage({
           This article is for general educational purposes only and is not
           financial advice. Rates and figures are indicative and may change.
           Consult a licensed mortgage professional about your situation. See our{" "}
-          <Link href="/disclaimer" className="text-emerald-700 underline">disclaimer</Link>.
+          <Link href="/disclaimer" className="text-sky-800 underline">disclaimer</Link>.
         </p>
       </article>
     </>

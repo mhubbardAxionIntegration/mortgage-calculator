@@ -228,6 +228,99 @@ export function calculateArmStress(inputs: ArmInputs): ArmResult {
   };
 }
 
+/** Illustrative VA purchase funding-fee rates (percent of base loan). Confirm current VA schedule. */
+export function vaFundingFeeRatePercent(
+  firstUse: boolean,
+  downPaymentPercent: number,
+  disabilityExempt: boolean,
+): number {
+  if (disabilityExempt) return 0;
+  const down = Math.max(0, downPaymentPercent);
+  if (down >= 10) return 1.25;
+  if (down >= 5) return 1.5;
+  return firstUse ? 2.15 : 3.3;
+}
+
+export interface VaInputs {
+  homePrice: number;
+  downPayment: number;
+  annualRate: number;
+  termYears: number;
+  firstUse: boolean;
+  disabilityExempt: boolean;
+  financeFundingFee: boolean;
+  /** Optional override; when null, rate comes from vaFundingFeeRatePercent. */
+  fundingFeeRateOverride: number | null;
+  propertyTaxRate: number;
+  annualHomeInsurance: number;
+  monthlyHoa: number;
+}
+
+export interface VaResult {
+  baseLoanAmount: number;
+  downPaymentPercent: number;
+  fundingFeeRate: number;
+  fundingFee: number;
+  financedLoanAmount: number;
+  monthlyPI: number;
+  monthlyTax: number;
+  monthlyInsurance: number;
+  monthlyHoa: number;
+  totalMonthly: number;
+}
+
+/** VA payment with one-time funding fee (no PMI) and optional financed fee. */
+export function calculateVaPayment(inputs: VaInputs): VaResult {
+  const {
+    homePrice,
+    downPayment,
+    annualRate,
+    termYears,
+    firstUse,
+    disabilityExempt,
+    financeFundingFee,
+    fundingFeeRateOverride,
+    propertyTaxRate,
+    annualHomeInsurance,
+    monthlyHoa,
+  } = inputs;
+
+  const price = Math.max(0, homePrice);
+  const down = Math.max(0, Math.min(downPayment, price));
+  const baseLoanAmount = Math.max(0, price - down);
+  const downPaymentPercent = price > 0 ? (down / price) * 100 : 0;
+  const fundingFeeRate =
+    fundingFeeRateOverride !== null && Number.isFinite(fundingFeeRateOverride)
+      ? Math.max(0, fundingFeeRateOverride)
+      : vaFundingFeeRatePercent(firstUse, downPaymentPercent, disabilityExempt);
+  const fundingFee = baseLoanAmount * (fundingFeeRate / 100);
+  const financedLoanAmount =
+    financeFundingFee && !disabilityExempt
+      ? baseLoanAmount + fundingFee
+      : baseLoanAmount;
+
+  const monthlyPI = monthlyPrincipalAndInterest(
+    financedLoanAmount,
+    annualRate,
+    termYears,
+  );
+  const monthlyTax = (price * (propertyTaxRate / 100)) / 12;
+  const monthlyInsurance = annualHomeInsurance / 12;
+
+  return {
+    baseLoanAmount,
+    downPaymentPercent,
+    fundingFeeRate,
+    fundingFee,
+    financedLoanAmount,
+    monthlyPI,
+    monthlyTax,
+    monthlyInsurance,
+    monthlyHoa,
+    totalMonthly: monthlyPI + monthlyTax + monthlyInsurance + monthlyHoa,
+  };
+}
+
 /** Human-readable break-even label. */
 export function breakEvenLabel(months: number | null): string {
   if (months === null) return "N/A — no monthly savings at this rate";

@@ -38,14 +38,14 @@ export default function BlogIndexPage() {
       </header>
 
       <nav aria-label="Blog categories" className="mt-8 flex flex-wrap gap-2">
-        <span className="rounded-full border border-emerald-600 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700">
+        <span className="rounded-full border border-sky-800 bg-sky-50 px-3 py-1.5 text-sm font-medium text-sky-800">
           All
         </span>
         {BLOG_CATEGORIES.map((c) => (
           <Link
             key={c.slug}
             href={`/blog/category/${c.slug}`}
-            className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:border-emerald-300 hover:text-emerald-700"
+            className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:border-sky-300 hover:text-sky-800"
           >
             {c.name}
           </Link>
@@ -55,9 +55,9 @@ export default function BlogIndexPage() {
       {featured && (
         <Link
           href={`/blog/${featured.slug}`}
-          className="mt-8 block overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-white p-6 transition hover:border-emerald-300 hover:shadow-md sm:p-8"
+          className="mt-8 block overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-sky-50 to-white p-6 transition hover:border-sky-300 hover:shadow-md sm:p-8"
         >
-          <span className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+          <span className="text-xs font-semibold uppercase tracking-wide text-sky-800">
             Latest &middot; {featured.tags[0]}
           </span>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
@@ -75,7 +75,7 @@ export default function BlogIndexPage() {
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-md"
+            className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-300 hover:shadow-md"
           >
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag) => (

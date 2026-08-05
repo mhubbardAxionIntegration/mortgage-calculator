@@ -1,5 +1,5 @@
 import { SITE } from "./site";
-import { getState } from "./states";
+import { getState, STATES } from "./states";
 
 export type Block =
   | { type: "p"; html: string }
@@ -270,7 +270,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 8,
     tags: ["First-time buyers", "Georgia", "Guides"],
     relatedCalculators: [
-      { href: "/mortgage-calculator/georgia", label: "Georgia Mortgage Calculator" },
+      { href: "/mortgage-calculator?state=georgia", label: "Georgia Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
     ],
     body: [
@@ -290,7 +290,7 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "h2", text: "5. Tour, offer, and close" },
       { type: "p", html: "Once you're under contract, you'll complete an inspection and appraisal, finalize your loan, and review your closing disclosure. Budget for closing costs of roughly 2–5% of the loan amount. On closing day you'll sign, fund, and get the keys." },
       { type: "h2", text: "Estimate your Georgia payment" },
-      { type: "p", html: "When you're ready to run numbers, our <a href=\"/mortgage-calculator/georgia\">Georgia mortgage calculator</a> is pre-loaded with the state's average property tax and insurance figures so your estimate is closer to reality. Adjust the home price and down payment to match the listings you're considering." },
+      { type: "p", html: "When you're ready to run numbers, our <a href=\"/mortgage-calculator?state=georgia\">Georgia mortgage calculator</a> is pre-loaded with the state's average property tax and insurance figures so your estimate is closer to reality. Adjust the home price and down payment to match the listings you're considering." },
     ],
   },
   {
@@ -547,7 +547,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 7,
     tags: ["Affordability", "Georgia", "Budgeting"],
     relatedCalculators: [
-      { href: "/mortgage-calculator/georgia", label: "Georgia Mortgage Calculator" },
+      { href: "/mortgage-calculator?state=georgia", label: "Georgia Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
     ],
     body: (() => {
@@ -577,7 +577,7 @@ export const BLOG_POSTS: BlogPost[] = [
         { type: "h2" as const, text: "Georgia programs that stretch your budget" },
         { type: "p" as const, html: "First-time buyers may qualify for Georgia Dream down-payment assistance through the Department of Community Affairs. FHA loans allow 3.5% down with flexible credit, and VA loans offer $0 down for eligible veterans — though mortgage insurance or funding fees change the monthly math. Compare options in our <a href=\"/calculators/fha-mortgage-calculator\">FHA calculator</a> and <a href=\"/calculators/va-mortgage-calculator\">VA calculator</a>." },
         { type: "h2" as const, text: "Run your own Georgia numbers" },
-        { type: "p" as const, html: `Use the <a href=\"/calculators/home-affordability-calculator\">home affordability calculator</a> to work backward from your income, or open the <a href=\"/mortgage-calculator/georgia\">Georgia mortgage calculator</a> — it's pre-loaded with state tax and insurance defaults so your estimate matches local costs more closely.` },
+        { type: "p" as const, html: `Use the <a href=\"/calculators/home-affordability-calculator\">home affordability calculator</a> to work backward from your income, or open the <a href=\"/mortgage-calculator?state=georgia\">Georgia mortgage calculator</a> — it's pre-loaded with state tax and insurance defaults so your estimate matches local costs more closely.` },
       ];
     })(),
   },
@@ -594,7 +594,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 7,
     tags: ["Affordability", "Texas", "Budgeting"],
     relatedCalculators: [
-      { href: "/mortgage-calculator/texas", label: "Texas Mortgage Calculator" },
+      { href: "/mortgage-calculator?state=texas", label: "Texas Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
     ],
     body: (() => {
@@ -622,7 +622,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "Look at total monthly cost, not just the price per square foot.",
           "Consider energy costs — older homes in hot climates can add $200+ in summer AC.",
         ] },
-        { type: "p" as const, html: `Model your payment with local defaults in the <a href=\"/mortgage-calculator/texas\">Texas mortgage calculator</a>, or start from income in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a>.` },
+        { type: "p" as const, html: `Model your payment with local defaults in the <a href=\"/mortgage-calculator?state=texas\">Texas mortgage calculator</a>, or start from income in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a>.` },
       ];
     })(),
   },
@@ -639,7 +639,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 7,
     tags: ["Affordability", "Florida", "Budgeting"],
     relatedCalculators: [
-      { href: "/mortgage-calculator/florida", label: "Florida Mortgage Calculator" },
+      { href: "/mortgage-calculator?state=florida", label: "Florida Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
     ],
     body: (() => {
@@ -667,7 +667,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "Homestead exemption reduces assessed value for primary residences.",
           "Condo HOA fees that may include master insurance — verify what's covered.",
         ] },
-        { type: "p" as const, html: `Run localized numbers in the <a href=\"/mortgage-calculator/florida\">Florida mortgage calculator</a> and compare scenarios in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a> before you tour homes.` },
+        { type: "p" as const, html: `Run localized numbers in the <a href=\"/mortgage-calculator?state=florida\">Florida mortgage calculator</a> and compare scenarios in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a> before you tour homes.` },
       ];
     })(),
   },
@@ -684,7 +684,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 7,
     tags: ["Affordability", "California", "Budgeting"],
     relatedCalculators: [
-      { href: "/mortgage-calculator/california", label: "California Mortgage Calculator" },
+      { href: "/mortgage-calculator?state=california", label: "California Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
     ],
     body: (() => {
@@ -712,7 +712,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "Look at first-time buyer programs through CalHFA if you qualify.",
           "Run 15-year vs. 30-year comparisons — higher prices make term choice critical.",
         ] },
-        { type: "p" as const, html: `Use the <a href=\"/mortgage-calculator/california\">California mortgage calculator</a> with state defaults, or work from income in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a>.` },
+        { type: "p" as const, html: `Use the <a href=\"/mortgage-calculator?state=california\">California mortgage calculator</a> with state defaults, or work from income in the <a href=\"/calculators/home-affordability-calculator\">affordability calculator</a>.` },
       ];
     })(),
   },
@@ -730,7 +730,7 @@ export const BLOG_POSTS: BlogPost[] = [
     tags: ["Property taxes", "PITI", "Guides"],
     relatedCalculators: [
       { href: "/mortgage-calculator", label: "Mortgage Calculator" },
-      { href: "/mortgage-calculator/texas", label: "Texas Calculator" },
+      { href: "/mortgage-calculator?state=texas", label: "Texas Calculator" },
     ],
     body: [
       { type: "p", html: "When buyers search for a \"mortgage calculator with taxes and insurance,\" they're usually trying to avoid the surprise that sinks budgets: a payment that's hundreds higher than principal and interest alone. Property taxes are often the biggest piece of that gap." },
@@ -747,7 +747,7 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "h2", text: "Taxes and affordability" },
       { type: "p", html: "Lenders include estimated taxes in your debt-to-income calculation, but online calculators that ignore taxes make homes look cheaper than they are. Always use a calculator that includes property tax, insurance, PMI, and HOA — like our <a href=\"/mortgage-calculator\">mortgage calculator</a> — or pick your state page for localized defaults." },
       { type: "h2", text: "Find your state estimate" },
-      { type: "p", html: "We publish localized defaults for all 50 states. Start with high-tax markets like <a href=\"/mortgage-calculator/texas\">Texas</a>, <a href=\"/mortgage-calculator/new-jersey\">New Jersey</a>, or <a href=\"/mortgage-calculator/illinois\">Illinois</a>, or browse the full list from the <a href=\"/mortgage-calculator\">main calculator page</a>." },
+      { type: "p", html: "We publish localized defaults for all 50 states. Start with high-tax markets like <a href=\"/mortgage-calculator?state=texas\">Texas</a>, <a href=\"/mortgage-calculator?state=new-jersey\">New Jersey</a>, or <a href=\"/mortgage-calculator?state=illinois\">Illinois</a>, or browse the full list from the <a href=\"/mortgage-calculator\">main calculator page</a>." },
     ],
   },
   {
@@ -800,4 +800,42 @@ export const BLOG_POSTS_SORTED = [...BLOG_POSTS].sort(
 
 export function getPostsByCategory(categorySlug: string): BlogPost[] {
   return BLOG_POSTS_SORTED.filter((p) => p.category === categorySlug);
+}
+
+/**
+ * Posts relevant to a state — tag/name/slug match first; if few hits,
+ * pad with national rates/affordability guides (no state-specific tags).
+ */
+export function getPostsForState(stateSlug: string, limit = 4): BlogPost[] {
+  const state = getState(stateSlug);
+  if (!state) return BLOG_POSTS_SORTED.slice(0, limit);
+
+  const name = state.name.toLowerCase();
+  const slug = state.slug.toLowerCase();
+
+  const matched = BLOG_POSTS_SORTED.filter((p) => {
+    const hay = `${p.slug} ${p.title} ${p.tags.join(" ")}`.toLowerCase();
+    return (
+      hay.includes(name) ||
+      hay.includes(slug) ||
+      p.tags.some((t) => t.toLowerCase() === name || t.toLowerCase() === slug)
+    );
+  });
+
+  if (matched.length >= limit) return matched.slice(0, limit);
+
+  const national = BLOG_POSTS_SORTED.filter(
+    (p) =>
+      !matched.includes(p) &&
+      (p.category === "rates" ||
+        p.category === "affordability" ||
+        p.category === "guides") &&
+      !STATES.some(
+        (s) =>
+          p.slug.includes(s.slug) ||
+          p.tags.some((t) => t.toLowerCase() === s.name.toLowerCase()),
+      ),
+  );
+
+  return [...matched, ...national].slice(0, limit);
 }

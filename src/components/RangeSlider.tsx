@@ -198,7 +198,7 @@ export function RangeSlider({
         aria-valuemax={max}
         aria-valuenow={shown}
         tabIndex={0}
-        className="relative flex h-11 cursor-pointer touch-none select-none items-center outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded-lg"
+        className="relative flex h-11 cursor-pointer touch-none select-none items-center outline-none focus-visible:ring-2 focus-visible:ring-sky-600 focus-visible:ring-offset-2 rounded-lg"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerEnd}
@@ -207,11 +207,11 @@ export function RangeSlider({
       >
         <div className="pointer-events-none absolute inset-x-0 h-2 rounded-full bg-slate-200" />
         <div
-          className="pointer-events-none absolute h-2 rounded-l-full bg-emerald-600"
+          className="pointer-events-none absolute h-2 rounded-l-full bg-sky-800"
           style={{ width: `${pct}%` }}
         />
         <div
-          className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-white bg-emerald-600 shadow-md"
+          className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-white bg-sky-800 shadow-md"
           style={{ left: `${pct}%`, transform: "translateX(-50%)" }}
         />
       </div>

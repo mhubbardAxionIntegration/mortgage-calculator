@@ -1,25 +1,28 @@
 "use client";
 
 import { useMemo, useState, useCallback } from "react";
-import { calculateFhaPayment } from "@/lib/specializedMortgage";
+import {
+  calculateVaPayment,
+  vaFundingFeeRatePercent,
+} from "@/lib/specializedMortgage";
 import { formatCurrency, formatPercent } from "@/lib/mortgage";
 import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { RangeSlider } from "./RangeSlider";
 
 const DEFAULTS = {
   homePrice: DEFAULT_INPUTS.homePrice,
-  downPayment: Math.round(DEFAULT_INPUTS.homePrice * 0.035),
+  downPayment: 0,
   annualRate: DEFAULT_INPUTS.annualRate,
   termYears: 30,
-  upfrontMipRate: 1.75,
-  annualMipRate: 0.55,
-  financeUpfrontMip: true,
+  firstUse: true,
+  disabilityExempt: false,
+  financeFundingFee: true,
   propertyTaxRate: DEFAULT_INPUTS.propertyTaxRate,
   annualHomeInsurance: DEFAULT_INPUTS.annualHomeInsurance,
   monthlyHoa: DEFAULT_INPUTS.monthlyHoa,
 };
 
-export function FhaCalculator() {
+export function VaCalculator() {
   const [inputs, setInputs] = useState(DEFAULTS);
   const set = useCallback(
     <K extends keyof typeof DEFAULTS>(key: K, value: (typeof DEFAULTS)[K]) =>
@@ -27,18 +30,32 @@ export function FhaCalculator() {
     [],
   );
 
-  const result = useMemo(() => calculateFhaPayment(inputs), [inputs]);
-  const maxDown = Math.min(inputs.homePrice * 0.2, inputs.homePrice);
+  const downPct =
+    inputs.homePrice > 0 ? (inputs.downPayment / inputs.homePrice) * 100 : 0;
+  const tableRate = vaFundingFeeRatePercent(
+    inputs.firstUse,
+    downPct,
+    inputs.disabilityExempt,
+  );
+
+  const result = useMemo(
+    () =>
+      calculateVaPayment({
+        ...inputs,
+        fundingFeeRateOverride: null,
+      }),
+    [inputs],
+  );
 
   return (
     <section
       id="calculator"
-      aria-label="FHA mortgage calculator with MIP"
+      aria-label="VA mortgage calculator with funding fee"
       className="scroll-mt-24 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
     >
       <div className="border-b border-slate-200 bg-slate-50 px-5 py-3 sm:px-6">
         <p className="text-sm font-medium text-slate-700">
-          FHA payment with upfront MIP + monthly annual MIP
+          VA payment with funding fee — no monthly PMI
         </p>
       </div>
 
@@ -48,13 +65,12 @@ export function FhaCalculator() {
             label="Home price"
             value={inputs.homePrice}
             onChange={(v) => {
-              const nextPrice = v;
               const pct =
-                inputs.homePrice > 0 ? inputs.downPayment / inputs.homePrice : 0.035;
+                inputs.homePrice > 0 ? inputs.downPayment / inputs.homePrice : 0;
               setInputs((prev) => ({
                 ...prev,
-                homePrice: nextPrice,
-                downPayment: Math.round(nextPrice * pct),
+                homePrice: v,
+                downPayment: Math.round(v * pct),
               }));
             }}
             min={50000}
@@ -63,22 +79,16 @@ export function FhaCalculator() {
             format={(v) => formatCurrency(v)}
           />
           <RangeSlider
-            label="Down payment"
+            label="Down payment (optional)"
             value={inputs.downPayment}
             onChange={(v) => set("downPayment", v)}
             min={0}
-            max={maxDown}
-            step={500}
+            max={inputs.homePrice}
+            step={1000}
             format={(v) =>
-              `${formatCurrency(v)} (${formatPercent(result.downPaymentPercent, 1)})`
+              `${formatCurrency(v)} (${formatPercent(downPct, 1)})`
             }
-            hint={
-              result.downPaymentPercent < 3.5
-                ? "FHA typically requires at least 3.5% with qualifying credit"
-                : result.mipLikelyLifetime
-                  ? "Under 10% down — annual MIP often lasts the life of the loan"
-                  : "10%+ down — annual MIP may drop off after ~11 years (rules vary)"
-            }
+            hint="VA allows $0 down; putting money down can lower the funding fee tier"
           />
           <RangeSlider
             label="Interest rate"
@@ -100,42 +110,67 @@ export function FhaCalculator() {
           />
 
           <h3 className="pt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            FHA mortgage insurance
+            VA funding fee
           </h3>
-          <RangeSlider
-            label="Upfront MIP rate"
-            value={inputs.upfrontMipRate}
-            onChange={(v) => set("upfrontMipRate", v)}
-            min={0}
-            max={3}
-            step={0.05}
-            format={(v) => formatPercent(v, 2)}
-            hint={`≈ ${formatCurrency(result.upfrontMip)} on this loan`}
-          />
+          <fieldset className="space-y-2 rounded-lg border border-slate-200 bg-white p-3 text-sm">
+            <legend className="px-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Loan use
+            </legend>
+            <label className="flex cursor-pointer items-center gap-2">
+              <input
+                type="radio"
+                name="va-use"
+                checked={inputs.firstUse}
+                onChange={() => set("firstUse", true)}
+                className="text-sky-800 focus:ring-sky-600"
+              />
+              First use of VA benefit
+            </label>
+            <label className="flex cursor-pointer items-center gap-2">
+              <input
+                type="radio"
+                name="va-use"
+                checked={!inputs.firstUse}
+                onChange={() => set("firstUse", false)}
+                className="text-sky-800 focus:ring-sky-600"
+              />
+              Subsequent use
+            </label>
+          </fieldset>
           <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm">
             <input
               type="checkbox"
               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-sky-800 focus:ring-sky-600"
-              checked={inputs.financeUpfrontMip}
-              onChange={(e) => set("financeUpfrontMip", e.target.checked)}
+              checked={inputs.disabilityExempt}
+              onChange={(e) => set("disabilityExempt", e.target.checked)}
             />
             <span>
-              <span className="font-medium text-slate-800">Finance upfront MIP into the loan</span>
+              <span className="font-medium text-slate-800">
+                Funding-fee exempt (e.g. qualifying disability)
+              </span>
               <span className="mt-0.5 block text-xs text-slate-500">
-                Most FHA borrowers roll UFMIP into the balance instead of paying cash at closing
+                Confirm exemption with your lender and Certificate of Eligibility
               </span>
             </span>
           </label>
-          <RangeSlider
-            label="Annual MIP rate"
-            value={inputs.annualMipRate}
-            onChange={(v) => set("annualMipRate", v)}
-            min={0}
-            max={1.5}
-            step={0.05}
-            format={(v) => formatPercent(v, 2)}
-            hint={`${formatCurrency(result.monthlyAnnualMip)}/mo from base loan`}
-          />
+          <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm">
+            <input
+              type="checkbox"
+              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-sky-800 focus:ring-sky-600"
+              checked={inputs.financeFundingFee}
+              disabled={inputs.disabilityExempt}
+              onChange={(e) => set("financeFundingFee", e.target.checked)}
+            />
+            <span>
+              <span className="font-medium text-slate-800">
+                Finance funding fee into the loan
+              </span>
+              <span className="mt-0.5 block text-xs text-slate-500">
+                Table rate for this scenario: {formatPercent(tableRate, 2)} of
+                the base loan
+              </span>
+            </span>
+          </label>
 
           <h3 className="pt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
             Escrow
@@ -178,35 +213,53 @@ export function FhaCalculator() {
               {formatCurrency(result.totalMonthly)}
             </p>
             <p className="mt-1 text-sm text-slate-600">
-              Includes P&amp;I, annual MIP, taxes, insurance
-              {result.monthlyHoa > 0 ? ", HOA" : ""}
+              P&amp;I + taxes + insurance
+              {result.monthlyHoa > 0 ? " + HOA" : ""} — no PMI
             </p>
           </div>
 
           <dl className="space-y-3 text-sm">
-            <ResultRow label="Base loan (price − down)" value={formatCurrency(result.baseLoanAmount)} />
-            <ResultRow label="Upfront MIP" value={formatCurrency(result.upfrontMip)} />
             <ResultRow
-              label={inputs.financeUpfrontMip ? "Financed loan amount" : "Loan amount (UFMIP paid cash)"}
-              value={formatCurrency(result.financedLoanAmount)}
+              label="Base loan (price − down)"
+              value={formatCurrency(result.baseLoanAmount)}
             />
-            <ResultRow label="Principal & interest" value={formatCurrency(result.monthlyPI)} />
             <ResultRow
-              label="Monthly annual MIP"
-              value={formatCurrency(result.monthlyAnnualMip)}
+              label={`Funding fee (${formatPercent(result.fundingFeeRate, 2)})`}
+              value={formatCurrency(result.fundingFee)}
               emphasize
             />
-            <ResultRow label="Property tax" value={formatCurrency(result.monthlyTax)} />
-            <ResultRow label="Insurance" value={formatCurrency(result.monthlyInsurance)} />
+            <ResultRow
+              label={
+                inputs.financeFundingFee && !inputs.disabilityExempt
+                  ? "Financed loan amount"
+                  : "Loan amount (fee paid cash / exempt)"
+              }
+              value={formatCurrency(result.financedLoanAmount)}
+            />
+            <ResultRow
+              label="Principal & interest"
+              value={formatCurrency(result.monthlyPI)}
+            />
+            <ResultRow
+              label="Property tax"
+              value={formatCurrency(result.monthlyTax)}
+            />
+            <ResultRow
+              label="Insurance"
+              value={formatCurrency(result.monthlyInsurance)}
+            />
             {result.monthlyHoa > 0 && (
-              <ResultRow label="HOA" value={formatCurrency(result.monthlyHoa)} />
+              <ResultRow
+                label="HOA"
+                value={formatCurrency(result.monthlyHoa)}
+              />
             )}
           </dl>
 
           <p className="mt-auto text-xs leading-relaxed text-slate-500">
-            MIP rates are illustrative defaults — HUD tables and your FICO/LTV can change
-            annual MIP. Unlike conventional PMI, FHA annual MIP often cannot be canceled
-            early when you start under 10% down.
+            Funding-fee percentages are illustrative defaults from common VA
+            purchase tiers. Your COE, disability status, and the current VA
+            schedule control the real fee — always confirm on the Loan Estimate.
           </p>
         </div>
       </div>

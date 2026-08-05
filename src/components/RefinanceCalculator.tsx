@@ -184,7 +184,7 @@ function ResultRow({
       <dd
         className={
           emphasize
-            ? "font-semibold text-emerald-700"
+            ? "font-semibold text-teal-700"
             : "font-semibold tabular-nums text-slate-900"
         }
       >

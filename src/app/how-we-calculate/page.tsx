@@ -59,7 +59,7 @@ export default function HowWeCalculatePage() {
               We use the standard fixed-rate amortization formula for monthly
               principal and interest:
             </p>
-            <p className="mt-3 rounded-lg bg-slate-900 px-4 py-3 text-center font-mono text-sm text-emerald-300">
+            <p className="mt-3 rounded-lg bg-slate-900 px-4 py-3 text-center font-mono text-sm text-sky-300">
               M = P · r(1 + r)<sup>n</sup> / ((1 + r)<sup>n</sup> − 1)
             </p>
             <ul className="mt-4 list-disc space-y-2 pl-5">
@@ -190,7 +190,7 @@ export default function HowWeCalculatePage() {
               <li>
                 <Link
                   href="/mortgage-calculator"
-                  className="font-medium text-emerald-700 hover:text-emerald-800"
+                  className="font-medium text-sky-800 hover:text-sky-900"
                 >
                   Mortgage payment calculator
                 </Link>
@@ -198,7 +198,7 @@ export default function HowWeCalculatePage() {
               <li>
                 <Link
                   href="/calculators/home-affordability-calculator"
-                  className="font-medium text-emerald-700 hover:text-emerald-800"
+                  className="font-medium text-sky-800 hover:text-sky-900"
                 >
                   Home affordability calculator
                 </Link>
@@ -206,7 +206,7 @@ export default function HowWeCalculatePage() {
               <li>
                 <Link
                   href="/about"
-                  className="font-medium text-emerald-700 hover:text-emerald-800"
+                  className="font-medium text-sky-800 hover:text-sky-900"
                 >
                   About our editorial approach
                 </Link>

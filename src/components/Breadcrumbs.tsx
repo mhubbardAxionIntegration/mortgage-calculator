@@ -27,7 +27,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
           <li key={c.href} className="flex items-center gap-1.5">
             {i < items.length - 1 ? (
               <>
-                <Link href={c.href} className="hover:text-emerald-700">
+                <Link href={c.href} className="hover:text-sky-800">
                   {c.name}
                 </Link>
                 <span aria-hidden className="text-slate-300">/</span>

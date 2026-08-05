@@ -1,7 +1,8 @@
 /**
- * Builds unique, high-value editorial content for each state calculator page.
- * Combines per-state facts with calculated payment scenarios so pages are not
- * thin Mad-Libs replicas (AdSense "replicated content" risk).
+ * Builds unique, high-value editorial content for each state selected on the
+ * mortgage calculator hub (?state=). Combines per-state facts with calculated
+ * payment scenarios so selecting a state shows real local context — not a Mad-Libs
+ * page farm (AdSense "replicated content" risk).
  */
 import type { StateData } from "./states";
 import type { Faq } from "./faqs";
