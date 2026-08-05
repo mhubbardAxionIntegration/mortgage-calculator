@@ -49,9 +49,9 @@ export const LOAN_TYPES: LoanType[] = [
     ],
     defaults: { downPayment: 0.035 * 350000, pmiRate: 0.55 },
     highlights: [
-      "Down payments as low as 3.5% with a 580+ credit score",
-      "Includes annual MIP, which often lasts the life of the loan",
-      "Backed by the Federal Housing Administration (FHA)",
+      "Models upfront MIP and monthly annual MIP separately",
+      "Option to finance UFMIP into the loan (like most FHA borrowers)",
+      "Shows when MIP is likely to last for the life of the loan",
     ],
     comparison: [
       { label: "Typical minimum down payment", value: "3.5% (580+ FICO)" },
@@ -77,8 +77,8 @@ export const LOAN_TYPES: LoanType[] = [
         text: "FHA loans are popular with first-time buyers and borrowers with limited savings or credit scores that would price poorly on conventional guidelines, because they allow a 3.5% down payment and more flexible qualification in many cases. They are not automatically cheaper every month — MIP can make the payment higher than a strong-credit conventional loan with modest PMI. Use this calculator to compare the lower cash-to-close of FHA against the long-term cost of mortgage insurance versus a conventional alternative at the same purchase price.",
       },
       {
-        heading: "Worked cost mindset (not a quote)",
-        text: "On a $350,000 home with 3.5% down, you finance most of the price and add monthly MIP on top of principal, interest, taxes, and insurance. Raising the down payment to 10% can change MIP duration rules on some FHA loans, while jumping to 20% on a conventional loan can eliminate monthly mortgage insurance entirely. The right choice depends on cash available, credit, and how long you expect to keep the loan — not on a single headline rate.",
+        heading: "How this FHA calculator models MIP",
+        text: "Enter the purchase price, down payment, rate, and term, then set upfront and annual MIP percentages. Toggle whether upfront MIP is financed: when it is, the loan balance grows by UFMIP and principal & interest rises accordingly, while monthly annual MIP is still calculated on the base loan (price minus down payment). That matches how most FHA borrowers close. Rates shown are illustrative defaults — your Loan Estimate may differ with credit, LTV, and current HUD MIP tables.",
       },
       {
         heading: "FHA vs conventional: decide with a timeline",
@@ -155,9 +155,9 @@ export const LOAN_TYPES: LoanType[] = [
     ],
     defaults: { downPayment: 80000, termYears: 30 },
     highlights: [
-      "Compare your current payment to a new lower-rate loan",
-      "Estimate lifetime interest savings",
-      "Factor in your remaining balance and new term",
+      "Compare current vs new principal & interest side by side",
+      "Break-even months from closing costs ÷ monthly savings",
+      "Shows lifetime interest on both paths — not payment alone",
     ],
     comparison: [
       { label: "Rate-and-term refi goal", value: "Lower payment or shorter term" },
@@ -183,8 +183,8 @@ export const LOAN_TYPES: LoanType[] = [
         text: "Refinancing isn't free: expect closing costs of roughly 2–5% of the loan amount unless you take a lender credit in exchange for a higher rate. Divide those costs by your monthly savings to find the break-even point in months. If you will stay longer than that, the refinance typically pays off on payment alone — then check total interest, because restarting a 30-year term can erase savings if you already had few years left.",
       },
       {
-        heading: "How to model a refinance in this calculator",
-        text: "Enter your remaining balance as the home price with $0 down (or a small cash-in amount as a down payment if you are bringing money to closing). Set the new rate and term you were quoted. Compare the new principal and interest to your current P&I, then add taxes and insurance only if you are changing escrow assumptions. For cash-out, increase the loan amount to the new balance you would carry after taking equity out.",
+        heading: "How to use this refinance calculator",
+        text: "Enter your remaining balance, current rate, and months left, then the new rate, term, and estimated closing costs. The tool computes current vs new P&I, monthly savings, break-even months, and lifetime interest on both paths. Optional cash-out increases the new loan amount. Taxes and insurance are intentionally omitted so break-even stays focused on the refinance trade-off — add escrow separately if your new Loan Estimate changes those items.",
       },
       {
         heading: "Rate-and-term vs cash-out",
@@ -261,9 +261,9 @@ export const LOAN_TYPES: LoanType[] = [
     ],
     defaults: { annualRate: 6.0 },
     highlights: [
-      "Lower introductory rate than most fixed-rate loans",
-      "Rate adjusts after the fixed period (e.g. 5, 7, or 10 years)",
-      "Best when you plan to move or refinance before it adjusts",
+      "Side-by-side intro payment vs a higher post-reset stress rate",
+      "Set intro years for common 5/1, 7/1, and 10/1 structures",
+      "Budget for the payment jump — not just the teaser rate",
     ],
     comparison: [
       { label: "Common structures", value: "5/1, 7/1, 10/1 ARMs" },
@@ -282,15 +282,15 @@ export const LOAN_TYPES: LoanType[] = [
     sections: [
       {
         heading: "How adjustable-rate mortgages work",
-        text: "An ARM such as a 5/1 or 7/1 carries a fixed introductory rate for the first 5 or 7 years, then adjusts periodically based on a market index plus a margin. The introductory rate is usually lower than a comparable 30-year fixed rate, which can make early payments more affordable. This calculator estimates the payment during the initial fixed period — it is not a full future-path simulator, so you should manually test higher rates for post-adjustment scenarios.",
+        text: "An ARM such as a 5/1 or 7/1 carries a fixed introductory rate for the first 5 or 7 years, then adjusts periodically based on a market index plus a margin. The introductory rate is usually lower than a comparable 30-year fixed rate, which can make early payments more affordable. This calculator shows the intro payment next to a stress payment at a higher rate you choose (often your lifetime cap or a +2–5% bump) so you can budget for the reset, not just the teaser.",
       },
       {
         heading: "Weighing the risk of an ARM",
-        text: "After the introductory period, your rate — and payment — can rise (subject to periodic and lifetime caps). ARMs tend to make sense if you expect to sell or refinance before the first adjustment, or if you can comfortably afford a higher payment later. If you plan to stay long term with limited refinance flexibility, model a higher rate here to stress-test what your payment could become before you choose the teaser payment.",
+        text: "After the introductory period, your rate — and payment — can rise (subject to periodic and lifetime caps). ARMs tend to make sense if you expect to sell or refinance before the first adjustment, or if you can comfortably afford a higher payment later. If you plan to stay long term with limited refinance flexibility, set the stress rate near your lifetime cap and confirm you can still afford that payment before choosing the lower intro payment.",
       },
       {
         heading: "Caps, margins, and indexes (why the fine print matters)",
-        text: "Two ARMs with the same start rate can behave very differently after reset. The margin is added to the index; caps limit how far the rate can jump at the first adjustment, at later adjustments, and over the loan’s life. Ask for these numbers in writing and recalculate the payment at each cap using this tool so you understand the worst case you are contractually allowing.",
+        text: "Two ARMs with the same start rate can behave very differently after reset. The margin is added to the index; caps limit how far the rate can jump at the first adjustment, at later adjustments, and over the loan’s life. Ask for these numbers in writing and set this calculator’s stress rate to each cap so you understand the worst case you are contractually allowing.",
       },
       {
         heading: "ARM vs fixed in today’s decision frame",

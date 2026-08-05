@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
+import { RefinanceCalculator } from "@/components/RefinanceCalculator";
+import { FhaCalculator } from "@/components/FhaCalculator";
+import { ArmCalculator } from "@/components/ArmCalculator";
 import { FaqSection } from "@/components/FaqSection";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
@@ -111,11 +114,19 @@ export default async function LoanTypePage({
         </header>
 
         <div className="mt-8">
-          <MortgageCalculator
-            initialInputs={data.defaults}
-            initialMode={isAffordability ? "affordability" : "payment"}
-            lockMode={isAffordability}
-          />
+          {data.slug === "refinance-mortgage-calculator" ? (
+            <RefinanceCalculator />
+          ) : data.slug === "fha-mortgage-calculator" ? (
+            <FhaCalculator />
+          ) : data.slug === "arm-mortgage-calculator" ? (
+            <ArmCalculator />
+          ) : (
+            <MortgageCalculator
+              initialInputs={data.defaults}
+              initialMode={isAffordability ? "affordability" : "payment"}
+              lockMode={isAffordability}
+            />
+          )}
         </div>
 
         <div className="mt-10">
