@@ -22,9 +22,11 @@ export function BlogContent({ blocks }: { blocks: Block[] }) {
           return (
             <ul key={i} className="list-disc space-y-2 pl-6 text-slate-600">
               {block.items.map((item, j) => (
-                <li key={j} className="leading-relaxed">
-                  {item}
-                </li>
+                <li
+                  key={j}
+                  className="leading-relaxed [&_a]:font-medium [&_a]:text-sky-800 [&_a]:underline"
+                  dangerouslySetInnerHTML={{ __html: item }}
+                />
               ))}
             </ul>
           );
