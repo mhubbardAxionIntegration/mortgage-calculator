@@ -97,18 +97,18 @@ export function LocationControls({
           </select>
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <button
           type="button"
           disabled={!canGo}
           onClick={() => onApply(draftState, draftCounty)}
           className={
             canGo
-              ? "w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 active:bg-emerald-800 sm:w-auto sm:min-w-[7.5rem]"
-              : "w-full cursor-not-allowed rounded-lg bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-400 sm:w-auto sm:min-w-[7.5rem]"
+              ? "w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 active:bg-emerald-800"
+              : "w-full cursor-not-allowed rounded-lg bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-400"
           }
         >
-          Go
+          {canGo ? "GO" : "Select a State and County"}
         </button>
       </div>
     </div>

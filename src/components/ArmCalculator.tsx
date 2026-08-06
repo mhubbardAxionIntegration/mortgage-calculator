@@ -6,6 +6,8 @@ import { formatCurrency, formatPercent } from "@/lib/mortgage";
 import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
+import { LocationSnapshot } from "@/components/LocationSnapshot";
+import { StateLocationGuide } from "@/components/StateLocationGuide";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
@@ -81,7 +83,7 @@ export function ArmCalculator({
     inputs.homePrice > 0 ? (inputs.downPayment / inputs.homePrice) * 100 : 0;
 
   return (
-    <div className="space-y-4">
+    <div>
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
@@ -89,6 +91,15 @@ export function ArmCalculator({
         hint="ARM product rules are national; location still drives local tax and insurance in your intro vs stress payment."
       />
 
+      <LocationSnapshot
+        state={loc.state}
+        county={loc.county}
+        locationInputs={loc.locationInputs}
+        fhaLimit={loc.fhaLimit}
+        conformingLimit={loc.conformingLimit}
+      />
+
+      <div className="mt-8">
       <RatesBeside ratesPanel={ratesPanel}>
       <section
         id="calculator"
@@ -285,6 +296,14 @@ export function ArmCalculator({
         </div>
       </section>
       </RatesBeside>
+      </div>
+
+      <StateLocationGuide
+        state={loc.state}
+        county={loc.county}
+        stateSlug={loc.stateSlug}
+        countyFips={loc.countyFips}
+      />
     </div>
   );
 }

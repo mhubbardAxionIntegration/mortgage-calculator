@@ -10,6 +10,8 @@ import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { LOAN_LIMIT_YEAR } from "@/lib/loanLimits";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
+import { LocationSnapshot } from "@/components/LocationSnapshot";
+import { StateLocationGuide } from "@/components/StateLocationGuide";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
@@ -88,7 +90,7 @@ export function VaCalculator({
     result.financedLoanAmount > loc.conformingLimit;
 
   return (
-    <div className="space-y-4">
+    <div>
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
@@ -96,6 +98,15 @@ export function VaCalculator({
         hint="Location sets tax/insurance defaults, VA residual-income region, and FHFA county conforming limits used when entitlement is limited."
       />
 
+      <LocationSnapshot
+        state={loc.state}
+        county={loc.county}
+        locationInputs={loc.locationInputs}
+        fhaLimit={loc.fhaLimit}
+        conformingLimit={loc.conformingLimit}
+      />
+
+      <div className="mt-8">
       <RatesBeside ratesPanel={ratesPanel}>
       <section
         id="calculator"
@@ -382,6 +393,14 @@ export function VaCalculator({
         </div>
       </section>
       </RatesBeside>
+      </div>
+
+      <StateLocationGuide
+        state={loc.state}
+        county={loc.county}
+        stateSlug={loc.stateSlug}
+        countyFips={loc.countyFips}
+      />
     </div>
   );
 }

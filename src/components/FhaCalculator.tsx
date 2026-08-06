@@ -7,6 +7,8 @@ import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { LOAN_LIMIT_YEAR } from "@/lib/loanLimits";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
+import { LocationSnapshot } from "@/components/LocationSnapshot";
+import { StateLocationGuide } from "@/components/StateLocationGuide";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
@@ -69,7 +71,7 @@ export function FhaCalculator({
   const overLimit = result.financedLoanAmount > loc.fhaLimit;
 
   return (
-    <div className="space-y-4">
+    <div>
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
@@ -77,6 +79,15 @@ export function FhaCalculator({
         hint="County sets FHA maximum loan amount (HUD limits) plus local tax and insurance defaults. MIP rules are national."
       />
 
+      <LocationSnapshot
+        state={loc.state}
+        county={loc.county}
+        locationInputs={loc.locationInputs}
+        fhaLimit={loc.fhaLimit}
+        conformingLimit={loc.conformingLimit}
+      />
+
+      <div className="mt-8">
       <RatesBeside ratesPanel={ratesPanel}>
       <section
         id="calculator"
@@ -307,6 +318,14 @@ export function FhaCalculator({
         </div>
       </section>
       </RatesBeside>
+      </div>
+
+      <StateLocationGuide
+        state={loc.state}
+        county={loc.county}
+        stateSlug={loc.stateSlug}
+        countyFips={loc.countyFips}
+      />
     </div>
   );
 }

@@ -10,6 +10,8 @@ import { SITE } from "@/lib/site";
 import { getRefiClosingCostPercent } from "@/lib/refiLocation";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
+import { LocationSnapshot } from "@/components/LocationSnapshot";
+import { StateLocationGuide } from "@/components/StateLocationGuide";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
@@ -61,7 +63,7 @@ export function RefinanceCalculator({
   const costPct = getRefiClosingCostPercent(loc.state?.abbr);
 
   return (
-    <div className="space-y-4">
+    <div>
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
@@ -72,6 +74,15 @@ export function RefinanceCalculator({
         hint="State drives estimated closing costs (title, recording, transfer) and any tangible net-benefit disclosure notes. County refines local context."
       />
 
+      <LocationSnapshot
+        state={loc.state}
+        county={loc.county}
+        locationInputs={loc.locationInputs}
+        fhaLimit={loc.fhaLimit}
+        conformingLimit={loc.conformingLimit}
+      />
+
+      <div className="mt-8">
       <RatesBeside ratesPanel={ratesPanel}>
       <section
         id="calculator"
@@ -239,6 +250,14 @@ export function RefinanceCalculator({
         </div>
       </section>
       </RatesBeside>
+      </div>
+
+      <StateLocationGuide
+        state={loc.state}
+        county={loc.county}
+        stateSlug={loc.stateSlug}
+        countyFips={loc.countyFips}
+      />
     </div>
   );
 }

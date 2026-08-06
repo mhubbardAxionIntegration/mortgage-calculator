@@ -3,6 +3,8 @@
 import { useMemo, type ReactNode } from "react";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
 import { LocationControls } from "@/components/LocationControls";
+import { LocationSnapshot } from "@/components/LocationSnapshot";
+import { StateLocationGuide } from "@/components/StateLocationGuide";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 import type { MortgageInputs } from "@/lib/mortgage";
@@ -36,7 +38,7 @@ export function LocatedMortgageCalculator({
   );
 
   return (
-    <div className="space-y-4">
+    <div>
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
@@ -47,14 +49,32 @@ export function LocatedMortgageCalculator({
             : "Choose a state and county for local tax and insurance defaults."
         }
       />
-      <RatesBeside ratesPanel={ratesPanel}>
-        <MortgageCalculator
-          key={loc.locationKey}
-          initialInputs={initialInputs}
-          initialMode={affordability ? "affordability" : "payment"}
-          lockMode={affordability}
-        />
-      </RatesBeside>
+
+      <LocationSnapshot
+        state={loc.state}
+        county={loc.county}
+        locationInputs={loc.locationInputs}
+        fhaLimit={loc.fhaLimit}
+        conformingLimit={loc.conformingLimit}
+      />
+
+      <div className="mt-8">
+        <RatesBeside ratesPanel={ratesPanel}>
+          <MortgageCalculator
+            key={loc.locationKey}
+            initialInputs={initialInputs}
+            initialMode={affordability ? "affordability" : "payment"}
+            lockMode={affordability}
+          />
+        </RatesBeside>
+      </div>
+
+      <StateLocationGuide
+        state={loc.state}
+        county={loc.county}
+        stateSlug={loc.stateSlug}
+        countyFips={loc.countyFips}
+      />
     </div>
   );
 }

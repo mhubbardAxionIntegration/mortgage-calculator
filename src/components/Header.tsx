@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SITE } from "@/lib/site";
 import { LOAN_TYPES } from "@/lib/loanTypes";
 
 export function Header() {
@@ -12,7 +11,7 @@ export function Header() {
       >
         <Link
           href="/"
-          className="flex min-w-0 items-center gap-2.5 text-base font-bold text-slate-900 sm:text-lg"
+          className="flex min-w-0 items-center gap-2.5 text-base font-bold leading-tight text-slate-900 sm:text-lg"
         >
           <Image
             src="/images/heroes/home.png"
@@ -22,7 +21,10 @@ export function Header() {
             className="h-10 w-10 shrink-0 rounded-lg object-cover shadow-sm ring-1 ring-slate-200"
             priority
           />
-          <span className="truncate">{SITE.shortName}</span>
+          <span className="flex min-w-0 flex-col text-left">
+            <span className="truncate">Smart Mortgage</span>
+            <span className="truncate">Calculator</span>
+          </span>
         </Link>
 
         <ul className="hidden items-center gap-1 text-sm font-medium text-slate-600 md:flex">
@@ -39,9 +41,11 @@ export function Header() {
           <li>
             <Link
               href="/blog"
-              className="rounded-md px-3 py-2 hover:bg-slate-100 hover:text-slate-900"
+              aria-label="Smart Buying"
+              className="inline-flex flex-col items-center rounded-md px-3 py-1 text-center leading-tight hover:bg-slate-100 hover:text-slate-900"
             >
-              Smart Buying
+              <span aria-hidden="true">Smart</span>
+              <span aria-hidden="true">Buying</span>
             </Link>
           </li>
           <li>

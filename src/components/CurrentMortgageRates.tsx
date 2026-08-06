@@ -42,48 +42,50 @@ export async function CurrentMortgageRates({
           </p>
           <p className="mt-1 text-xs text-slate-500">As of {asOfLabel}</p>
         </div>
-        <div className="rounded-xl border border-sky-100 bg-white px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
-            15-year fixed
+        <div className="flex flex-col gap-4">
+          <div className="rounded-xl border border-sky-100 bg-white px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+              15-year fixed
+            </p>
+            <p className="mt-1 text-3xl font-extrabold tabular-nums text-slate-900">
+              {rates.rate15.toFixed(2)}%
+            </p>
+            <p className="mt-1 text-xs text-slate-500">
+              As of {formatRateDate(rates.asOf15)}
+            </p>
+          </div>
+
+          <p className="text-sm leading-relaxed text-slate-600">
+            {isLive
+              ? "National averages from the Freddie Mac Primary Mortgage Market Survey, published weekly through the Federal Reserve (FRED). Your quoted rate may differ based on credit, down payment, and loan type."
+              : "Showing our last saved estimate — live feed temporarily unavailable. Use the links below for the latest published averages."}
           </p>
-          <p className="mt-1 text-3xl font-extrabold tabular-nums text-slate-900">
-            {rates.rate15.toFixed(2)}%
-          </p>
-          <p className="mt-1 text-xs text-slate-500">
-            As of {formatRateDate(rates.asOf15)}
-          </p>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href={RATE_SOURCE_LINKS.fred30}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 rounded-lg bg-sky-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
+            >
+              View live rates on FRED
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+            <a
+              href={RATE_SOURCE_LINKS.freddieMac}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-sky-300 hover:text-sky-800"
+            >
+              Freddie Mac PMMS
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+            <ApplyRateInCalculatorLink
+              calculatorHref={calculatorHref}
+              rate={rates.rate30}
+            />
+          </div>
         </div>
-      </div>
-
-      <p className="mt-4 text-sm leading-relaxed text-slate-600">
-        {isLive
-          ? "National averages from the Freddie Mac Primary Mortgage Market Survey, published weekly through the Federal Reserve (FRED). Your quoted rate may differ based on credit, down payment, and loan type."
-          : "Showing our last saved estimate — live feed temporarily unavailable. Use the links below for the latest published averages."}
-      </p>
-
-      <div className="mt-auto flex flex-wrap items-center gap-3 pt-4">
-        <a
-          href={RATE_SOURCE_LINKS.fred30}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-lg bg-sky-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
-        >
-          View live rates on FRED
-          <span aria-hidden="true">&rarr;</span>
-        </a>
-        <a
-          href={RATE_SOURCE_LINKS.freddieMac}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-sky-300 hover:text-sky-800"
-        >
-          Freddie Mac PMMS
-          <span aria-hidden="true">&rarr;</span>
-        </a>
-        <ApplyRateInCalculatorLink
-          calculatorHref={calculatorHref}
-          rate={rates.rate30}
-        />
       </div>
     </section>
   );
