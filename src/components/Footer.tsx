@@ -3,19 +3,12 @@ import Link from "next/link";
 import { SITE, COMPANY } from "@/lib/site";
 import { RATE_SOURCE_LINKS } from "@/lib/mortgageRates";
 import { LOAN_TYPES } from "@/lib/loanTypes";
-import { STATES, stateCalculatorHref } from "@/lib/states";
 import { CookiePreferencesButton } from "@/components/consent/CookiePreferencesButton";
 
 export function Footer() {
-  const featuredStates = STATES.filter((s) =>
-    ["california", "texas", "florida", "georgia", "new-york", "north-carolina"].includes(
-      s.slug,
-    ),
-  );
-
   return (
     <footer className="mt-16 border-t border-slate-200 bg-slate-50">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
             <Image
@@ -48,27 +41,6 @@ export function Footer() {
                 </Link>
               </li>
             ))}
-          </ul>
-        </div>
-
-        <div>
-          <h2 className="text-sm font-semibold text-slate-900">By state</h2>
-          <ul className="mt-3 space-y-2 text-sm text-slate-600">
-            {featuredStates.map((s) => (
-              <li key={s.slug}>
-                <Link
-                  href={stateCalculatorHref(s.slug)}
-                  className="hover:text-sky-800"
-                >
-                  {s.name} Mortgage Calculator
-                </Link>
-              </li>
-            ))}
-            <li>
-              <Link href="/#states" className="font-medium hover:text-sky-800">
-                All 50 states &rarr;
-              </Link>
-            </li>
           </ul>
         </div>
 

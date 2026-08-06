@@ -6,7 +6,7 @@ import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
 import { CalculatorWithRates, RatesPanel } from "@/components/CalculatorWithRates";
 import { PageHero } from "@/components/PageHero";
 import { LOAN_TYPES } from "@/lib/loanTypes";
-import { STATES, stateCalculatorHref, getState } from "@/lib/states";
+import { getState } from "@/lib/states";
 import { BLOG_POSTS_SORTED } from "@/lib/blog";
 import { JsonLd } from "@/components/JsonLd";
 import { RateCta } from "@/components/RateCta";
@@ -14,18 +14,6 @@ import { webApplicationSchema } from "@/lib/schema";
 import { getMortgageRatesWithFallback, formatRateDate } from "@/lib/mortgageRates";
 import { SITE } from "@/lib/site";
 import { PAGE_HEROES } from "@/lib/pageHeroes";
-
-/** Popular markets for the hub. */
-const FEATURED_STATE_SLUGS = [
-  "california",
-  "texas",
-  "florida",
-  "georgia",
-  "new-york",
-  "north-carolina",
-  "arizona",
-  "washington",
-] as const;
 
 const FEATURED_LOAN_SLUGS = [
   "fha-mortgage-calculator",
@@ -54,9 +42,6 @@ export default async function Home({
     await searchParams;
   const selected = stateSlug ? getState(stateSlug) : undefined;
 
-  const featuredStates = FEATURED_STATE_SLUGS.map((slug) =>
-    STATES.find((s) => s.slug === slug),
-  ).filter(Boolean);
   const featuredLoans = FEATURED_LOAN_SLUGS.map((slug) =>
     LOAN_TYPES.find((t) => t.slug === slug),
   ).filter(Boolean);
@@ -200,42 +185,6 @@ export default async function Home({
             </li>
           ))}
         </ul>
-      </section>
-
-      <section id="states" className="border-t border-slate-200 bg-slate-50">
-        <div className="mx-auto max-w-6xl px-4 py-12">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                Featured state guides
-              </h2>
-              <p className="mt-2 max-w-2xl text-slate-600">
-                Select a state and county above for local defaults, or open a
-                popular market guide.
-              </p>
-            </div>
-            <a
-              href="#calculator"
-              className="text-sm font-medium text-sky-800 hover:text-sky-900"
-            >
-              Back to calculator &rarr;
-            </a>
-          </div>
-          <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-4">
-            {featuredStates.map((s) =>
-              s ? (
-                <li key={s.slug}>
-                  <Link
-                    href={stateCalculatorHref(s.slug)}
-                    className="font-medium text-slate-700 hover:text-sky-800"
-                  >
-                    {s.name}
-                  </Link>
-                </li>
-              ) : null,
-            )}
-          </ul>
-        </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">

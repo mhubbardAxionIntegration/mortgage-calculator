@@ -73,11 +73,6 @@ export function getState(slug: string): StateData | undefined {
   return STATES.find((s) => s.slug === slug);
 }
 
-/** Hub deep-link for a state (home calculator with location defaults). */
-export function stateCalculatorHref(slug: string): string {
-  return `/?state=${encodeURIComponent(slug)}`;
-}
-
 /** Calculator defaults derived from a state's tax, insurance, and median price. */
 export function inputsFromState(state: StateData) {
   return {
