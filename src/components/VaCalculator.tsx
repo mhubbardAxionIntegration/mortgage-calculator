@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, type ReactNode } from "react";
 import {
   calculateVaPayment,
   vaFundingFeeRatePercent,
@@ -10,11 +10,13 @@ import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { LOAN_LIMIT_YEAR } from "@/lib/loanLimits";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
+import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
 type Props = {
   initialStateSlug?: string;
   initialCounty?: string;
+  ratesPanel?: ReactNode;
 };
 
 const BASE_DEFAULTS = {
@@ -35,6 +37,7 @@ const BASE_DEFAULTS = {
 export function VaCalculator({
   initialStateSlug = "",
   initialCounty = "",
+  ratesPanel,
 }: Props) {
   const loc = useCalculatorLocation({ initialStateSlug, initialCounty });
   const [inputs, setInputs] = useState(() => ({
@@ -89,11 +92,11 @@ export function VaCalculator({
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
-        onStateChange={loc.onStateChange}
-        onCountyChange={loc.onCountyChange}
+        onApply={loc.applyLocation}
         hint="Location sets tax/insurance defaults, VA residual-income region, and FHFA county conforming limits used when entitlement is limited."
       />
 
+      <RatesBeside ratesPanel={ratesPanel}>
       <section
         id="calculator"
         aria-label="VA mortgage calculator with funding fee"
@@ -378,6 +381,7 @@ export function VaCalculator({
           </div>
         </div>
       </section>
+      </RatesBeside>
     </div>
   );
 }

@@ -1,5 +1,29 @@
 import { Suspense, type ReactNode } from "react";
 import { CurrentMortgageRates } from "@/components/CurrentMortgageRates";
+import { CalculatorRatesLayout } from "@/components/CalculatorRatesLayout";
+
+type RatesPanelProps = {
+  calculatorHref?: string;
+};
+
+/** Server rates sidebar with loading placeholder; fills the stretched column. */
+export function RatesPanel({ calculatorHref = "/" }: RatesPanelProps) {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="h-full min-h-[28rem] animate-pulse rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white"
+          aria-hidden
+        />
+      }
+    >
+      <CurrentMortgageRates
+        calculatorHref={calculatorHref}
+        className="h-full w-full"
+      />
+    </Suspense>
+  );
+}
 
 type Props = {
   children: ReactNode;
@@ -7,29 +31,18 @@ type Props = {
 };
 
 /**
- * Places Current US Mortgage Rates on the left of the calculator on large screens.
+ * Places Current US Mortgage Rates on the left of the calculator on large screens,
+ * top-aligned and matching the calculator column height.
  */
 export function CalculatorWithRates({
   children,
   calculatorHref = "/",
 }: Props) {
   return (
-    <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-12">
-      <aside className="lg:col-span-4">
-        <div className="lg:sticky lg:top-24">
-          <Suspense
-            fallback={
-              <div className="min-h-[12rem] animate-pulse rounded-2xl border border-slate-200 bg-slate-50" />
-            }
-          >
-            <CurrentMortgageRates
-              calculatorHref={calculatorHref}
-              className="w-full"
-            />
-          </Suspense>
-        </div>
-      </aside>
-      <div className="min-w-0 lg:col-span-8">{children}</div>
-    </div>
+    <CalculatorRatesLayout ratesPanel={<RatesPanel calculatorHref={calculatorHref} />}>
+      {children}
+    </CalculatorRatesLayout>
   );
 }
+
+export { CalculatorRatesLayout } from "@/components/CalculatorRatesLayout";

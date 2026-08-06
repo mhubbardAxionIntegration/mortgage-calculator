@@ -88,6 +88,16 @@ export function useCalculatorLocation({
     [stateSlug, syncUrl],
   );
 
+  /** Apply state + county together (Go button / confirm location). */
+  const applyLocation = useCallback(
+    (slug: string, fips: string) => {
+      setStateSlug(slug);
+      setCountyFips(fips);
+      syncUrl(slug, fips);
+    },
+    [syncUrl],
+  );
+
   const state = resolveState(stateSlug);
   const county = countyFips ? getCounty(countyFips) : undefined;
 
@@ -115,6 +125,7 @@ export function useCalculatorLocation({
     county,
     onStateChange,
     onCountyChange,
+    applyLocation,
     locationInputs,
     locationKey,
     fhaLimit,

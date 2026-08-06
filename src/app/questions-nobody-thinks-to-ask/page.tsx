@@ -185,7 +185,7 @@ export default function QuestionsNobodyThinksToAskPage() {
         <Breadcrumbs
           items={[
             { name: "Home", href: "/" },
-            { name: "Blog", href: "/blog" },
+            { name: "Smart Buying", href: "/blog" },
             { name: "Questions to ask", href: PAGE_PATH },
           ]}
         />

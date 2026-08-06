@@ -70,7 +70,7 @@ export default async function BlogCategoryPage({
         <Breadcrumbs
           items={[
             { name: "Home", href: "/" },
-            { name: "Blog", href: "/blog" },
+            { name: "Smart Buying", href: "/blog" },
             { name: cat.name, href: `/blog/category/${cat.slug}` },
           ]}
         />
@@ -91,7 +91,7 @@ export default async function BlogCategoryPage({
         </aside>
       )}
 
-      <nav aria-label="Blog categories" className="mt-8 flex flex-wrap gap-2">
+      <nav aria-label="Smart Buying categories" className="mt-8 flex flex-wrap gap-2">
         <Link
           href="/blog"
           className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:border-sky-300 hover:text-sky-800"

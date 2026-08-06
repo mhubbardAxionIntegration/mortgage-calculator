@@ -7,7 +7,7 @@ import { SITE } from "@/lib/site";
 import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
-  title: "Mortgage & Homebuying Blog",
+  title: "Smart Buying — Mortgage & Homebuying Guides",
   description:
     "Guides and explainers on mortgage rates, affordability, PMI, loan terms, and homebuying — from the team behind our free mortgage calculators.",
   alternates: { canonical: "/blog" },
@@ -35,7 +35,7 @@ export default function BlogIndexPage() {
 
       <div className="mx-auto max-w-5xl px-4 py-8">
         <Breadcrumbs
-          items={[{ name: "Home", href: "/" }, { name: "Blog", href: "/blog" }]}
+          items={[{ name: "Home", href: "/" }, { name: "Smart Buying", href: "/blog" }]}
         />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -79,7 +79,7 @@ export default function BlogIndexPage() {
         </Link>
       </div>
 
-      <nav aria-label="Blog categories" className="mt-8 flex flex-wrap gap-2">
+      <nav aria-label="Smart Buying categories" className="mt-8 flex flex-wrap gap-2">
         <span className="rounded-full border border-sky-800 bg-sky-50 px-3 py-1.5 text-sm font-medium text-sky-800">
           All
         </span>

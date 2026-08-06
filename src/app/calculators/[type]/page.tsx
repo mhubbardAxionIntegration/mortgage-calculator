@@ -8,7 +8,7 @@ import { ArmCalculator } from "@/components/ArmCalculator";
 import { VaCalculator } from "@/components/VaCalculator";
 import { LocatedMortgageCalculator } from "@/components/LocatedMortgageCalculator";
 import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
-import { CalculatorWithRates } from "@/components/CalculatorWithRates";
+import { RatesPanel } from "@/components/CalculatorWithRates";
 import { PageHero } from "@/components/PageHero";
 import { FaqSection } from "@/components/FaqSection";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -77,6 +77,9 @@ export default async function LoanTypePage({
 
   const faqs = data.faqs;
   const otherTypes = LOAN_TYPES.filter((t) => t.slug !== data.slug);
+  const ratesPanel = (
+    <RatesPanel calculatorHref={`/calculators/${data.slug}`} />
+  );
 
   return (
     <>
@@ -119,38 +122,41 @@ export default async function LoanTypePage({
         </ul>
 
         <div className="mt-8">
-          <CalculatorWithRates calculatorHref={`/calculators/${data.slug}`}>
-            <Suspense fallback={<CalculatorSkeleton />}>
-              {data.slug === "refinance-mortgage-calculator" ? (
-                <RefinanceCalculator
-                  initialStateSlug={stateSlug}
-                  initialCounty={countyParam}
-                />
-              ) : data.slug === "fha-mortgage-calculator" ? (
-                <FhaCalculator
-                  initialStateSlug={stateSlug}
-                  initialCounty={countyParam}
-                />
-              ) : data.slug === "arm-mortgage-calculator" ? (
-                <ArmCalculator
-                  initialStateSlug={stateSlug}
-                  initialCounty={countyParam}
-                />
-              ) : data.slug === "va-mortgage-calculator" ? (
-                <VaCalculator
-                  initialStateSlug={stateSlug}
-                  initialCounty={countyParam}
-                />
-              ) : (
-                <LocatedMortgageCalculator
-                  initialStateSlug={stateSlug}
-                  initialCounty={countyParam}
-                  loanDefaults={data.defaults}
-                  affordability={isAffordability}
-                />
-              )}
-            </Suspense>
-          </CalculatorWithRates>
+          <Suspense fallback={<CalculatorSkeleton />}>
+            {data.slug === "refinance-mortgage-calculator" ? (
+              <RefinanceCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+                ratesPanel={ratesPanel}
+              />
+            ) : data.slug === "fha-mortgage-calculator" ? (
+              <FhaCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+                ratesPanel={ratesPanel}
+              />
+            ) : data.slug === "arm-mortgage-calculator" ? (
+              <ArmCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+                ratesPanel={ratesPanel}
+              />
+            ) : data.slug === "va-mortgage-calculator" ? (
+              <VaCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+                ratesPanel={ratesPanel}
+              />
+            ) : (
+              <LocatedMortgageCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+                loanDefaults={data.defaults}
+                affordability={isAffordability}
+                ratesPanel={ratesPanel}
+              />
+            )}
+          </Suspense>
         </div>
 
         <div className="mt-10">

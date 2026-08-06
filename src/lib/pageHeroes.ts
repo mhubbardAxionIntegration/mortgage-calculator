@@ -52,6 +52,10 @@ export const PAGE_HEROES = {
     src: "/images/heroes/questions.png",
     alt: "Classic home with a for-sale sense of discovery under open sky",
   },
+  faq: {
+    src: "/images/heroes/faq.png",
+    alt: "Victorian row house with a limestone stoop and bright red door at golden hour",
+  },
   privacy: {
     src: "/images/heroes/privacy.png",
     alt: "Secluded private residence screened by mature trees",

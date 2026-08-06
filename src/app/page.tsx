@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { StateAwareCalculatorHub } from "@/components/StateAwareCalculatorHub";
 import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
-import { CalculatorWithRates } from "@/components/CalculatorWithRates";
+import { CalculatorWithRates, RatesPanel } from "@/components/CalculatorWithRates";
 import { PageHero } from "@/components/PageHero";
 import { LOAN_TYPES } from "@/lib/loanTypes";
 import { STATES, stateCalculatorHref, getState } from "@/lib/states";
@@ -128,15 +128,23 @@ export default async function Home({
 
       <section id="calculator" className="scroll-mt-24 bg-gradient-to-b from-slate-50 to-white">
         <div className="mx-auto max-w-6xl px-4 pb-10 pt-10 sm:pt-12">
-          <CalculatorWithRates calculatorHref="/">
-            <Suspense fallback={<CalculatorSkeleton />}>
-              <StateAwareCalculatorHub
-                initialStateSlug={selected?.slug ?? ""}
-                initialCounty={countyParam}
-                annualRate={rates.rate30}
-              />
-            </Suspense>
-          </CalculatorWithRates>
+          <Suspense
+            fallback={
+              <div className="space-y-4">
+                <div className="h-28 animate-pulse rounded-2xl border border-slate-200 bg-white" />
+                <CalculatorWithRates calculatorHref="/">
+                  <CalculatorSkeleton />
+                </CalculatorWithRates>
+              </div>
+            }
+          >
+            <StateAwareCalculatorHub
+              initialStateSlug={selected?.slug ?? ""}
+              initialCounty={countyParam}
+              annualRate={rates.rate30}
+              ratesPanel={<RatesPanel calculatorHref="/" />}
+            />
+          </Suspense>
 
           <div className="mx-auto mt-8 max-w-5xl">
             <RateCta />
@@ -202,8 +210,8 @@ export default async function Home({
                 Featured state guides
               </h2>
               <p className="mt-2 max-w-2xl text-slate-600">
-                Choose a state (and county) above for local defaults — or jump
-                to a popular market.
+                Select a state and county above for local defaults, or open a
+                popular market guide.
               </p>
             </div>
             <a
@@ -233,7 +241,7 @@ export default async function Home({
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex items-end justify-between gap-4">
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            From the blog
+            From Smart Buying
           </h2>
           <Link
             href="/blog"

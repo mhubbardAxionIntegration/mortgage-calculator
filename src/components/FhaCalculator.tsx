@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, type ReactNode } from "react";
 import { calculateFhaPayment } from "@/lib/specializedMortgage";
 import { formatCurrency, formatPercent } from "@/lib/mortgage";
 import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { LOAN_LIMIT_YEAR } from "@/lib/loanLimits";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
+import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
 type Props = {
   initialStateSlug?: string;
   initialCounty?: string;
+  ratesPanel?: ReactNode;
 };
 
 const BASE_DEFAULTS = {
@@ -30,6 +32,7 @@ const BASE_DEFAULTS = {
 export function FhaCalculator({
   initialStateSlug = "",
   initialCounty = "",
+  ratesPanel,
 }: Props) {
   const loc = useCalculatorLocation({ initialStateSlug, initialCounty });
   const [inputs, setInputs] = useState(() => ({
@@ -70,11 +73,11 @@ export function FhaCalculator({
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
-        onStateChange={loc.onStateChange}
-        onCountyChange={loc.onCountyChange}
+        onApply={loc.applyLocation}
         hint="County sets FHA maximum loan amount (HUD limits) plus local tax and insurance defaults. MIP rules are national."
       />
 
+      <RatesBeside ratesPanel={ratesPanel}>
       <section
         id="calculator"
         aria-label="FHA mortgage calculator with MIP"
@@ -303,6 +306,7 @@ export function FhaCalculator({
           </div>
         </div>
       </section>
+      </RatesBeside>
     </div>
   );
 }

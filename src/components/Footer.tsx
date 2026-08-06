@@ -76,7 +76,7 @@ export function Footer() {
           <h2 className="text-sm font-semibold text-slate-900">Company</h2>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
             <li>
-              <Link href="/blog" className="hover:text-sky-800">Blog</Link>
+              <Link href="/blog" className="hover:text-sky-800">Smart Buying</Link>
             </li>
             <li>
               <Link href="/blog/category/pitfalls" className="hover:text-sky-800">
@@ -95,6 +95,9 @@ export function Footer() {
               <Link href="/how-we-calculate" className="hover:text-sky-800">
                 How we calculate
               </Link>
+            </li>
+            <li>
+              <Link href="/faq" className="hover:text-sky-800">FAQ</Link>
             </li>
             <li>
               <Link href="/about" className="hover:text-sky-800">About</Link>

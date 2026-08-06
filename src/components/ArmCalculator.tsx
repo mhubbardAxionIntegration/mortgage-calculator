@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, type ReactNode } from "react";
 import { calculateArmStress } from "@/lib/specializedMortgage";
 import { formatCurrency, formatPercent } from "@/lib/mortgage";
 import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
+import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
 type Props = {
   initialStateSlug?: string;
   initialCounty?: string;
+  ratesPanel?: ReactNode;
 };
 
 const BASE_DEFAULTS = {
@@ -28,6 +30,7 @@ const BASE_DEFAULTS = {
 export function ArmCalculator({
   initialStateSlug = "",
   initialCounty = "",
+  ratesPanel,
 }: Props) {
   const loc = useCalculatorLocation({ initialStateSlug, initialCounty });
   const [inputs, setInputs] = useState(() => ({
@@ -82,11 +85,11 @@ export function ArmCalculator({
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
-        onStateChange={loc.onStateChange}
-        onCountyChange={loc.onCountyChange}
+        onApply={loc.applyLocation}
         hint="ARM product rules are national; location still drives local tax and insurance in your intro vs stress payment."
       />
 
+      <RatesBeside ratesPanel={ratesPanel}>
       <section
         id="calculator"
         aria-label="ARM payment stress calculator"
@@ -281,6 +284,7 @@ export function ArmCalculator({
           </div>
         </div>
       </section>
+      </RatesBeside>
     </div>
   );
 }

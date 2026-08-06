@@ -27,7 +27,7 @@ export const SITE = {
   author: {
     name: "Michael Hubbard",
     role: "Founder & editor",
-    /** Short byline used on blog posts. */
+    /** Short byline used on Smart Buying posts. */
     bio: "Founder of Smart Mortgage Calculator and operator of Axion Integration Services, LLC. Builds educational mortgage tools and plain-English guides — estimates are educational, not loan offers.",
     /** Longer About-page credentials without inventing licenses. */
     credentials:

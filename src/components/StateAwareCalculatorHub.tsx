@@ -1,12 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import Link from "next/link";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
 import { LocationControls } from "@/components/LocationControls";
+import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { FaqSection } from "@/components/FaqSection";
 import { RateCta } from "@/components/RateCta";
-import { STATES, stateCalculatorHref } from "@/lib/states";
 import { getStateGuide } from "@/lib/stateGuides";
 import { getPostsForState, type BlogPost } from "@/lib/blog";
 import { DEFAULT_INPUTS } from "@/lib/defaults";
@@ -21,6 +21,11 @@ type Props = {
   initialCounty?: string;
   /** Live 30-yr rate when available. */
   annualRate?: number;
+  /**
+   * Server-rendered rates panel placed left of the calculator card
+   * (top-aligned, matching calculator height).
+   */
+  ratesPanel?: ReactNode;
 };
 
 function formatDate(iso: string): string {
@@ -36,14 +41,14 @@ export function StateAwareCalculatorHub({
   initialStateSlug = "",
   initialCounty = "",
   annualRate,
+  ratesPanel,
 }: Props) {
   const {
     stateSlug,
     countyFips,
     state,
     county,
-    onStateChange,
-    onCountyChange,
+    applyLocation,
     locationInputs,
     locationKey,
     fhaLimit,
@@ -79,8 +84,7 @@ export function StateAwareCalculatorHub({
       <LocationControls
         stateSlug={stateSlug}
         countyFips={countyFips}
-        onStateChange={onStateChange}
-        onCountyChange={onCountyChange}
+        onApply={applyLocation}
         hint="Choose a state and county to load local tax and insurance defaults. County also drives FHA and conforming loan-limit context used on specialized calculators."
       />
 
@@ -126,10 +130,12 @@ export function StateAwareCalculatorHub({
       )}
 
       <div className="mt-8">
-        <MortgageCalculator
-          key={locationKey}
-          initialInputs={calculatorInputs}
-        />
+        <RatesBeside ratesPanel={ratesPanel}>
+          <MortgageCalculator
+            key={locationKey}
+            initialInputs={calculatorInputs}
+          />
+        </RatesBeside>
       </div>
 
       <div className="mt-10">
@@ -258,7 +264,7 @@ export function StateAwareCalculatorHub({
                   href="/blog"
                   className="text-sm font-medium text-sky-800 hover:text-sky-900"
                 >
-                  All blog posts &rarr;
+                  All Smart Buying guides &rarr;
                 </Link>
               </div>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -289,35 +295,6 @@ export function StateAwareCalculatorHub({
             />
           </div>
         </>
-      )}
-
-      {!state && (
-        <section id="states" className="mt-14">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            Jump to a state
-          </h2>
-          <p className="mt-3 max-w-3xl text-slate-600">
-            Selecting a state loads local defaults in the calculator above.
-            Choose a county next for finer tax, insurance, and loan-limit
-            context.
-          </p>
-          <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-3 lg:grid-cols-4">
-            {STATES.map((s) => (
-              <li key={s.slug}>
-                <button
-                  type="button"
-                  onClick={() => onStateChange(s.slug)}
-                  className="text-left text-slate-600 hover:text-sky-800"
-                >
-                  {s.name}
-                </button>
-                <span className="sr-only">
-                  <Link href={stateCalculatorHref(s.slug)}>{s.name}</Link>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
       )}
     </div>
   );

@@ -41,7 +41,7 @@ export function Header() {
               href="/blog"
               className="rounded-md px-3 py-2 hover:bg-slate-100 hover:text-slate-900"
             >
-              Blog
+              Smart Buying
             </Link>
           </li>
           <li>
@@ -50,6 +50,14 @@ export function Header() {
               className="rounded-md px-3 py-2 hover:bg-slate-100 hover:text-slate-900"
             >
               Methodology
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/faq"
+              className="rounded-md px-3 py-2 hover:bg-slate-100 hover:text-slate-900"
+            >
+              FAQ
             </Link>
           </li>
           <li>

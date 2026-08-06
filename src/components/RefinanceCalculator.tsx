@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef, type ReactNode } from "react";
 import {
   calculateRefinance,
   breakEvenLabel,
@@ -10,11 +10,13 @@ import { SITE } from "@/lib/site";
 import { getRefiClosingCostPercent } from "@/lib/refiLocation";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
+import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
 type Props = {
   initialStateSlug?: string;
   initialCounty?: string;
+  ratesPanel?: ReactNode;
 };
 
 const BASE_DEFAULTS = {
@@ -30,6 +32,7 @@ const BASE_DEFAULTS = {
 export function RefinanceCalculator({
   initialStateSlug = "",
   initialCounty = "",
+  ratesPanel,
 }: Props) {
   const loc = useCalculatorLocation({
     initialStateSlug,
@@ -62,14 +65,14 @@ export function RefinanceCalculator({
       <LocationControls
         stateSlug={loc.stateSlug}
         countyFips={loc.countyFips}
-        onStateChange={(slug) => {
+        onApply={(slug, fips) => {
           autoCloseRef.current = true;
-          loc.onStateChange(slug);
+          loc.applyLocation(slug, fips);
         }}
-        onCountyChange={loc.onCountyChange}
         hint="State drives estimated closing costs (title, recording, transfer) and any tangible net-benefit disclosure notes. County refines local context."
       />
 
+      <RatesBeside ratesPanel={ratesPanel}>
       <section
         id="calculator"
         aria-label="Refinance break-even calculator"
@@ -235,6 +238,7 @@ export function RefinanceCalculator({
           </div>
         </div>
       </section>
+      </RatesBeside>
     </div>
   );
 }
