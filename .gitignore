@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# HUD CHUMS raw fixed-width downloads (regenerate via npm run sync:loan-limits)
+/public/data/raw-*.txt
+
 # debug
 npm-debug.log*
 yarn-debug.log*

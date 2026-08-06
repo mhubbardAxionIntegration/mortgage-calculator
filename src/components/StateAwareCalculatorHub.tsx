@@ -1,26 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MortgageCalculator } from "@/components/MortgageCalculator";
+import { LocationControls } from "@/components/LocationControls";
 import { FaqSection } from "@/components/FaqSection";
 import { RateCta } from "@/components/RateCta";
-import {
-  STATES,
-  getState,
-  inputsFromState,
-  stateCalculatorHref,
-  type StateData,
-} from "@/lib/states";
+import { STATES, stateCalculatorHref } from "@/lib/states";
 import { getStateGuide } from "@/lib/stateGuides";
 import { getPostsForState, type BlogPost } from "@/lib/blog";
 import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { formatCurrency, formatPercent } from "@/lib/mortgage";
+import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
+import { LOAN_LIMIT_YEAR } from "@/lib/loanLimits";
 
 type Props = {
   /** Initial state slug from the server (?state=). */
   initialStateSlug?: string;
+  /** Initial county FIPS or slug from the server (?county=). */
+  initialCounty?: string;
   /** Live 30-yr rate when available. */
   annualRate?: number;
 };
@@ -36,113 +34,100 @@ function formatDate(iso: string): string {
 
 export function StateAwareCalculatorHub({
   initialStateSlug = "",
+  initialCounty = "",
   annualRate,
 }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const selectId = useId();
-
-  const urlSlug = searchParams.get("state") || initialStateSlug || "";
-  const [selectedSlug, setSelectedSlug] = useState(urlSlug);
-
-  // Stay in sync when the user navigates via browser back/forward or links.
-  useEffect(() => {
-    const next = searchParams.get("state") || "";
-    setSelectedSlug((prev) => (prev === next ? prev : next));
-  }, [searchParams]);
-
-  const state: StateData | undefined = selectedSlug
-    ? getState(selectedSlug)
-    : undefined;
-
-  const syncUrl = useCallback(
-    (slug: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (slug) params.set("state", slug);
-      else params.delete("state");
-      // Drop share-link overrides when switching market so state defaults apply cleanly.
-      params.delete("price");
-      params.delete("down");
-      const q = params.toString();
-      router.replace(q ? `${pathname}?${q}` : pathname, { scroll: false });
-    },
-    [pathname, router, searchParams],
-  );
-
-  const onSelectState = useCallback(
-    (slug: string) => {
-      setSelectedSlug(slug);
-      syncUrl(slug);
-    },
-    [syncUrl],
-  );
+  const {
+    stateSlug,
+    countyFips,
+    state,
+    county,
+    onStateChange,
+    onCountyChange,
+    locationInputs,
+    locationKey,
+    fhaLimit,
+    conformingLimit,
+  } = useCalculatorLocation({
+    initialStateSlug,
+    initialCounty,
+  });
 
   const calculatorInputs = useMemo(() => {
     const rate = annualRate ?? DEFAULT_INPUTS.annualRate;
-    if (!state) return { annualRate: rate };
-    return { ...inputsFromState(state), annualRate: rate };
-  }, [state, annualRate]);
+    return { ...locationInputs, annualRate: rate };
+  }, [locationInputs, annualRate]);
 
   const guide = state ? getStateGuide(state) : null;
   const relatedPosts: BlogPost[] = state
     ? getPostsForState(state.slug, 4)
     : [];
 
+  const displayPrice =
+    locationInputs.homePrice ?? state?.medianHomePrice ?? DEFAULT_INPUTS.homePrice;
+  const displayTax =
+    locationInputs.propertyTaxRate ??
+    state?.propertyTaxRate ??
+    DEFAULT_INPUTS.propertyTaxRate;
+  const displayIns =
+    locationInputs.annualHomeInsurance ??
+    state?.avgInsurance ??
+    DEFAULT_INPUTS.annualHomeInsurance;
+
   return (
     <div>
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
-        <label
-          htmlFor={selectId}
-          className="block text-sm font-semibold text-slate-900"
-        >
-          Property location
-        </label>
-        <p className="mt-1 text-sm text-slate-600">
-          Choose a state to load local tax and insurance defaults and show that
-          market&apos;s guide, programs, and related articles.
-        </p>
-        <select
-          id={selectId}
-          value={selectedSlug}
-          onChange={(e) => onSelectState(e.target.value)}
-          className="mt-3 w-full max-w-md rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-600/30"
-        >
-          <option value="">United States — national defaults</option>
-          {STATES.map((s) => (
-            <option key={s.slug} value={s.slug}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <LocationControls
+        stateSlug={stateSlug}
+        countyFips={countyFips}
+        onStateChange={onStateChange}
+        onCountyChange={onCountyChange}
+        hint="Choose a state and county to load local tax and insurance defaults. County also drives FHA and conforming loan-limit context used on specialized calculators."
+      />
 
-      {state && (
-        <div className="mt-6 grid grid-cols-3 gap-3 text-center text-sm">
+      {(state || county) && (
+        <div className="mt-6 grid grid-cols-2 gap-3 text-center text-sm sm:grid-cols-4">
           <div className="rounded-xl border border-slate-200 bg-white p-3">
-            <div className="text-xs text-slate-500">Median home price</div>
+            <div className="text-xs text-slate-500">
+              {county ? "Local median (HUD)" : "Median home price"}
+            </div>
             <div className="font-bold text-slate-900">
-              {formatCurrency(state.medianHomePrice)}
+              {formatCurrency(displayPrice)}
             </div>
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-3">
-            <div className="text-xs text-slate-500">Avg property tax</div>
+            <div className="text-xs text-slate-500">Property tax rate</div>
             <div className="font-bold text-slate-900">
-              {formatPercent(state.propertyTaxRate)}
+              {formatPercent(displayTax)}
             </div>
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-3">
-            <div className="text-xs text-slate-500">Avg insurance</div>
+            <div className="text-xs text-slate-500">Est. insurance</div>
             <div className="font-bold text-slate-900">
-              {formatCurrency(state.avgInsurance)}/yr
+              {formatCurrency(displayIns)}/yr
+            </div>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-white p-3">
+            <div className="text-xs text-slate-500">
+              {county ? `FHA 1-unit (${LOAN_LIMIT_YEAR})` : "Select county for FHA limit"}
+            </div>
+            <div className="font-bold text-slate-900">
+              {county ? formatCurrency(fhaLimit) : "—"}
             </div>
           </div>
         </div>
       )}
 
+      {county && (
+        <p className="mt-3 text-xs text-slate-500">
+          {county.name} County conforming (FHFA) 1-unit limit:{" "}
+          {formatCurrency(conformingLimit)}. Limits are educational estimates
+          from HUD CHUMS {LOAN_LIMIT_YEAR} files.
+        </p>
+      )}
+
       <div className="mt-8">
         <MortgageCalculator
-          key={state?.slug ?? "national"}
+          key={locationKey}
           initialInputs={calculatorInputs}
         />
       </div>
@@ -151,7 +136,7 @@ export function StateAwareCalculatorHub({
         <RateCta
           prefill={
             state
-              ? { state: state.abbr, homePrice: state.medianHomePrice }
+              ? { state: state.abbr, homePrice: displayPrice }
               : undefined
           }
           heading={
@@ -161,7 +146,7 @@ export function StateAwareCalculatorHub({
           }
           subtext={
             state
-              ? `Get personalized quotes from lenders serving ${state.name}. Compare offers side by side before you lock.`
+              ? `Get personalized quotes from lenders serving ${state.name}${county ? ` (${county.name} County)` : ""}. Compare offers side by side before you lock.`
               : undefined
           }
         />
@@ -173,10 +158,12 @@ export function StateAwareCalculatorHub({
             <header>
               <h2 className="text-2xl font-bold tracking-tight text-slate-900">
                 {state.name} market guide
+                {county ? ` · ${county.name} County` : ""}
               </h2>
               <p className="mt-2 text-slate-600">
-                Local tax, insurance, program, and payment context for the state
-                you selected — not a separate thin URL.
+                Local tax, insurance, program, and payment context for the
+                location you selected — county defaults refine the calculator;
+                the guide remains state-level.
               </p>
             </header>
 
@@ -220,7 +207,7 @@ export function StateAwareCalculatorHub({
               <p className="mt-4 text-sm text-slate-500">
                 Adjust the calculator above, or open the{" "}
                 <Link
-                  href="/calculators/home-affordability-calculator"
+                  href={`/calculators/home-affordability-calculator${stateSlug ? `?state=${encodeURIComponent(stateSlug)}${countyFips ? `&county=${encodeURIComponent(countyFips)}` : ""}` : ""}`}
                   className="font-medium text-sky-800 hover:text-sky-900"
                 >
                   home affordability calculator
@@ -310,15 +297,16 @@ export function StateAwareCalculatorHub({
             Jump to a state
           </h2>
           <p className="mt-3 max-w-3xl text-slate-600">
-            Selecting a state loads local defaults in the calculator above and
-            reveals that market&apos;s guide on this same page.
+            Selecting a state loads local defaults in the calculator above.
+            Choose a county next for finer tax, insurance, and loan-limit
+            context.
           </p>
           <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-3 lg:grid-cols-4">
             {STATES.map((s) => (
               <li key={s.slug}>
                 <button
                   type="button"
-                  onClick={() => onSelectState(s.slug)}
+                  onClick={() => onStateChange(s.slug)}
                   className="text-left text-slate-600 hover:text-sky-800"
                 >
                   {s.name}

@@ -80,7 +80,9 @@ export default async function Home() {
           </div>
 
           <div className="mx-auto mt-8 max-w-5xl">
-            <LazyMortgageCalculator initialInputs={{ annualRate: rates.rate30 }} />
+            <Suspense fallback={<div className="min-h-[28rem] animate-pulse rounded-2xl border border-slate-200 bg-slate-100" />}>
+              <LazyMortgageCalculator loanDefaults={{ annualRate: rates.rate30 }} />
+            </Suspense>
           </div>
 
           <div className="mx-auto mt-8 max-w-5xl">

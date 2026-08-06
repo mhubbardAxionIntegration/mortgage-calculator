@@ -36,8 +36,8 @@ export const metadata: Metadata = {
 
 const HOW_TO_STEPS = [
   {
-    name: "Choose your state (optional)",
-    text: "Select a state to load local property-tax and insurance defaults, then see that market's guide and related articles on this page.",
+    name: "Choose your state and county (optional)",
+    text: "Select a state and county to load local property-tax and insurance defaults and see that market's guide and related articles on this page.",
   },
   {
     name: "Enter the home price",
@@ -60,10 +60,10 @@ const HOW_TO_STEPS = [
 export default async function MortgageCalculatorPage({
   searchParams,
 }: {
-  searchParams: Promise<{ state?: string }>;
+  searchParams: Promise<{ state?: string; county?: string }>;
 }) {
   const { rates } = await getMortgageRatesWithFallback();
-  const { state: stateSlug } = await searchParams;
+  const { state: stateSlug, county: countyParam } = await searchParams;
   const selected = stateSlug ? getState(stateSlug) : undefined;
   const guide = selected ? getStateGuide(selected) : null;
 
@@ -111,7 +111,7 @@ export default async function MortgageCalculatorPage({
           <p className="mt-3 text-lg text-slate-600">
             {selected
               ? `Estimate your monthly payment in ${selected.name} with local tax and insurance defaults, a worked example, buyer-program notes, and related guides — all on one page.`
-              : `Calculate your monthly mortgage payment with taxes, insurance, and PMI. Pick a state for localized defaults and that market’s guide. Updated for ${SITE.year}.`}
+              : `Calculate your monthly mortgage payment with taxes, insurance, and PMI. Pick a state and county for localized defaults and that market’s guide. Updated for ${SITE.year}.`}
           </p>
         </header>
 
@@ -123,6 +123,7 @@ export default async function MortgageCalculatorPage({
           <Suspense fallback={<CalculatorSkeleton />}>
             <StateAwareCalculatorHub
               initialStateSlug={selected?.slug ?? ""}
+              initialCounty={countyParam ?? ""}
               annualRate={rates.rate30}
             />
           </Suspense>

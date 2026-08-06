@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
+import type { MortgageInputs } from "@/lib/mortgage";
 
 /**
  * Client-boundary dynamic import so the home page (RSC) can defer the
@@ -9,6 +10,12 @@ import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
  */
 export const LazyMortgageCalculator = dynamic(
   () =>
-    import("@/components/MortgageCalculator").then((m) => m.MortgageCalculator),
+    import("@/components/LocatedMortgageCalculator").then(
+      (m) => m.LocatedMortgageCalculator,
+    ),
   { loading: () => <CalculatorSkeleton />, ssr: false },
 );
+
+export type LazyMortgageProps = {
+  loanDefaults?: Partial<MortgageInputs>;
+};

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { MortgageCalculator } from "@/components/MortgageCalculator";
 import { RefinanceCalculator } from "@/components/RefinanceCalculator";
 import { FhaCalculator } from "@/components/FhaCalculator";
 import { ArmCalculator } from "@/components/ArmCalculator";
 import { VaCalculator } from "@/components/VaCalculator";
+import { LocatedMortgageCalculator } from "@/components/LocatedMortgageCalculator";
+import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
 import { FaqSection } from "@/components/FaqSection";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
@@ -46,10 +48,14 @@ export async function generateMetadata({
 
 export default async function LoanTypePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ type: string }>;
+  searchParams: Promise<{ state?: string; county?: string }>;
 }) {
   const { type } = await params;
+  const { state: stateSlug = "", county: countyParam = "" } =
+    await searchParams;
   const data = getLoanType(type);
   if (!data) notFound();
 
@@ -104,21 +110,36 @@ export default async function LoanTypePage({
         </header>
 
         <div className="mt-8">
-          {data.slug === "refinance-mortgage-calculator" ? (
-            <RefinanceCalculator />
-          ) : data.slug === "fha-mortgage-calculator" ? (
-            <FhaCalculator />
-          ) : data.slug === "arm-mortgage-calculator" ? (
-            <ArmCalculator />
-          ) : data.slug === "va-mortgage-calculator" ? (
-            <VaCalculator />
-          ) : (
-            <MortgageCalculator
-              initialInputs={data.defaults}
-              initialMode={isAffordability ? "affordability" : "payment"}
-              lockMode={isAffordability}
-            />
-          )}
+          <Suspense fallback={<CalculatorSkeleton />}>
+            {data.slug === "refinance-mortgage-calculator" ? (
+              <RefinanceCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+              />
+            ) : data.slug === "fha-mortgage-calculator" ? (
+              <FhaCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+              />
+            ) : data.slug === "arm-mortgage-calculator" ? (
+              <ArmCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+              />
+            ) : data.slug === "va-mortgage-calculator" ? (
+              <VaCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+              />
+            ) : (
+              <LocatedMortgageCalculator
+                initialStateSlug={stateSlug}
+                initialCounty={countyParam}
+                loanDefaults={data.defaults}
+                affordability={isAffordability}
+              />
+            )}
+          </Suspense>
         </div>
 
         <div className="mt-10">
