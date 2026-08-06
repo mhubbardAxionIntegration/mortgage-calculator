@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { LOAN_TYPES } from "@/lib/loanTypes";
@@ -11,14 +12,16 @@ export function Header() {
       >
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-bold text-slate-900"
+          className="flex items-center gap-2.5 text-lg font-bold text-slate-900"
         >
-          <span
-            aria-hidden
-            className="grid h-8 w-8 place-items-center rounded-lg bg-sky-900 text-white"
-          >
-            $
-          </span>
+          <Image
+            src="/images/hero-home-panorama.png"
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-lg object-cover shadow-sm ring-1 ring-slate-200"
+            priority
+          />
           <span>{SITE.shortName}</span>
         </Link>
 

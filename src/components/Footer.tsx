@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SITE, COMPANY } from "@/lib/site";
 import { RATE_SOURCE_LINKS } from "@/lib/mortgageRates";
@@ -16,13 +17,14 @@ export function Footer() {
     <footer className="mt-16 border-t border-slate-200 bg-slate-50">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="flex items-center gap-2 text-lg font-bold text-slate-900">
-            <span
-              aria-hidden
-              className="grid h-7 w-7 place-items-center rounded-lg bg-sky-800 text-white"
-            >
-              $
-            </span>
+          <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
+            <Image
+              src="/images/hero-home-panorama.png"
+              alt=""
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-lg object-cover ring-1 ring-slate-200"
+            />
             {SITE.shortName}
           </div>
           <p className="mt-3 text-sm text-slate-600">

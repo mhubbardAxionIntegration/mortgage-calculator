@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -60,28 +61,67 @@ export default async function Home() {
         })}
       />
 
-      <section className="bg-gradient-to-b from-sky-50 to-white">
-        <div className="mx-auto max-w-6xl px-4 pb-10 pt-12 sm:pt-16">
+      <section className="relative isolate min-h-[22rem] overflow-hidden sm:min-h-[26rem]">
+        <Image
+          src="/images/hero-home-panorama.png"
+          alt="Picturesque home along a quiet tree-lined street at golden hour"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-b from-slate-950/55 via-slate-950/45 to-slate-950/70"
+        />
+        <div className="relative mx-auto flex min-h-[22rem] max-w-6xl items-center px-4 py-14 sm:min-h-[26rem] sm:py-16">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="inline-flex items-center rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-800">
+            <p className="text-sm font-semibold tracking-wide text-sky-200">
+              {SITE.shortName}
+            </p>
+            <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+              {SITE.seo.homeH1}
+            </h1>
+            <p className="mt-4 text-lg text-slate-100/90">
+              Estimate your payment with local tax and insurance context, then
+              open specialized tools for FHA, VA, refinance, ARM, and
+              affordability.
+            </p>
+            <p className="mt-3 text-sm text-sky-100/90">
               Updated for {SITE.year}
               {isLive
                 ? ` · 30-yr avg ${rates.rate30.toFixed(2)}% (${formatRateDate(rates.asOf30)})`
                 : ` · Rates as of ${SITE.ratesAsOf}`}
             </p>
-            <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-              {SITE.seo.homeH1}
-            </h1>
-            <p className="mt-4 text-lg text-slate-600">
-              Start with a national payment estimate below, then open specialized
-              tools for refinance break-even, FHA MIP, ARM stress tests, or a
-              state page when local taxes and insurance drive the escrow.
-            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/mortgage-calculator"
+                className="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-sky-950 shadow-sm transition hover:bg-sky-50"
+              >
+                Open calculator
+              </Link>
+              <Link
+                href="/calculators/home-affordability-calculator"
+                className="rounded-lg border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
+              >
+                What can I afford?
+              </Link>
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mx-auto mt-8 max-w-5xl">
-            <Suspense fallback={<div className="min-h-[28rem] animate-pulse rounded-2xl border border-slate-200 bg-slate-100" />}>
-              <LazyMortgageCalculator loanDefaults={{ annualRate: rates.rate30 }} />
+      <section className="bg-gradient-to-b from-slate-50 to-white">
+        <div className="mx-auto max-w-6xl px-4 pb-10 pt-10 sm:pt-12">
+          <div className="mx-auto max-w-5xl">
+            <Suspense
+              fallback={
+                <div className="min-h-[28rem] animate-pulse rounded-2xl border border-slate-200 bg-slate-100" />
+              }
+            >
+              <LazyMortgageCalculator
+                loanDefaults={{ annualRate: rates.rate30 }}
+              />
             </Suspense>
           </div>
 
