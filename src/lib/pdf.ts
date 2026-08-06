@@ -7,6 +7,7 @@ import {
   type MortgageInputs,
   type PaymentBreakdown,
   type AmortizationYear,
+  type AmortizationMonth,
 } from "./mortgage";
 import { SITE, COMPANY } from "./site";
 
@@ -165,6 +166,120 @@ export function downloadAmortizationPdf(
   }
 
   savePdf(doc, "mortgage-amortization-report.pdf");
+}
+
+export interface ScheduleSummaryField {
+  label: string;
+  value: string;
+}
+
+export interface SchedulePdfParams {
+  title: string;
+  summaryFields: ScheduleSummaryField[];
+  schedule: AmortizationMonth[];
+  fileName?: string;
+}
+
+/**
+ * Generates and downloads a branded PDF of any calculator's full month-by-month
+ * amortization schedule, with a header summarizing every input used to produce
+ * it. Used by the shared AmortizationSchedulePanel across calculator types.
+ */
+export function downloadSchedulePdf({
+  title,
+  summaryFields,
+  schedule,
+  fileName = "amortization-schedule.pdf",
+}: SchedulePdfParams): void {
+  const doc = new jsPDF({ unit: "pt", format: "letter" });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const margin = 48;
+  let y = 54;
+
+  doc.setFillColor(...EMERALD);
+  doc.rect(0, 0, pageWidth, 8, "F");
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.setTextColor(...SLATE);
+  doc.text(title, margin, y);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(...MUTED);
+  y += 18;
+  doc.text(SITE.name, margin, y);
+
+  y += 20;
+  autoTable(doc, {
+    startY: y,
+    theme: "plain",
+    styles: { fontSize: 9.5, cellPadding: 3, textColor: SLATE },
+    columnStyles: {
+      0: { textColor: MUTED, cellWidth: 130 },
+      2: { textColor: MUTED, cellWidth: 130 },
+    },
+    body: chunkPairs(summaryFields),
+  });
+
+  // @ts-expect-error - lastAutoTable is added by the autotable plugin at runtime
+  y = (doc.lastAutoTable?.finalY ?? y) + 22;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(13);
+  doc.setTextColor(...SLATE);
+  doc.text("Month-by-month amortization schedule", margin, y);
+
+  autoTable(doc, {
+    startY: y + 10,
+    head: [["#", "Date", "Payment", "Principal", "Interest", "Balance"]],
+    body: schedule.map((row) => [
+      String(row.month),
+      row.label,
+      formatCurrency(row.payment, 2),
+      formatCurrency(row.principalPaid, 2),
+      formatCurrency(row.interestPaid, 2),
+      formatCurrency(row.endingBalance),
+    ]),
+    styles: { fontSize: 8, cellPadding: 3 },
+    headStyles: { fillColor: EMERALD, textColor: [255, 255, 255], fontStyle: "bold" },
+    alternateRowStyles: { fillColor: [248, 250, 252] },
+    columnStyles: {
+      2: { halign: "right" },
+      3: { halign: "right" },
+      4: { halign: "right" },
+      5: { halign: "right" },
+    },
+    margin: { left: margin, right: margin },
+  });
+
+  const pageCount = doc.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    const h = doc.internal.pageSize.getHeight();
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7.5);
+    doc.setTextColor(...MUTED);
+    doc.text(
+      `Estimates only — not financial advice or a loan offer. © ${SITE.year} ${COMPANY.name}.`,
+      margin,
+      h - 24,
+      { maxWidth: pageWidth - margin * 2 },
+    );
+    doc.text(`Page ${i} of ${pageCount}`, pageWidth - margin, h - 24, { align: "right" });
+  }
+
+  savePdf(doc, fileName);
+}
+
+/** Lays two-column label/value pairs into a 4-column autotable body. */
+function chunkPairs(fields: ScheduleSummaryField[]): string[][] {
+  const rows: string[][] = [];
+  for (let i = 0; i < fields.length; i += 2) {
+    const a = fields[i];
+    const b = fields[i + 1];
+    rows.push([a.label, a.value, b?.label ?? "", b?.value ?? ""]);
+  }
+  return rows;
 }
 
 /** Trigger a PDF download in a way that works in mobile in-app browsers. */

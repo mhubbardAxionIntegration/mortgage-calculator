@@ -149,12 +149,14 @@ export interface AmortizationMonth {
   month: number;
   /** Calendar label for the payment, e.g. "Jul 2026". */
   label: string;
+  /** Total payment for the period (principal + interest). */
+  payment: number;
   principalPaid: number;
   interestPaid: number;
   endingBalance: number;
 }
 
-/** Month-by-month amortization, used for the detailed PDF report. */
+/** Month-by-month amortization, used for the detailed PDF report and the on-page schedule panel. */
 export function buildMonthlyAmortizationSchedule(
   loanAmount: number,
   annualRate: number,
@@ -187,6 +189,65 @@ export function buildMonthlyAmortizationSchedule(
     schedule.push({
       month: m,
       label: fmt.format(d),
+      payment: principal + interest,
+      principalPaid: principal,
+      interestPaid: interest,
+      endingBalance: balance,
+    });
+
+    if (balance <= 0) break;
+  }
+
+  return schedule;
+}
+
+/**
+ * Two-phase month-by-month amortization for adjustable-rate scenarios: the
+ * intro rate applies for `introYears`, then the payment recasts over the
+ * remaining term at `stressRate` (a common simplified ARM-reset model).
+ */
+export function buildArmAmortizationSchedule(
+  loanAmount: number,
+  introRate: number,
+  introYears: number,
+  stressRate: number,
+  termYears: number,
+  startDate: Date = new Date(),
+): AmortizationMonth[] {
+  const schedule: AmortizationMonth[] = [];
+  if (loanAmount <= 0 || termYears <= 0) return schedule;
+
+  const introMonths = Math.min(Math.max(0, Math.round(introYears * 12)), termYears * 12);
+  const totalMonths = termYears * 12;
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+
+  let balance = loanAmount;
+  let rMonthly = introRate / 100 / 12;
+  let payment = monthlyPrincipalAndInterest(loanAmount, introRate, termYears);
+
+  for (let m = 1; m <= totalMonths; m++) {
+    if (m === introMonths + 1 && introMonths < totalMonths) {
+      const remainingYears = (totalMonths - introMonths) / 12;
+      rMonthly = stressRate / 100 / 12;
+      payment = monthlyPrincipalAndInterest(balance, stressRate, remainingYears);
+    }
+
+    const interest = balance * rMonthly;
+    const principal = Math.min(payment - interest, balance);
+    balance = Math.max(0, balance - principal);
+
+    const d = new Date(
+      Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth() + m, 1),
+    );
+
+    schedule.push({
+      month: m,
+      label: fmt.format(d),
+      payment: principal + interest,
       principalPaid: principal,
       interestPaid: interest,
       endingBalance: balance,

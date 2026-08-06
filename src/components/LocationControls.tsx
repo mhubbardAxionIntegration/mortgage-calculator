@@ -64,7 +64,7 @@ export function LocationControls({
             onChange={(e) => handleStateChange(e.target.value)}
             className="mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-600/30"
           >
-            <option value="">United States — national defaults</option>
+            <option value="">Where are you looking to buy?</option>
             {STATES.map((s) => (
               <option key={s.slug} value={s.slug}>
                 {s.name}
@@ -97,15 +97,15 @@ export function LocationControls({
           </select>
         </div>
       </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <div className="mt-4 flex justify-center">
         <button
           type="button"
           disabled={!canGo}
           onClick={() => onApply(draftState, draftCounty)}
           className={
             canGo
-              ? "w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 active:bg-emerald-800"
-              : "w-full cursor-not-allowed rounded-lg bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-400"
+              ? "w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 active:bg-emerald-800 sm:max-w-md"
+              : "w-full cursor-not-allowed rounded-lg bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-400 sm:max-w-md"
           }
         >
           {canGo ? "GO" : "Select a State and County"}

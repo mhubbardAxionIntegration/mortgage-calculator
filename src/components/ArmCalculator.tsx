@@ -2,12 +2,17 @@
 
 import { useEffect, useMemo, useState, useCallback, type ReactNode } from "react";
 import { calculateArmStress } from "@/lib/specializedMortgage";
-import { formatCurrency, formatPercent } from "@/lib/mortgage";
+import {
+  formatCurrency,
+  formatPercent,
+  buildArmAmortizationSchedule,
+} from "@/lib/mortgage";
 import { DEFAULT_INPUTS } from "@/lib/defaults";
 import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
 import { LocationSnapshot } from "@/components/LocationSnapshot";
 import { StateLocationGuide } from "@/components/StateLocationGuide";
+import { AmortizationSchedulePanel } from "@/components/AmortizationSchedulePanel";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
@@ -77,6 +82,18 @@ export function ArmCalculator({
         monthlyHoa: inputs.monthlyHoa,
       }),
     [inputs, loanAmount],
+  );
+
+  const armSchedule = useMemo(
+    () =>
+      buildArmAmortizationSchedule(
+        loanAmount,
+        inputs.introRate,
+        inputs.introYears,
+        inputs.stressRate,
+        inputs.termYears,
+      ),
+    [loanAmount, inputs.introRate, inputs.introYears, inputs.stressRate, inputs.termYears],
   );
 
   const downPct =
@@ -297,6 +314,32 @@ export function ArmCalculator({
       </section>
       </RatesBeside>
       </div>
+
+      {loc.state && loc.county && (
+        <div className="mt-8">
+          <AmortizationSchedulePanel
+            loanTypeLabel={`ARM (${inputs.introYears}-yr intro → stress rate)`}
+            state={loc.state}
+            county={loc.county}
+            homePrice={inputs.homePrice}
+            downPayment={inputs.downPayment}
+            loanAmount={loanAmount}
+            annualRate={inputs.introRate}
+            termYears={inputs.termYears}
+            monthlyPayment={result.introTotalMonthly}
+            principalAndInterest={result.introMonthlyPI}
+            schedule={armSchedule}
+            details={[
+              { label: "Intro rate", value: `${formatPercent(inputs.introRate)} for ${inputs.introYears} yr` },
+              { label: "Stress rate after reset", value: formatPercent(inputs.stressRate) },
+              { label: "Stress payment (P&I)", value: `${formatCurrency(result.stressMonthlyPI)}/mo` },
+              { label: "Property tax", value: `${formatCurrency((inputs.homePrice * inputs.propertyTaxRate) / 100 / 12)}/mo` },
+              { label: "Home insurance", value: `${formatCurrency(inputs.annualHomeInsurance / 12)}/mo` },
+              { label: "HOA dues", value: `${formatCurrency(inputs.monthlyHoa)}/mo` },
+            ]}
+          />
+        </div>
+      )}
 
       <StateLocationGuide
         state={loc.state}

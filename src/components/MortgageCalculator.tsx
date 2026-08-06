@@ -43,11 +43,28 @@ const AmortizationSchedule = dynamic(
 
 type Mode = "payment" | "affordability";
 
+export interface CalculatorScheduleSummary {
+  loanTypeLabel: string;
+  loanAmount: number;
+  annualRate: number;
+  termYears: number;
+  monthlyPayment: number;
+  principalAndInterest: number;
+  homePrice?: number;
+  downPayment?: number;
+  details: { label: string; value: string }[];
+}
+
 interface Props {
   initialInputs?: Partial<MortgageInputs>;
   initialMode?: Mode;
   /** Hide the mode tabs (e.g. on a dedicated affordability page). */
   lockMode?: boolean;
+  /**
+   * Reports the current inputs/result whenever they change so a parent can
+   * drive a location-gated amortization schedule panel outside this card.
+   */
+  onSummaryChange?: (summary: CalculatorScheduleSummary | null) => void;
 }
 
 interface AffordabilityState {
@@ -92,6 +109,7 @@ function MortgageCalculatorInner({
   initialInputs,
   initialMode = "payment",
   lockMode = false,
+  onSummaryChange,
 }: Props) {  const searchParams = useSearchParams();
   const [mode, setMode] = useState<Mode>(initialMode);
   const [inputs, setInputs] = useState<MortgageInputs>({
@@ -242,6 +260,55 @@ function MortgageCalculatorInner({
       }),
     [afford, inputs.annualRate, inputs.termYears, inputs.propertyTaxRate, inputs.annualHomeInsurance, inputs.monthlyHoa],
   );
+
+  // Report current inputs/results up so a parent can drive a
+  // location-gated amortization schedule panel below this card.
+  useEffect(() => {
+    if (!onSummaryChange) return;
+    if (mode === "payment") {
+      onSummaryChange({
+        loanTypeLabel: "Conventional fixed-rate",
+        loanAmount: result.loanAmount,
+        annualRate: inputs.annualRate,
+        termYears: inputs.termYears,
+        monthlyPayment: result.totalMonthly,
+        principalAndInterest: result.principalAndInterest,
+        homePrice: inputs.homePrice,
+        downPayment: inputs.downPayment,
+        details: [
+          { label: "Property tax", value: `${formatCurrency(result.monthlyTax)}/mo` },
+          { label: "Home insurance", value: `${formatCurrency(result.monthlyInsurance)}/mo` },
+          {
+            label: "PMI",
+            value: result.monthlyPmi > 0 ? `${formatCurrency(result.monthlyPmi)}/mo` : "None",
+          },
+          { label: "HOA dues", value: `${formatCurrency(result.monthlyHoa)}/mo` },
+        ],
+      });
+    } else {
+      onSummaryChange({
+        loanTypeLabel: "Affordability estimate",
+        loanAmount: affordResult.maxLoanAmount,
+        annualRate: inputs.annualRate,
+        termYears: inputs.termYears,
+        monthlyPayment: affordResult.maxMonthlyPayment,
+        principalAndInterest: affordResult.estimatedMonthlyPI,
+        homePrice: affordResult.maxHomePrice,
+        downPayment: afford.downPayment,
+        details: [
+          { label: "Annual income", value: formatCurrency(afford.annualIncome) },
+          { label: "Monthly debts", value: formatCurrency(afford.monthlyDebts) },
+          { label: "Target DTI", value: `${Math.round(afford.maxDtiRatio * 100)}%` },
+        ],
+      });
+    }
+  }, [mode, result, affordResult, inputs, afford, onSummaryChange]);
+
+  // Clear the summary only when this calculator instance unmounts (e.g. the
+  // location changes and remounts via `key`), not on every input tweak.
+  useEffect(() => {
+    return () => onSummaryChange?.(null);
+  }, [onSummaryChange]);
 
   const handleShare = useCallback(async () => {
     const params = new URLSearchParams({

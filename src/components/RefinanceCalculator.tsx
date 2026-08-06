@@ -12,6 +12,7 @@ import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
 import { LocationSnapshot } from "@/components/LocationSnapshot";
 import { StateLocationGuide } from "@/components/StateLocationGuide";
+import { AmortizationSchedulePanel } from "@/components/AmortizationSchedulePanel";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
@@ -251,6 +252,28 @@ export function RefinanceCalculator({
       </section>
       </RatesBeside>
       </div>
+
+      {loc.state && loc.county && (
+        <div className="mt-8">
+          <AmortizationSchedulePanel
+            loanTypeLabel="Refinance — new loan"
+            state={loc.state}
+            county={loc.county}
+            loanAmount={result.newLoanAmount}
+            annualRate={inputs.newRate}
+            termYears={inputs.newTermYears}
+            monthlyPayment={result.newMonthlyPI}
+            principalAndInterest={result.newMonthlyPI}
+            details={[
+              { label: "Current balance", value: formatCurrency(inputs.currentBalance) },
+              { label: "Current rate", value: formatPercent(inputs.currentRate) },
+              { label: "Closing costs", value: formatCurrency(inputs.closingCosts) },
+              { label: "Cash-out", value: formatCurrency(inputs.cashOut) },
+              { label: "Break-even", value: breakEvenLabel(result.breakEvenMonths) },
+            ]}
+          />
+        </div>
+      )}
 
       <StateLocationGuide
         state={loc.state}

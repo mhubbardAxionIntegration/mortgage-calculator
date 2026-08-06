@@ -98,12 +98,13 @@ export default function AboutPage() {
 
       <h2>How we stay free</h2>
       <p>
-        The calculators and guides on this Site are free to use. We do not run
-        advertising trackers or analytics profiling on the Site. Optional
-        features (such as a paid PDF report, if enabled) or future partner
-        links—if any—are separate from ordinary calculator use. See our{" "}
+        The calculators and guides on this Site are free to use. Advertising,
+        analytics, affiliate links, and paid features are currently disabled.
+        If we enable advertising or partner links in the future, we will
+        disclose them and handle the related data as described in our{" "}
         <a href="/privacy-policy">Privacy Policy</a> and{" "}
-        <a href="/disclaimer">Disclaimer</a> for details.
+        <a href="/disclaimer">Disclaimer</a>. Ordinary calculator use remains
+        separate from any optional third-party offer.
       </p>
 
       <h2>Get in touch</h2>

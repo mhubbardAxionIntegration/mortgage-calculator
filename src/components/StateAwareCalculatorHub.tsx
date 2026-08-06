@@ -1,10 +1,14 @@
 "use client";
 
-import { useMemo, type ReactNode } from "react";
-import { MortgageCalculator } from "@/components/MortgageCalculator";
+import { useMemo, useState, type ReactNode } from "react";
+import {
+  MortgageCalculator,
+  type CalculatorScheduleSummary,
+} from "@/components/MortgageCalculator";
 import { LocationControls } from "@/components/LocationControls";
 import { LocationSnapshot } from "@/components/LocationSnapshot";
 import { StateLocationGuide } from "@/components/StateLocationGuide";
+import { AmortizationSchedulePanel } from "@/components/AmortizationSchedulePanel";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { RateCta } from "@/components/RateCta";
 import { DEFAULT_INPUTS } from "@/lib/defaults";
@@ -45,6 +49,9 @@ export function StateAwareCalculatorHub({
     initialCounty,
   });
 
+  const [scheduleSummary, setScheduleSummary] =
+    useState<CalculatorScheduleSummary | null>(null);
+
   const calculatorInputs = useMemo(() => {
     const rate = annualRate ?? DEFAULT_INPUTS.annualRate;
     return { ...locationInputs, annualRate: rate };
@@ -75,9 +82,28 @@ export function StateAwareCalculatorHub({
           <MortgageCalculator
             key={locationKey}
             initialInputs={calculatorInputs}
+            onSummaryChange={setScheduleSummary}
           />
         </RatesBeside>
       </div>
+
+      {state && county && scheduleSummary && (
+        <div className="mt-8">
+          <AmortizationSchedulePanel
+            loanTypeLabel={scheduleSummary.loanTypeLabel}
+            state={state}
+            county={county}
+            homePrice={scheduleSummary.homePrice}
+            downPayment={scheduleSummary.downPayment}
+            loanAmount={scheduleSummary.loanAmount}
+            annualRate={scheduleSummary.annualRate}
+            termYears={scheduleSummary.termYears}
+            monthlyPayment={scheduleSummary.monthlyPayment}
+            principalAndInterest={scheduleSummary.principalAndInterest}
+            details={scheduleSummary.details}
+          />
+        </div>
+      )}
 
       <div className="mt-10">
         <RateCta

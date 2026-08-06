@@ -9,7 +9,7 @@ import { PAGE_HEROES } from "@/lib/pageHeroes";
 export const metadata: Metadata = {
   title: "Smart Buying — Mortgage & Homebuying Guides",
   description:
-    "Guides and explainers on mortgage rates, affordability, PMI, loan terms, and homebuying — from the team behind our free mortgage calculators.",
+    "Guides on mortgage rates, affordability, PMI, loan terms, and homebuying — from the team behind our free mortgage calculators.",
   alternates: { canonical: "/blog" },
 };
 
@@ -30,7 +30,7 @@ export default function BlogIndexPage() {
       <PageHero
         hero={PAGE_HEROES.blog}
         title="Mortgage & Homebuying Guides"
-        subtitle={`Clear, practical explainers on rates, affordability, and loans — updated for ${SITE.year}.`}
+        subtitle={`Clear, practical guides on rates, affordability, and loans — updated for ${SITE.year}.`}
       />
 
       <div className="mx-auto max-w-5xl px-4 py-8">

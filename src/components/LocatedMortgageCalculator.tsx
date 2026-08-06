@@ -1,10 +1,14 @@
 "use client";
 
-import { useMemo, type ReactNode } from "react";
-import { MortgageCalculator } from "@/components/MortgageCalculator";
+import { useMemo, useState, type ReactNode } from "react";
+import {
+  MortgageCalculator,
+  type CalculatorScheduleSummary,
+} from "@/components/MortgageCalculator";
 import { LocationControls } from "@/components/LocationControls";
 import { LocationSnapshot } from "@/components/LocationSnapshot";
 import { StateLocationGuide } from "@/components/StateLocationGuide";
+import { AmortizationSchedulePanel } from "@/components/AmortizationSchedulePanel";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 import type { MortgageInputs } from "@/lib/mortgage";
@@ -28,6 +32,8 @@ export function LocatedMortgageCalculator({
   ratesPanel,
 }: Props) {
   const loc = useCalculatorLocation({ initialStateSlug, initialCounty });
+  const [scheduleSummary, setScheduleSummary] =
+    useState<CalculatorScheduleSummary | null>(null);
 
   const initialInputs = useMemo(
     () => ({
@@ -65,9 +71,28 @@ export function LocatedMortgageCalculator({
             initialInputs={initialInputs}
             initialMode={affordability ? "affordability" : "payment"}
             lockMode={affordability}
+            onSummaryChange={setScheduleSummary}
           />
         </RatesBeside>
       </div>
+
+      {loc.state && loc.county && scheduleSummary && (
+        <div className="mt-8">
+          <AmortizationSchedulePanel
+            loanTypeLabel={scheduleSummary.loanTypeLabel}
+            state={loc.state}
+            county={loc.county}
+            homePrice={scheduleSummary.homePrice}
+            downPayment={scheduleSummary.downPayment}
+            loanAmount={scheduleSummary.loanAmount}
+            annualRate={scheduleSummary.annualRate}
+            termYears={scheduleSummary.termYears}
+            monthlyPayment={scheduleSummary.monthlyPayment}
+            principalAndInterest={scheduleSummary.principalAndInterest}
+            details={scheduleSummary.details}
+          />
+        </div>
+      )}
 
       <StateLocationGuide
         state={loc.state}

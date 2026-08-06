@@ -9,6 +9,7 @@ import { RangeSlider } from "./RangeSlider";
 import { LocationControls } from "./LocationControls";
 import { LocationSnapshot } from "@/components/LocationSnapshot";
 import { StateLocationGuide } from "@/components/StateLocationGuide";
+import { AmortizationSchedulePanel } from "@/components/AmortizationSchedulePanel";
 import { RatesBeside } from "@/components/CalculatorRatesLayout";
 import { useCalculatorLocation } from "@/hooks/useCalculatorLocation";
 
@@ -319,6 +320,30 @@ export function FhaCalculator({
       </section>
       </RatesBeside>
       </div>
+
+      {loc.state && loc.county && (
+        <div className="mt-8">
+          <AmortizationSchedulePanel
+            loanTypeLabel="FHA fixed-rate"
+            state={loc.state}
+            county={loc.county}
+            homePrice={inputs.homePrice}
+            downPayment={inputs.downPayment}
+            loanAmount={result.financedLoanAmount}
+            annualRate={inputs.annualRate}
+            termYears={inputs.termYears}
+            monthlyPayment={result.totalMonthly}
+            principalAndInterest={result.monthlyPI}
+            details={[
+              { label: "Upfront MIP", value: formatCurrency(result.upfrontMip) },
+              { label: "Monthly annual MIP", value: `${formatCurrency(result.monthlyAnnualMip)}/mo` },
+              { label: "Property tax", value: `${formatCurrency(result.monthlyTax)}/mo` },
+              { label: "Home insurance", value: `${formatCurrency(result.monthlyInsurance)}/mo` },
+              { label: "HOA dues", value: `${formatCurrency(result.monthlyHoa)}/mo` },
+            ]}
+          />
+        </div>
+      )}
 
       <StateLocationGuide
         state={loc.state}
