@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalShell } from "@/components/LegalShell";
 import { SITE, COMPANY } from "@/lib/site";
+import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
@@ -10,7 +11,13 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalShell title="Terms of Use" href="/terms" updated={SITE.ratesAsOf}>
+    <LegalShell
+      title="Terms of Use"
+      href="/terms"
+      updated={SITE.ratesAsOf}
+      hero={PAGE_HEROES.terms}
+      subtitle={`Rules that govern your use of ${SITE.name}.`}
+    >
       <p>
         These Terms of Use (&ldquo;Terms&rdquo;) govern your access to and use
         of {SITE.name} (the &ldquo;Site&rdquo;), operated by {COMPANY.name}. By

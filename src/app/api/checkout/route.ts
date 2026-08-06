@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
   const origin = new URL(req.url).origin;
 
-  let returnPath = "/mortgage-calculator";
+  let returnPath = "/";
   try {
     const body = await req.json();
     if (typeof body?.returnPath === "string" && body.returnPath.startsWith("/")) {

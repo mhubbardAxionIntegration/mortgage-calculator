@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
+import { PageHero } from "@/components/PageHero";
 import { absoluteUrl, SITE } from "@/lib/site";
 import { webPageSchema } from "@/lib/schema";
+import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 const PAGE_URL = absoluteUrl("/how-we-calculate");
 
@@ -31,6 +33,12 @@ export default function HowWeCalculatePage() {
         })}
       />
 
+      <PageHero
+        hero={PAGE_HEROES.howWeCalculate}
+        title="How We Calculate Mortgage Payments"
+        subtitle="Transparent formulas, assumptions, and data sources behind every estimate."
+      />
+
       <div className="mx-auto max-w-3xl px-4 py-8">
         <Breadcrumbs
           items={[
@@ -40,10 +48,7 @@ export default function HowWeCalculatePage() {
         />
 
         <header className="mt-6">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-            How we calculate mortgage payments
-          </h1>
-          <p className="mt-3 text-lg text-slate-600">
+          <p className="text-lg text-slate-600">
             Every estimate on {SITE.name} is educational, not a lender quote.
             This page documents the math, defaults, and limits so you can trust
             — and challenge — the numbers.
@@ -189,7 +194,7 @@ export default function HowWeCalculatePage() {
             <ul className="mt-4 space-y-2">
               <li>
                 <Link
-                  href="/mortgage-calculator"
+                  href="/"
                   className="font-medium text-sky-800 hover:text-sky-900"
                 >
                   Mortgage payment calculator

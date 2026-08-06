@@ -15,7 +15,7 @@ export const postsNewHighValue: BlogPost[] = [
     readingMinutes: 15,
     tags: ["Rates", "Loan Estimates", "Shopping"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
@@ -80,7 +80,7 @@ export const postsNewHighValue: BlogPost[] = [
       { type: "h2", text: "Worked comparison" },
       {
         type: "p",
-        html: `On a $400,000 loan near ${SITE.defaultRate}%, a 0.25% rate improvement without points saves on the order of $60+/month — thousands over several years. Paying one point ($4,000) for that quarter point only wins if you stay past break-even. Run both paths in the <a href="/mortgage-calculator">mortgage calculator</a> before you negotiate.`,
+        html: `On a $400,000 loan near ${SITE.defaultRate}%, a 0.25% rate improvement without points saves on the order of $60+/month — thousands over several years. Paying one point ($4,000) for that quarter point only wins if you stay past break-even. Run both paths in the <a href="/">mortgage calculator</a> before you negotiate.`,
       },
       { type: "h2", text: "Common questions" },
       {
@@ -111,7 +111,7 @@ export const postsNewHighValue: BlogPost[] = [
     tags: ["FHA", "Loan limits", "MIP", "2026"],
     relatedCalculators: [
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
     ],
     body: [
       {
@@ -151,7 +151,7 @@ export const postsNewHighValue: BlogPost[] = [
       { type: "h2", text: "Taxes and insurance still decide the payment" },
       {
         type: "p",
-        html: `County matters twice: once for the max loan, and again for escrow. Model full PITI in a <a href="/mortgage-calculator">state-aware mortgage calculator</a> (try <a href="/mortgage-calculator?state=texas">Texas</a>, <a href="/mortgage-calculator?state=florida">Florida</a>, or <a href="/mortgage-calculator?state=california">California</a>) and add FHA MIP in the <a href="/calculators/fha-mortgage-calculator">FHA calculator</a>.`,
+        html: `County matters twice: once for the max loan, and again for escrow. Model full PITI in a <a href="/">state-aware mortgage calculator</a> (try <a href="/?state=texas">Texas</a>, <a href="/?state=florida">Florida</a>, or <a href="/?state=california">California</a>) and add FHA MIP in the <a href="/calculators/fha-mortgage-calculator">FHA calculator</a>.`,
       },
       { type: "h2", text: "Shopping FHA without leaving money on the table" },
       {
@@ -188,7 +188,7 @@ export const postsNewHighValue: BlogPost[] = [
     tags: ["VA", "Entitlement", "Residual income", "Funding fee"],
     relatedCalculators: [
       { href: "/calculators/va-mortgage-calculator", label: "VA Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
     ],
     body: [
@@ -237,7 +237,7 @@ export const postsNewHighValue: BlogPost[] = [
       { type: "h2", text: "Seller concessions and local affordability" },
       {
         type: "p",
-        html: `VA generally limits seller concessions (distinct from reasonable discount points in some reads of the rules) around about 4% of the reasonable value for certain closing costs — confirm with your lender. Local taxes, insurance, and state veteran property-tax benefits change residual income and payment comfort. Model scenarios in the <a href="/calculators/va-mortgage-calculator">VA calculator</a> and a <a href="/mortgage-calculator">state mortgage calculator</a>.`,
+        html: `VA generally limits seller concessions (distinct from reasonable discount points in some reads of the rules) around about 4% of the reasonable value for certain closing costs — confirm with your lender. Local taxes, insurance, and state veteran property-tax benefits change residual income and payment comfort. Model scenarios in the <a href="/calculators/va-mortgage-calculator">VA calculator</a> and a <a href="/">state mortgage calculator</a>.`,
       },
       { type: "h2", text: "Shopping tips for VA borrowers" },
       {

@@ -15,7 +15,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
     readingMinutes: 14,
     tags: ["Rates", "Market", "Loan Estimates"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
       { href: "/calculators/arm-mortgage-calculator", label: "ARM Calculator" },
     ],
@@ -43,7 +43,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
       { type: "h2", text: "Worked payment sensitivity" },
       {
         type: "p",
-        html: `On a $350,000 loan amount with a 30-year term near ${SITE.defaultRate}%, a one-percentage-point rate change typically moves principal and interest by roughly $200–$230 per month before taxes and insurance. Over 30 years, the interest difference can reach tens of thousands of dollars. Use our <a href="/mortgage-calculator">mortgage calculator</a> and nudge the rate slider — including PMI if your down payment is under 20% — so you see the full PITI picture, not just P&amp;I.`,
+        html: `On a $350,000 loan amount with a 30-year term near ${SITE.defaultRate}%, a one-percentage-point rate change typically moves principal and interest by roughly $200–$230 per month before taxes and insurance. Over 30 years, the interest difference can reach tens of thousands of dollars. Use our <a href="/">mortgage calculator</a> and nudge the rate slider — including PMI if your down payment is under 20% — so you see the full PITI picture, not just P&amp;I.`,
       },
       { type: "h2", text: "Why your rate differs from the headline" },
       {
@@ -118,7 +118,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
     tags: ["Affordability", "Budgeting", "DTI"],
     relatedCalculators: [
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
     ],
     body: [
       {
@@ -185,7 +185,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
       { type: "h2", text: "State-specific next steps" },
       {
         type: "p",
-        html: `Run the national <a href="/calculators/home-affordability-calculator">home affordability calculator</a>, then pressure-test the monthly payment in the <a href="/mortgage-calculator">mortgage calculator</a> with your state's tax and insurance defaults — for example <a href="/mortgage-calculator?state=texas">Texas</a>, <a href="/mortgage-calculator?state=florida">Florida</a>, <a href="/mortgage-calculator?state=georgia">Georgia</a>, or <a href="/mortgage-calculator?state=california">California</a>. Deep dives: <a href="/blog/how-much-house-can-i-afford-georgia">Georgia</a>, <a href="/blog/how-much-house-can-i-afford-texas">Texas</a>, <a href="/blog/how-much-house-can-i-afford-florida">Florida</a>, <a href="/blog/how-much-house-can-i-afford-california">California</a>.`,
+        html: `Run the national <a href="/calculators/home-affordability-calculator">home affordability calculator</a>, then pressure-test the monthly payment in the <a href="/">mortgage calculator</a> with your state's tax and insurance defaults — for example <a href="/?state=texas">Texas</a>, <a href="/?state=florida">Florida</a>, <a href="/?state=georgia">Georgia</a>, or <a href="/?state=california">California</a>. Deep dives: <a href="/blog/how-much-house-can-i-afford-georgia">Georgia</a>, <a href="/blog/how-much-house-can-i-afford-texas">Texas</a>, <a href="/blog/how-much-house-can-i-afford-florida">Florida</a>, <a href="/blog/how-much-house-can-i-afford-california">California</a>.`,
       },
       { type: "h2", text: "Common questions" },
       {
@@ -215,7 +215,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
     readingMinutes: 11,
     tags: ["Rates", "June 2026", "Market"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
       { href: "/calculators/arm-mortgage-calculator", label: "ARM Calculator" },
     ],
@@ -248,7 +248,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
         type: "ol",
         items: [
           "Pick a target home price and down payment for the ZIP you will actually shop.",
-          'Run a full PITI estimate in the <a href="/mortgage-calculator">mortgage calculator</a> at today\'s indicative rate and again 1% higher.',
+          'Run a full PITI estimate in the <a href="/">mortgage calculator</a> at today\'s indicative rate and again 1% higher.',
           'If you already own, compare your current P&amp;I to a new quote in the <a href="/calculators/refinance-mortgage-calculator">refinance calculator</a> and compute break-even months — including state-specific title/transfer friction from <a href="/blog/refinance-closing-costs-by-state">closing costs by state</a>.',
           'Request 3–5 Loan Estimates the same day, then negotiate credits or rate using competing LEs — see <a href="/blog/how-to-get-the-best-mortgage-rate">best mortgage rate</a>.',
           "Ask about lock length, extension fees, and float-down rules before you lock.",
@@ -257,7 +257,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
       { type: "h2", text: "Location still belongs in a \"rates\" snapshot" },
       {
         type: "p",
-        html: `A national average does not include Texas property taxes, Florida wind premiums, or California Mello-Roos. Open a state-preloaded calculator such as <a href="/mortgage-calculator?state=texas">Texas</a>, <a href="/mortgage-calculator?state=florida">Florida</a>, or <a href="/mortgage-calculator?state=california">California</a> before you decide a payment is affordable.`,
+        html: `A national average does not include Texas property taxes, Florida wind premiums, or California Mello-Roos. Open a state-preloaded calculator such as <a href="/?state=texas">Texas</a>, <a href="/?state=florida">Florida</a>, or <a href="/?state=california">California</a> before you decide a payment is affordable.`,
       },
       { type: "h2", text: "How this page differs from the evergreen guide" },
       {
@@ -279,7 +279,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
     readingMinutes: 12,
     tags: ["Points", "Rates", "Loan Estimates"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
@@ -295,7 +295,7 @@ export const postsRatesAndAffordability: BlogPost[] = [
       { type: "h2", text: "Worked comparison with today's indicative rate" },
       {
         type: "p",
-        html: `At an indicative ${SITE.defaultRate}% 30-year rate on $300,000, small rate cuts change P&amp;I by dozens of dollars per month — meaningful over a decade, modest over two years. Use the <a href="/mortgage-calculator">mortgage calculator</a> twice: once at the no-points rate and once at the bought-down rate. Divide the cash paid for points by the monthly difference. That is your personal break-even, independent of marketing slogans.`,
+        html: `At an indicative ${SITE.defaultRate}% 30-year rate on $300,000, small rate cuts change P&amp;I by dozens of dollars per month — meaningful over a decade, modest over two years. Use the <a href="/">mortgage calculator</a> twice: once at the no-points rate and once at the bought-down rate. Divide the cash paid for points by the monthly difference. That is your personal break-even, independent of marketing slogans.`,
       },
       { type: "h2", text: "Points vs lender credits and \"no-cost\" loans" },
       {

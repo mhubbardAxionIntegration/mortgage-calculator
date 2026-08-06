@@ -68,7 +68,7 @@ export function stateAffordabilityBlocks(
     { type: "h2", text: "Run your own numbers" },
     {
       type: "p",
-      html: `Use the <a href="/calculators/home-affordability-calculator">home affordability calculator</a> to work backward from income, then open the <a href="/mortgage-calculator?state=${stateSlug}">${st.name} mortgage calculator</a> — it is pre-loaded with state tax and insurance defaults. Cross-check with our national <a href="/blog/how-much-house-can-i-afford">28/36 affordability guide</a>. Verify current tax assessments and insurance quotes locally; confirm loan pricing with a licensed lender. Educational estimates only — not a loan offer.`,
+      html: `Use the <a href="/calculators/home-affordability-calculator">home affordability calculator</a> to work backward from income, then open the <a href="/?state=${stateSlug}">${st.name} mortgage calculator</a> — it is pre-loaded with state tax and insurance defaults. Cross-check with our national <a href="/blog/how-much-house-can-i-afford">28/36 affordability guide</a>. Verify current tax assessments and insurance quotes locally; confirm loan pricing with a licensed lender. Educational estimates only — not a loan offer.`,
     },
   ];
 }

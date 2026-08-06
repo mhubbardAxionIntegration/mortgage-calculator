@@ -15,7 +15,7 @@ export const postsGuidesRefi: BlogPost[] = [
     tags: ["Refinancing", "Strategy", "Break-even"],
     relatedCalculators: [
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
     ],
     body: [
       {
@@ -95,7 +95,7 @@ export const postsGuidesRefi: BlogPost[] = [
     tags: ["Closing", "Costs", "Loan Estimates"],
     relatedCalculators: [
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
     ],
     body: [
       {
@@ -122,7 +122,7 @@ export const postsGuidesRefi: BlogPost[] = [
       { type: "h2", text: "Cash to close vs monthly payment" },
       {
         type: "p",
-        html: `A lower monthly payment does not mean lower cash to close. Points, larger prepaid taxes, and HOA move-in fees can spike day-of funding. Use the <a href="/mortgage-calculator">mortgage calculator</a> for the recurring payment and keep a separate closing-cost worksheet for cash at the table.`,
+        html: `A lower monthly payment does not mean lower cash to close. Points, larger prepaid taxes, and HOA move-in fees can spike day-of funding. Use the <a href="/">mortgage calculator</a> for the recurring payment and keep a separate closing-cost worksheet for cash at the table.`,
       },
       { type: "h2", text: "Seller concessions and temporary buydowns" },
       {
@@ -168,7 +168,7 @@ export const postsGuidesRefi: BlogPost[] = [
     readingMinutes: 13,
     tags: ["First-time buyers", "Georgia", "Guides"],
     relatedCalculators: [
-      { href: "/mortgage-calculator?state=georgia", label: "Georgia Mortgage Calculator" },
+      { href: "/?state=georgia", label: "Georgia Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
     ],
@@ -215,7 +215,7 @@ export const postsGuidesRefi: BlogPost[] = [
       { type: "h2", text: "Estimate your Georgia payment" },
       {
         type: "p",
-        html: `Our <a href="/mortgage-calculator?state=georgia">Georgia mortgage calculator</a> is pre-loaded with state average tax and insurance figures. Compare FHA in the <a href="/calculators/fha-mortgage-calculator">FHA calculator</a> if you are low on cash to close. Verify Georgia Dream details with DCA and final pricing with a licensed lender — estimates here are educational.`,
+        html: `Our <a href="/?state=georgia">Georgia mortgage calculator</a> is pre-loaded with state average tax and insurance figures. Compare FHA in the <a href="/calculators/fha-mortgage-calculator">FHA calculator</a> if you are low on cash to close. Verify Georgia Dream details with DCA and final pricing with a licensed lender — estimates here are educational.`,
       },
     ],
   },
@@ -232,8 +232,8 @@ export const postsGuidesRefi: BlogPost[] = [
     readingMinutes: 11,
     tags: ["Property taxes", "PITI", "Guides"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
-      { href: "/mortgage-calculator?state=texas", label: "Texas Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
+      { href: "/?state=texas", label: "Texas Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
     ],
     body: [
@@ -263,7 +263,7 @@ export const postsGuidesRefi: BlogPost[] = [
       { type: "h2", text: "Taxes, DTI, and loan shopping" },
       {
         type: "p",
-        html: `Lenders include estimated taxes in your debt-to-income calculation. Online tools that ignore taxes make homes look cheaper than they are. Always use a calculator that includes property tax, insurance, PMI, and HOA — like our <a href="/mortgage-calculator">mortgage calculator</a> — or pick a state page for localized defaults. A better Loan Estimate rate cannot fully offset a high-millage county; shop both the loan and the location.`,
+        html: `Lenders include estimated taxes in your debt-to-income calculation. Online tools that ignore taxes make homes look cheaper than they are. Always use a calculator that includes property tax, insurance, PMI, and HOA — like our <a href="/">mortgage calculator</a> — or pick a state page for localized defaults. A better Loan Estimate rate cannot fully offset a high-millage county; shop both the loan and the location.`,
       },
       { type: "h2", text: "Worked comparison" },
       {
@@ -278,7 +278,7 @@ export const postsGuidesRefi: BlogPost[] = [
       { type: "h2", text: "Find your state estimate" },
       {
         type: "p",
-        html: `We publish localized defaults for all 50 states. Start with high-tax markets like <a href="/mortgage-calculator?state=texas">Texas</a>, <a href="/mortgage-calculator?state=new-jersey">New Jersey</a>, or <a href="/mortgage-calculator?state=illinois">Illinois</a>, or browse from the <a href="/mortgage-calculator">main calculator page</a>. Confirm assessed values and exemptions with the county assessor; figures on this site are educational averages, not tax bills.`,
+        html: `We publish localized defaults for all 50 states. Start with high-tax markets like <a href="/?state=texas">Texas</a>, <a href="/?state=new-jersey">New Jersey</a>, or <a href="/?state=illinois">Illinois</a>, or browse from the <a href="/">main calculator page</a>. Confirm assessed values and exemptions with the county assessor; figures on this site are educational averages, not tax bills.`,
       },
     ],
   },
@@ -295,7 +295,7 @@ export const postsGuidesRefi: BlogPost[] = [
     readingMinutes: 13,
     tags: ["Down payment", "PMI", "First-time buyers"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
       { href: "/calculators/va-mortgage-calculator", label: "VA Calculator" },
     ],
@@ -338,7 +338,7 @@ export const postsGuidesRefi: BlogPost[] = [
       {
         type: "ol",
         items: [
-          'Slide the down payment in our <a href="/mortgage-calculator">mortgage calculator</a> to see PMI kick in below 20%.',
+          'Slide the down payment in our <a href="/">mortgage calculator</a> to see PMI kick in below 20%.',
           'Compare FHA and VA paths in the <a href="/calculators/fha-mortgage-calculator">FHA</a> and <a href="/calculators/va-mortgage-calculator">VA</a> calculators.',
           "Ask for Loan Estimates at two down-payment levels so you see rate and MI together.",
           "Keep cash reserves after closing — under-estimating taxes, insurance, and HOA is a common regret.",

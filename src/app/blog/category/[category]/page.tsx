@@ -2,11 +2,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { PageHero } from "@/components/PageHero";
 import {
   BLOG_CATEGORIES,
   getCategory,
   getPostsByCategory,
 } from "@/lib/blog";
+import { PAGE_HEROES, type PageHeroConfig } from "@/lib/pageHeroes";
+
+const CATEGORY_HEROES: Record<string, PageHeroConfig> = {
+  rates: PAGE_HEROES.categoryRates,
+  affordability: PAGE_HEROES.categoryAffordability,
+  "loan-types": PAGE_HEROES.categoryLoanTypes,
+  refinancing: PAGE_HEROES.categoryRefinancing,
+  guides: PAGE_HEROES.categoryGuides,
+  pitfalls: PAGE_HEROES.categoryPitfalls,
+};
 
 export function generateStaticParams() {
   return BLOG_CATEGORIES.map((c) => ({ category: c.slug }));
@@ -49,24 +60,22 @@ export default async function BlogCategoryPage({
   const cat = getCategory(category);
   if (!cat) notFound();
   const posts = getPostsByCategory(cat.slug);
+  const hero = CATEGORY_HEROES[cat.slug] ?? PAGE_HEROES.blog;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <Breadcrumbs
-        items={[
-          { name: "Home", href: "/" },
-          { name: "Blog", href: "/blog" },
-          { name: cat.name, href: `/blog/category/${cat.slug}` },
-        ]}
-      />
+    <>
+      <PageHero hero={hero} title={cat.name} subtitle={cat.description} />
 
-      <header className="mt-6 max-w-3xl">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-          {cat.name}
-        </h1>
-        <p className="mt-3 text-lg text-slate-600">{cat.description}</p>
-        <p className="mt-4 leading-relaxed text-slate-600">{cat.intro}</p>
-      </header>
+      <div className="mx-auto max-w-5xl px-4 py-8">
+        <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Blog", href: "/blog" },
+            { name: cat.name, href: `/blog/category/${cat.slug}` },
+          ]}
+        />
+
+        <p className="mt-6 max-w-3xl leading-relaxed text-slate-600">{cat.intro}</p>
 
       {cat.relatedTools.length > 0 && (
         <aside className="mt-6 flex flex-wrap gap-2">
@@ -120,6 +129,7 @@ export default async function BlogCategoryPage({
           </Link>
         ))}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -14,7 +14,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
     readingMinutes: 12,
     tags: ["Loan terms", "Strategy"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
@@ -73,7 +73,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
       { type: "h2", text: "Taxes, insurance, and the full PITI picture" },
       {
         type: "p",
-        html: `Term choice only changes principal and interest. Property taxes, insurance, PMI/MIP, and HOA stay either way. Always compare inside a full PITI estimate on a <a href="/mortgage-calculator">state-aware mortgage calculator</a> — for example <a href="/mortgage-calculator?state=texas">Texas</a> or <a href="/mortgage-calculator?state=california">California</a>.`,
+        html: `Term choice only changes principal and interest. Property taxes, insurance, PMI/MIP, and HOA stay either way. Always compare inside a full PITI estimate on a <a href="/">state-aware mortgage calculator</a> — for example <a href="/?state=texas">Texas</a> or <a href="/?state=california">California</a>.`,
       },
       { type: "h2", text: "When people refinance between terms" },
       {
@@ -83,7 +83,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
       { type: "h2", text: "How to decide in practice" },
       {
         type: "p",
-        html: `Start with the payment you could still make after a temporary income shock. If the 15-year only works in a perfect month, the 30-year with optional extras is usually safer. Open the <a href="/mortgage-calculator">mortgage calculator</a>, switch terms, and compare payment and total interest. Methodology: <a href="/how-we-calculate">how we calculate</a>. Verify final pricing with a licensed lender.`,
+        html: `Start with the payment you could still make after a temporary income shock. If the 15-year only works in a perfect month, the 30-year with optional extras is usually safer. Open the <a href="/">mortgage calculator</a>, switch terms, and compare payment and total interest. Methodology: <a href="/how-we-calculate">how we calculate</a>. Verify final pricing with a licensed lender.`,
       },
     ],
   },
@@ -100,7 +100,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
     readingMinutes: 13,
     tags: ["PMI", "Down payment", "FHA MIP"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
@@ -155,7 +155,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
       },
       {
         type: "p",
-        html: `Our main <a href="/mortgage-calculator">mortgage calculator</a> automatically adds PMI when your down payment is under 20% and removes it at 20% or above. For the exact rule in our math, see <a href="/how-we-calculate">how we calculate</a>. Confirm cancellation policy with your servicer; this is educational, not servicing advice.`,
+        html: `Our main <a href="/">mortgage calculator</a> automatically adds PMI when your down payment is under 20% and removes it at 20% or above. For the exact rule in our math, see <a href="/how-we-calculate">how we calculate</a>. Confirm cancellation policy with your servicer; this is educational, not servicing advice.`,
       },
     ],
   },
@@ -172,7 +172,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
     readingMinutes: 12,
     tags: ["Credit", "Preparation", "Rates"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
     ],
     body: [
@@ -183,7 +183,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
       { type: "h2", text: "Why your score matters so much" },
       {
         type: "p",
-        html: `Lenders price risk with loan-level pricing adjustments tied to score bands and LTV. A higher score signals you are likely to repay on time. On a $350,000 loan, even a 0.5% rate difference can mean tens of thousands of dollars over the life of the loan — see for yourself in the <a href="/mortgage-calculator">mortgage calculator</a>. FHA may still approve mid-500s files with larger down payments, but conventional pricing improves sharply as you climb through the 680, 720, and 760 bands.`,
+        html: `Lenders price risk with loan-level pricing adjustments tied to score bands and LTV. A higher score signals you are likely to repay on time. On a $350,000 loan, even a 0.5% rate difference can mean tens of thousands of dollars over the life of the loan — see for yourself in the <a href="/">mortgage calculator</a>. FHA may still approve mid-500s files with larger down payments, but conventional pricing improves sharply as you climb through the 680, 720, and 760 bands.`,
       },
       { type: "h2", text: "Steps that move the needle" },
       {
@@ -241,7 +241,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
     tags: ["FHA", "Conventional", "Comparison", "MIP"],
     relatedCalculators: [
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
     ],
     body: [
@@ -290,7 +290,7 @@ export const postsLoanTypesGuides: BlogPost[] = [
         type: "ol",
         items: [
           'Model FHA with financed upfront MIP in the <a href="/calculators/fha-mortgage-calculator">FHA calculator</a>.',
-          'Model conventional at the same price in the <a href="/mortgage-calculator">mortgage calculator</a> with realistic PMI.',
+          'Model conventional at the same price in the <a href="/">mortgage calculator</a> with realistic PMI.',
           "Compare cash to close, month-1 payment, and whether insurance can fall off.",
           "Ask for Loan Estimates with the same purchase price, points, and lock period from multiple lenders.",
         ],

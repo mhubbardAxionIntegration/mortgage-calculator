@@ -16,8 +16,8 @@ export const dynamic = "force-dynamic";
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const sessionId = url.searchParams.get("session_id");
-  const ret = url.searchParams.get("return") ?? "/mortgage-calculator";
-  const safeReturn = ret.startsWith("/") ? ret : "/mortgage-calculator";
+  const ret = url.searchParams.get("return") ?? "/";
+  const safeReturn = ret.startsWith("/") ? ret : "/";
 
   const stripe = getStripe();
   if (!stripe || !sessionId) {

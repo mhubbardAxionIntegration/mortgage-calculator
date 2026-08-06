@@ -1,6 +1,6 @@
 export const SITE = {
   name: "Smart Mortgage Calculator",
-  shortName: "Smart Mortgage Calc",
+  shortName: "Smart Mortgage Calculator",
   // Update this to your production domain before deploying.
   url: "https://www.smartmortgagecalc.com",
   description:

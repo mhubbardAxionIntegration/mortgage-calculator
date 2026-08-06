@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalShell } from "@/components/LegalShell";
 import { SITE, COMPANY } from "@/lib/site";
+import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
   title: "Disclaimer",
@@ -11,7 +12,13 @@ export const metadata: Metadata = {
 
 export default function DisclaimerPage() {
   return (
-    <LegalShell title="Disclaimer" href="/disclaimer" updated={SITE.ratesAsOf}>
+    <LegalShell
+      title="Disclaimer"
+      href="/disclaimer"
+      updated={SITE.ratesAsOf}
+      hero={PAGE_HEROES.disclaimer}
+      subtitle="Educational estimates only — not financial advice or a loan offer."
+    >
       <p>
         The calculators, tools, and content on {SITE.name} (the &ldquo;Site&rdquo;),
         operated by {COMPANY.name}, are provided for general informational and

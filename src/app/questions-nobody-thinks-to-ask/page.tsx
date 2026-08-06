@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
+import { PageHero } from "@/components/PageHero";
 import { absoluteUrl, SITE } from "@/lib/site";
 import { webApplicationSchema } from "@/lib/schema";
+import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 const PAGE_PATH = "/questions-nobody-thinks-to-ask";
 const PAGE_URL = absoluteUrl(PAGE_PATH);
@@ -173,6 +175,12 @@ export default function QuestionsNobodyThinksToAskPage() {
         })}
       />
 
+      <PageHero
+        hero={PAGE_HEROES.questions}
+        title="Questions Nobody Thinks to Ask"
+        subtitle="Realtor interview scripts and property questions most buyers never run before offering."
+      />
+
       <div className="mx-auto max-w-3xl px-4 py-8">
         <Breadcrumbs
           items={[
@@ -183,13 +191,7 @@ export default function QuestionsNobodyThinksToAskPage() {
         />
 
         <header className="mt-6">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
-            Buyer toolkit · {SITE.year}
-          </p>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-            Questions Nobody Thinks to Ask
-          </h1>
-          <p className="mt-4 text-lg text-slate-600">
+          <p className="text-sm text-slate-600">
             Most buyers ask about square footage and school ratings. Fewer ask
             about buyer-broker compensation, seller-paid rate buydowns, roof age
             with receipts, or what will break an FHA appraisal. Below are{" "}

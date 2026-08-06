@@ -8,6 +8,8 @@ import { ArmCalculator } from "@/components/ArmCalculator";
 import { VaCalculator } from "@/components/VaCalculator";
 import { LocatedMortgageCalculator } from "@/components/LocatedMortgageCalculator";
 import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
+import { CalculatorWithRates } from "@/components/CalculatorWithRates";
+import { PageHero } from "@/components/PageHero";
 import { FaqSection } from "@/components/FaqSection";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
@@ -20,6 +22,16 @@ import {
   webApplicationSchema,
 } from "@/lib/schema";
 import { absoluteUrl } from "@/lib/site";
+import { PAGE_HEROES, type PageHeroConfig } from "@/lib/pageHeroes";
+
+function heroForLoanSlug(slug: string): PageHeroConfig {
+  if (slug.includes("fha")) return PAGE_HEROES.fha;
+  if (slug.includes("va")) return PAGE_HEROES.va;
+  if (slug.includes("refinance")) return PAGE_HEROES.refinance;
+  if (slug.includes("arm")) return PAGE_HEROES.arm;
+  if (slug.includes("affordability")) return PAGE_HEROES.affordability;
+  return PAGE_HEROES.home;
+}
 
 export function generateStaticParams() {
   return LOAN_TYPES.map((t) => ({ type: t.slug }));
@@ -61,6 +73,7 @@ export default async function LoanTypePage({
 
   const pageUrl = absoluteUrl(`/calculators/${data.slug}`);
   const isAffordability = data.slug === "home-affordability-calculator";
+  const hero = heroForLoanSlug(data.slug);
 
   const faqs = data.faqs;
   const otherTypes = LOAN_TYPES.filter((t) => t.slug !== data.slug);
@@ -83,63 +96,61 @@ export default async function LoanTypePage({
         ]}
       />
 
-      <div className="mx-auto max-w-5xl px-4 py-8">
+      <PageHero hero={hero} title={data.title} subtitle={data.tagline} />
+
+      <div className="mx-auto max-w-6xl px-4 py-8">
         <Breadcrumbs
           items={[
             { name: "Home", href: "/" },
-            { name: "Calculators", href: "/mortgage-calculator" },
+            { name: "Calculators", href: "/#calculator" },
             { name: data.label, href: `/calculators/${data.slug}` },
           ]}
         />
 
-        <header className="mt-6 max-w-3xl">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-            {data.title}
-          </h1>
-          <p className="mt-3 text-lg text-slate-600">{data.tagline}</p>
-          <ul className="mt-5 space-y-2">
-            {data.highlights.map((h) => (
-              <li key={h} className="flex items-start gap-2 text-sm text-slate-600">
-                <span aria-hidden className="mt-0.5 text-sky-800">
-                  &#10003;
-                </span>
-                {h}
-              </li>
-            ))}
-          </ul>
-        </header>
+        <ul className="mt-6 max-w-3xl space-y-2">
+          {data.highlights.map((h) => (
+            <li key={h} className="flex items-start gap-2 text-sm text-slate-600">
+              <span aria-hidden className="mt-0.5 text-sky-800">
+                &#10003;
+              </span>
+              {h}
+            </li>
+          ))}
+        </ul>
 
         <div className="mt-8">
-          <Suspense fallback={<CalculatorSkeleton />}>
-            {data.slug === "refinance-mortgage-calculator" ? (
-              <RefinanceCalculator
-                initialStateSlug={stateSlug}
-                initialCounty={countyParam}
-              />
-            ) : data.slug === "fha-mortgage-calculator" ? (
-              <FhaCalculator
-                initialStateSlug={stateSlug}
-                initialCounty={countyParam}
-              />
-            ) : data.slug === "arm-mortgage-calculator" ? (
-              <ArmCalculator
-                initialStateSlug={stateSlug}
-                initialCounty={countyParam}
-              />
-            ) : data.slug === "va-mortgage-calculator" ? (
-              <VaCalculator
-                initialStateSlug={stateSlug}
-                initialCounty={countyParam}
-              />
-            ) : (
-              <LocatedMortgageCalculator
-                initialStateSlug={stateSlug}
-                initialCounty={countyParam}
-                loanDefaults={data.defaults}
-                affordability={isAffordability}
-              />
-            )}
-          </Suspense>
+          <CalculatorWithRates calculatorHref={`/calculators/${data.slug}`}>
+            <Suspense fallback={<CalculatorSkeleton />}>
+              {data.slug === "refinance-mortgage-calculator" ? (
+                <RefinanceCalculator
+                  initialStateSlug={stateSlug}
+                  initialCounty={countyParam}
+                />
+              ) : data.slug === "fha-mortgage-calculator" ? (
+                <FhaCalculator
+                  initialStateSlug={stateSlug}
+                  initialCounty={countyParam}
+                />
+              ) : data.slug === "arm-mortgage-calculator" ? (
+                <ArmCalculator
+                  initialStateSlug={stateSlug}
+                  initialCounty={countyParam}
+                />
+              ) : data.slug === "va-mortgage-calculator" ? (
+                <VaCalculator
+                  initialStateSlug={stateSlug}
+                  initialCounty={countyParam}
+                />
+              ) : (
+                <LocatedMortgageCalculator
+                  initialStateSlug={stateSlug}
+                  initialCounty={countyParam}
+                  loanDefaults={data.defaults}
+                  affordability={isAffordability}
+                />
+              )}
+            </Suspense>
+          </CalculatorWithRates>
         </div>
 
         <div className="mt-10">

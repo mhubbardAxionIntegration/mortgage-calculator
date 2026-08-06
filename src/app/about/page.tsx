@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalShell } from "@/components/LegalShell";
 import { SITE, COMPANY } from "@/lib/site";
+import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -11,7 +12,12 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <LegalShell title="About Us" href="/about">
+    <LegalShell
+      title="About Us"
+      href="/about"
+      hero={PAGE_HEROES.about}
+      subtitle={`Who builds ${SITE.name} and how we keep the tools educational and transparent.`}
+    >
       <p>
         {SITE.name} is a free suite of mortgage and home-affordability
         calculators built to help homebuyers and homeowners make clearer,

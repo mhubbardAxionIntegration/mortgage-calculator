@@ -12,7 +12,7 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
     intro:
       "Rate guides cover what moves national averages, how your personal quote differs, Loan Estimate shopping, locks vs float-downs, and discount points. Pair any rate article with a full PITI estimate — taxes and insurance often move the payment more than a small rate change.",
     relatedTools: [
-      { href: "/mortgage-calculator", label: "Mortgage calculator" },
+      { href: "/", label: "Mortgage calculator" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance break-even" },
       { href: "/blog/how-to-get-the-best-mortgage-rate", label: "Best-rate shopping guide" },
     ],
@@ -25,7 +25,7 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
       "Affordability is more than a DTI rule of thumb. These guides walk through income, debts, and local tax/insurance friction — then point you to calculators that work backward from a comfortable payment instead of stretching to a lender maximum. State pages matter because the same loan payment feels different in Texas, Florida, Georgia, or California.",
     relatedTools: [
       { href: "/calculators/home-affordability-calculator", label: "Affordability calculator" },
-      { href: "/mortgage-calculator", label: "Payment calculator" },
+      { href: "/", label: "Payment calculator" },
       { href: "/blog/how-much-house-can-i-afford", label: "28/36 rule guide" },
     ],
   },
@@ -60,7 +60,7 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
     intro:
       "Buying guides cover credit timing, down payments, closing costs, seller concessions, lender overlays, and points with worked break-even examples. They assume you will verify numbers with a licensed loan officer and use our calculators for scenarios, not as personalized advice.",
     relatedTools: [
-      { href: "/mortgage-calculator", label: "Mortgage calculator" },
+      { href: "/", label: "Mortgage calculator" },
       { href: "/how-we-calculate", label: "How we calculate" },
       { href: "/blog/seller-concessions-and-rate-buydowns", label: "Seller concessions guide" },
     ],

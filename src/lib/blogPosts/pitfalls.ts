@@ -16,7 +16,7 @@ export const postsPitfalls: BlogPost[] = [
     readingMinutes: 16,
     tags: ["Pitfalls", "Homebuying", "Loan Estimates"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
       { href: "/questions-nobody-thinks-to-ask", label: "Questions Nobody Thinks to Ask" },
     ],
@@ -172,7 +172,7 @@ export const postsPitfalls: BlogPost[] = [
     relatedCalculators: [
       { href: "/blog/how-to-get-the-best-mortgage-rate", label: "Best Mortgage Rate Guide" },
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Break-Even" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
     ],
     body: [
       {
@@ -284,7 +284,7 @@ export const postsPitfalls: BlogPost[] = [
     tags: ["Pitfalls", "Affordability", "Escrow"],
     relatedCalculators: [
       { href: "/calculators/home-affordability-calculator", label: "Affordability Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/blog/property-taxes-mortgage-payment", label: "Property Taxes & Payments" },
     ],
     body: [
@@ -311,7 +311,7 @@ export const postsPitfalls: BlogPost[] = [
       { type: "h2", text: "Use location-aware tools before you fall in love with the house" },
       {
         type: "p",
-        html: 'Set state and county in our <a href="/mortgage-calculator">mortgage calculator</a> and <a href="/calculators/home-affordability-calculator">affordability calculator</a> so tax and insurance defaults are closer to local reality. Then replace defaults with quotes and tax bills from the actual property — questions you should force into writing on our <a href="/questions-nobody-thinks-to-ask">questions page</a>.',
+        html: 'Set state and county in our <a href="/">mortgage calculator</a> and <a href="/calculators/home-affordability-calculator">affordability calculator</a> so tax and insurance defaults are closer to local reality. Then replace defaults with quotes and tax bills from the actual property — questions you should force into writing on our <a href="/questions-nobody-thinks-to-ask">questions page</a>.',
       },
       { type: "h2", text: "28/36 still helps — but it is not location-proof" },
       {

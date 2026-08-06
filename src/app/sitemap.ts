@@ -7,12 +7,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: absoluteUrl("/"), lastModified: now, changeFrequency: "weekly", priority: 1 },
     {
-      url: absoluteUrl("/mortgage-calculator"),
+      url: absoluteUrl("/"),
       lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 1,
     },
     {
       url: absoluteUrl("/how-we-calculate"),

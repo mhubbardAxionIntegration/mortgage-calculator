@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { LegalShell } from "@/components/LegalShell";
 import { ContactForm } from "@/components/ContactForm";
 import { SITE, COMPANY } from "@/lib/site";
+import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -11,7 +12,12 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <LegalShell title="Contact Us" href="/contact">
+    <LegalShell
+      title="Contact Us"
+      href="/contact"
+      hero={PAGE_HEROES.contact}
+      subtitle="Questions, corrections, and calculator feedback — we read every message."
+    >
       <p>
         We&rsquo;d love to hear from you — whether you&rsquo;ve found a bug,
         have feedback on a calculator, or spotted something that needs a

@@ -15,7 +15,7 @@ export const postsNewHighValueB: BlogPost[] = [
     tags: ["Refinancing", "Closing costs", "Net benefit"],
     relatedCalculators: [
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Break-Even Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
     ],
     body: [
       {
@@ -41,7 +41,7 @@ export const postsNewHighValueB: BlogPost[] = [
       },
       {
         type: "p",
-        html: `Compare a refinance on a <a href="/mortgage-calculator?state=texas">Texas</a>, <a href="/mortgage-calculator?state=florida">Florida</a>, <a href="/mortgage-calculator?state=california">California</a>, or <a href="/mortgage-calculator?state=new-york">New York</a> payment context, then plug costs into the <a href="/calculators/refinance-mortgage-calculator">refinance break-even calculator</a>.`,
+        html: `Compare a refinance on a <a href="/?state=texas">Texas</a>, <a href="/?state=florida">Florida</a>, <a href="/?state=california">California</a>, or <a href="/?state=new-york">New York</a> payment context, then plug costs into the <a href="/calculators/refinance-mortgage-calculator">refinance break-even calculator</a>.`,
       },
       { type: "h2", text: "Tangible net benefit and anti-churning" },
       {
@@ -101,7 +101,7 @@ export const postsNewHighValueB: BlogPost[] = [
     readingMinutes: 13,
     tags: ["Seller concessions", "Buydowns", "Closing costs"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
       { href: "/calculators/va-mortgage-calculator", label: "VA Calculator" },
     ],
@@ -141,7 +141,7 @@ export const postsNewHighValueB: BlogPost[] = [
       { type: "h2", text: "How a 2-1 buydown feels in practice" },
       {
         type: "p",
-        html: "Suppose the note rate is 6.75% on a $350,000 loan. A classic 2-1 buydown makes year-one payments as if the rate were about 4.75% and year-two as if about 5.75%, with years three onward at 6.75%. Someone — buyer, seller, builder, or lender — must fund the subsidy equal to the payment differences. Qualify carefully: many lenders underwrite at the note rate, not the bought-down payment. Model the post-buydown PITI in the <a href=\"/mortgage-calculator\">mortgage calculator</a> so year three does not shock your budget.",
+        html: 'Suppose the note rate is 6.75% on a $350,000 loan. A classic 2-1 buydown makes year-one payments as if the rate were about 4.75% and year-two as if about 5.75%, with years three onward at 6.75%. Someone — buyer, seller, builder, or lender — must fund the subsidy equal to the payment differences. Qualify carefully: many lenders underwrite at the note rate, not the bought-down payment. Model the post-buydown PITI in the <a href="/">mortgage calculator</a> so year three does not shock your budget.',
       },
       { type: "h2", text: "When concessions beat another price reduction" },
       {
@@ -177,7 +177,7 @@ export const postsNewHighValueB: BlogPost[] = [
     readingMinutes: 12,
     tags: ["Overlays", "Underwriting", "Shopping"],
     relatedCalculators: [
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
       { href: "/calculators/va-mortgage-calculator", label: "VA Calculator" },
     ],
@@ -233,7 +233,7 @@ export const postsNewHighValueB: BlogPost[] = [
       },
       {
         type: "p",
-        html: `Model payments once you know which product you can actually close — <a href="/mortgage-calculator">mortgage calculator</a>, <a href="/calculators/fha-mortgage-calculator">FHA</a>, <a href="/calculators/va-mortgage-calculator">VA</a>. This article is educational; only a licensed lender can apply investor overlays to your file.`,
+        html: `Model payments once you know which product you can actually close — <a href="/">mortgage calculator</a>, <a href="/calculators/fha-mortgage-calculator">FHA</a>, <a href="/calculators/va-mortgage-calculator">VA</a>. This article is educational; only a licensed lender can apply investor overlays to your file.`,
       },
     ],
   },
@@ -251,7 +251,7 @@ export const postsNewHighValueB: BlogPost[] = [
     tags: ["Recasting", "Refinancing", "Strategy"],
     relatedCalculators: [
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance Calculator" },
-      { href: "/mortgage-calculator", label: "Mortgage Calculator" },
+      { href: "/", label: "Mortgage Calculator" },
     ],
     body: [
       {
@@ -282,7 +282,7 @@ export const postsNewHighValueB: BlogPost[] = [
       { type: "h2", text: "When recasting wins" },
       {
         type: "p",
-        html: `You already have a strong rate, you just want a lower payment after a lump sum, and your servicer offers recast. Example: you owe $320,000 at a competitive fixed rate with 300 months left. Paying $40,000 toward principal and recasting drops P&amp;I without paying thousands in title and points. Run leftover-balance payment estimates in the <a href="/mortgage-calculator">mortgage calculator</a>.`,
+        html: `You already have a strong rate, you just want a lower payment after a lump sum, and your servicer offers recast. Example: you owe $320,000 at a competitive fixed rate with 300 months left. Paying $40,000 toward principal and recasting drops P&amp;I without paying thousands in title and points. Run leftover-balance payment estimates in the <a href="/">mortgage calculator</a>.`,
       },
       { type: "h2", text: "When refinancing wins" },
       {

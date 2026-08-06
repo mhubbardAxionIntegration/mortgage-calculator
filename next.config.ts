@@ -3,7 +3,7 @@ import { STATES } from "./src/lib/states";
 
 const stateRedirects = STATES.map((s) => ({
   source: `/mortgage-calculator/${s.slug}`,
-  destination: `/mortgage-calculator?state=${s.slug}`,
+  destination: `/?state=${s.slug}`,
   permanent: true,
 }));
 
@@ -11,7 +11,14 @@ const nextConfig: NextConfig = {
   // Avoid trailing-slash redirects that fight Hostinger hcdn canonicalization on "/".
   skipTrailingSlashRedirect: true,
   async redirects() {
-    return stateRedirects;
+    return [
+      ...stateRedirects,
+      {
+        source: "/mortgage-calculator",
+        destination: "/",
+        permanent: true,
+      },
+    ];
   },
   async headers() {
     return [

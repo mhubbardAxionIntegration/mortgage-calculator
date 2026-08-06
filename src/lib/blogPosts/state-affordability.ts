@@ -15,7 +15,7 @@ export const postsStateAffordability: BlogPost[] = [
     readingMinutes: 12,
     tags: ["Affordability", "Georgia", "Budgeting"],
     relatedCalculators: [
-      { href: "/mortgage-calculator?state=georgia", label: "Georgia Mortgage Calculator" },
+      { href: "/?state=georgia", label: "Georgia Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
       { href: "/calculators/fha-mortgage-calculator", label: "FHA Calculator" },
     ],
@@ -49,7 +49,7 @@ export const postsStateAffordability: BlogPost[] = [
     readingMinutes: 12,
     tags: ["Affordability", "Texas", "Budgeting"],
     relatedCalculators: [
-      { href: "/mortgage-calculator?state=texas", label: "Texas Mortgage Calculator" },
+      { href: "/?state=texas", label: "Texas Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
     ],
     body: stateAffordabilityBlocks("texas", {
@@ -83,7 +83,7 @@ export const postsStateAffordability: BlogPost[] = [
     readingMinutes: 12,
     tags: ["Affordability", "Florida", "Budgeting"],
     relatedCalculators: [
-      { href: "/mortgage-calculator?state=florida", label: "Florida Mortgage Calculator" },
+      { href: "/?state=florida", label: "Florida Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
     ],
     body: stateAffordabilityBlocks("florida", {
@@ -117,7 +117,7 @@ export const postsStateAffordability: BlogPost[] = [
     readingMinutes: 12,
     tags: ["Affordability", "California", "Budgeting"],
     relatedCalculators: [
-      { href: "/mortgage-calculator?state=california", label: "California Mortgage Calculator" },
+      { href: "/?state=california", label: "California Mortgage Calculator" },
       { href: "/calculators/home-affordability-calculator", label: "Home Affordability Calculator" },
       { href: "/calculators/arm-mortgage-calculator", label: "ARM Calculator" },
     ],

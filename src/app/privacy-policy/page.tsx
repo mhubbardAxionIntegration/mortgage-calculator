@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalShell } from "@/components/LegalShell";
 import { SITE, COMPANY } from "@/lib/site";
+import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -10,7 +11,13 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalShell title="Privacy Policy" href="/privacy-policy" updated={SITE.ratesAsOf}>
+    <LegalShell
+      title="Privacy Policy"
+      href="/privacy-policy"
+      updated={SITE.ratesAsOf}
+      hero={PAGE_HEROES.privacy}
+      subtitle="How we handle information on this site — with no advertising or analytics trackers."
+    >
       <p>
         This Privacy Policy explains how {COMPANY.name} (&ldquo;we,&rdquo;
         &ldquo;us,&rdquo; or &ldquo;our&rdquo;) handles information in

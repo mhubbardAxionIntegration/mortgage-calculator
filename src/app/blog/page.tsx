@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { PageHero } from "@/components/PageHero";
 import { BLOG_POSTS_SORTED, BLOG_CATEGORIES } from "@/lib/blog";
 import { SITE } from "@/lib/site";
+import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
   title: "Mortgage & Homebuying Blog",
@@ -24,18 +26,17 @@ export default function BlogIndexPage() {
   const [featured, ...rest] = BLOG_POSTS_SORTED;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Blog", href: "/blog" }]} />
+    <>
+      <PageHero
+        hero={PAGE_HEROES.blog}
+        title="Mortgage & Homebuying Guides"
+        subtitle={`Clear, practical explainers on rates, affordability, and loans — updated for ${SITE.year}.`}
+      />
 
-      <header className="mt-6 max-w-3xl">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-          Mortgage &amp; Homebuying Guides
-        </h1>
-        <p className="mt-3 text-lg text-slate-600">
-          Clear, practical explainers on rates, affordability, and loans —
-          written to help you make confident decisions. Updated for {SITE.year}.
-        </p>
-      </header>
+      <div className="mx-auto max-w-5xl px-4 py-8">
+        <Breadcrumbs
+          items={[{ name: "Home", href: "/" }, { name: "Blog", href: "/blog" }]}
+        />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <Link
@@ -140,6 +141,7 @@ export default function BlogIndexPage() {
           </Link>
         ))}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

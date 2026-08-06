@@ -19,7 +19,7 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
             <Image
-              src="/images/hero-home-panorama.png"
+              src="/images/heroes/home.png"
               alt=""
               width={32}
               height={32}
@@ -37,8 +37,8 @@ export function Footer() {
           <h2 className="text-sm font-semibold text-slate-900">Calculators</h2>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
             <li>
-              <Link href="/mortgage-calculator" className="hover:text-sky-800">
-                Mortgage Calculator
+              <Link href="/#calculator" className="hover:text-sky-800">
+                Payment calculator
               </Link>
             </li>
             {LOAN_TYPES.map((t) => (
@@ -65,7 +65,7 @@ export function Footer() {
               </li>
             ))}
             <li>
-              <Link href="/mortgage-calculator#states" className="font-medium hover:text-sky-800">
+              <Link href="/#states" className="font-medium hover:text-sky-800">
                 All 50 states &rarr;
               </Link>
             </li>

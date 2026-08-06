@@ -58,7 +58,7 @@ export function CalculatorSeoPreview({ annualRate }: Props) {
       <p className="mt-4 text-sm text-slate-600">
         Use the interactive calculator below to change the home price, down payment,
         rate, and term. Browse{" "}
-        <Link href="/mortgage-calculator#states" className="font-medium text-sky-800 underline">
+        <Link href="/#states" className="font-medium text-sky-800 underline">
           calculators by state
         </Link>{" "}
         or read our{" "}
