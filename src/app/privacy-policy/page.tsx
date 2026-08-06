@@ -5,7 +5,7 @@ import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: `Learn how ${SITE.name} handles calculator inputs, contact information, cookies, and Google advertising when ads are enabled.`,
+  description: `Learn how ${SITE.name} handles calculator inputs, contact information, cookies, and Google AdSense advertising on this site.`,
   alternates: { canonical: "/privacy-policy" },
 };
 
@@ -22,19 +22,10 @@ export default function PrivacyPage() {
         This Privacy Policy explains how {COMPANY.name} (&ldquo;we,&rdquo;
         &ldquo;us,&rdquo; or &ldquo;our&rdquo;) handles information in
         connection with {SITE.name} (the &ldquo;Site&rdquo;). By using the Site,
-        you agree to this policy.
-      </p>
-
-      <h2>Current advertising status</h2>
-      <p>
-        <strong>
-          As of the date above, the Site does not have Google AdSense, Google
-          Analytics, affiliate tracking, or other advertising scripts enabled.
-        </strong>{" "}
-        The Site therefore does not currently load Google ad code or set
-        advertising or analytics cookies. We may use Google AdSense in the
-        future to display ads that help support the Site. The sections below
-        explain what that means if and when advertising is enabled.
+        you acknowledge the practices described here. {COMPANY.name} operates
+        the Site from the United States. To contact us about privacy, use our{" "}
+        <a href="/contact">contact page</a> or email{" "}
+        <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.
       </p>
 
       <h2>Information we collect and how we use it</h2>
@@ -44,8 +35,9 @@ export default function PrivacyPage() {
       </p>
       <ul>
         <li>
-          Store calculator numbers (home price, rate, income, and similar inputs)
-          on our servers — those calculations run in your browser
+          Do not store calculator numbers (home price, rate, income, and similar
+          inputs) on our application servers — those calculations run in your
+          browser
         </li>
         <li>
           Receive the name, email address, and message you submit through our
@@ -56,6 +48,10 @@ export default function PrivacyPage() {
           technical logs, such as IP address, requested URL, time, browser
           information, and security events, to deliver and protect the Site
         </li>
+        <li>
+          Use Google AdSense to serve third-party advertisements; Google and its
+          partners may collect and process data as described below
+        </li>
       </ul>
 
       <h2>Calculator inputs</h2>
@@ -63,9 +59,10 @@ export default function PrivacyPage() {
         Figures you type into the calculators (such as home price, down payment,
         rate, taxes, or income) are processed locally in your browser to show
         estimates. They are not uploaded to our application servers as part of
-        normal calculator use. If you use browser features such as sharing a
-        link that includes query parameters you chose, those values stay in the
-        URL you control.
+        normal calculator use. We do not sell calculator inputs and do not use
+        them to create advertising profiles. If you use browser features such as
+        sharing a link that includes query parameters you chose, those values
+        stay in the URL you control.
       </p>
 
       <h2>When you choose to contact us</h2>
@@ -80,42 +77,78 @@ export default function PrivacyPage() {
 
       <h2>Google AdSense and third-party advertising</h2>
       <p>
-        If we enable Google AdSense, Google and its advertising partners may
-        serve ads on the Site. They may use cookies, device identifiers, local
-        storage, and similar technologies, including Google advertising cookies
-        such as the DoubleClick cookie, to deliver and measure ads, limit how
-        often you see an ad, prevent fraud, report performance, and, where
-        permitted, personalize ads based on your visits to this and other sites.
-        Google&rsquo;s use of advertising data is governed by its own policies,
-        including its{" "}
+        We use Google AdSense to display ads that help support the Site. Google
+        and third-party vendors, ad networks, and other ad partners that
+        participate in AdSense may serve or measure ads on the Site. Those
+        parties may place or read cookies, use web beacons, IP addresses,
+        device identifiers, local storage, and similar technologies as a result
+        of ad serving.
+      </p>
+      <p>
+        Google&rsquo;s advertising cookies enable Google and its partners to
+        serve ads based on visits to this Site and/or other sites on the
+        internet. They may use those technologies and information to deliver
+        and render ads, cap frequency, measure ad performance, detect and
+        prevent fraud and abuse, and, where permitted and selected, personalize
+        ads. Google&rsquo;s explanation of its advertising technologies is
+        available in its{" "}
         <a
           href="https://policies.google.com/technologies/ads"
           target="_blank"
           rel="noopener noreferrer"
         >
-          information about ads
+          Advertising policy
+        </a>
+        , and its explanation of data it receives from partner sites is{" "}
+        <a
+          href="https://policies.google.com/technologies/partner-sites"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          How Google uses information from sites or apps that use its services
         </a>
         .
       </p>
       <p>
-        Google AdSense is the only advertising partner planned by the Site.
-        When enabled, Google may use a group of approved advertising technology
-        providers to serve or measure ads. The providers and purposes that
-        apply can vary by location and ad request; the applicable list will be
-        presented through the consent tool used when advertising is live.
+        Google AdSense is the Site&rsquo;s advertising partner. The specific
+        non-Google ad partners that may receive data can change based on our
+        AdSense configuration, the ad request, and your location. For European
+        traffic, the consent message must identify the selected partners and
+        link to their data-use information. Google publishes information about{" "}
+        <a
+          href="https://support.google.com/adsense/answer/9012903"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          its ad technology partners
+        </a>
+        . We do not use the Site&rsquo;s contact-form information or calculator
+        inputs to select or target ads.
+      </p>
+      <p>
+        What we collect ourselves (contact-form submissions and ordinary
+        hosting logs) is separate from advertising information Google and its
+        partners may collect when ads are served. As Google explains, that
+        information can include the page URL, IP address, browser or device
+        information, unique identifiers, and ad interactions. Google and its
+        partners process it under their own notices and policies.
       </p>
 
       <h2>Cookies, consent, and your choices</h2>
       <p>
-        The Site currently does not set advertising or analytics cookies. We
-        may use limited first-party browser storage for features you choose to
-        use, such as remembering a license unlock for an enabled paid PDF
-        feature. This storage is not used for cross-site advertising.
+        We and our advertising partners use cookies and similar technologies in
+        connection with ad delivery, measurement, and, if you allow it,
+        personalization. We may also use limited first-party browser storage to
+        remember your cookie choice and features you choose to use, such as an
+        enabled paid-PDF license unlock. That first-party storage is not used
+        for cross-site advertising.
       </p>
       <p>
-        If advertising or analytics is enabled, a cookie preferences control
-        will be available in the Site footer. You can use it to change or
-        withdraw your choice. You can also manage Google ad personalization in{" "}
+        The Site&rsquo;s cookie banner offers a single choice to accept or
+        decline non-essential analytics and advertising scripts, and the
+        &ldquo;Cookie preferences&rdquo; footer control lets you withdraw or
+        change that choice. It is not a vendor-level consent-management
+        platform. You can also manage Google ad personalization in{" "}
         <a
           href="https://myadcenter.google.com/"
           target="_blank"
@@ -130,6 +163,14 @@ export default function PrivacyPage() {
           rel="noopener noreferrer"
         >
           aboutads.info
+        </a>{" "}
+        and the{" "}
+        <a
+          href="https://optout.networkadvertising.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Network Advertising Initiative
         </a>
         . Browser settings can also block or delete cookies. These choices do
         not necessarily stop all ads; they generally affect personalization and
@@ -137,10 +178,15 @@ export default function PrivacyPage() {
       </p>
       <p>
         For visitors in the European Economic Area, the United Kingdom, and
-        Switzerland, we will use a Google-certified consent management platform
-        integrated with the IAB Transparency and Consent Framework before
-        serving personalized Google ads. We will not rely on the Site&rsquo;s
-        basic cookie-preferences control as a substitute for that requirement.
+        Switzerland, personalized Google ads must not be served unless and until
+        we implement a Google-certified consent management platform (CMP)
+        integrated with the IAB Europe Transparency and Consent Framework
+        (TCF), obtain the required consent, and identify the relevant ad
+        partners. Until that is in place, the Site&rsquo;s basic cookie banner
+        is not a substitute for a certified CMP and cannot support personalized
+        AdSense ads for visitors in those regions. Where permitted by Google
+        and applicable law, non-personalized or limited ads may be available
+        instead.
       </p>
 
       <h2>Hosting and security logs</h2>
@@ -156,10 +202,9 @@ export default function PrivacyPage() {
       <h2>Affiliate and partner links</h2>
       <p>
         The Site may include optional links to third-party lenders or tools. If
-        those links are disabled or unused, no partner handoff occurs. If you
-        later choose to click an affiliate or partner link, that third party may
-        collect information under its own privacy policy once you leave our Site.
-        We do not control those external sites.
+        you click an affiliate or partner link, that third party may collect
+        information under its own privacy policy once you leave our Site. We do
+        not control those external sites.
       </p>
 
       <h2>How we use information we receive</h2>
@@ -170,16 +215,16 @@ export default function PrivacyPage() {
         </li>
         <li>To protect the Site against abuse and to meet legal obligations</li>
         <li>
-          If advertising is enabled, to support ad delivery and measurement as
+          To support ad delivery and measurement through Google AdSense as
           described above; Google and its providers process advertising data
           under their own policies
         </li>
       </ul>
       <p>
         We do not sell the contact information you submit to us. We do not use
-        calculator inputs to create advertising profiles. When advertising is
-        enabled, Google may process online identifiers and activity through its
-        own advertising technologies as described above.
+        calculator inputs to create advertising profiles. Google may process
+        online identifiers and activity through its own advertising technologies
+        as described above.
       </p>
 
       <h2>Your rights</h2>
@@ -205,12 +250,15 @@ export default function PrivacyPage() {
       <h2>Changes to this policy</h2>
       <p>
         We may update this Privacy Policy from time to time. Changes are
-        effective when posted on this page.
+        effective when posted on this page. The &ldquo;Last updated&rdquo; date
+        at the top of this page reflects the latest revision.
       </p>
 
       <h2>Contact</h2>
       <p>
-        Questions about privacy? Visit our <a href="/contact">contact page</a>.
+        Questions about privacy? Visit our <a href="/contact">contact page</a>{" "}
+        or email{" "}
+        <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.
       </p>
     </LegalShell>
   );

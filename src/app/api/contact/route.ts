@@ -14,10 +14,31 @@ function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function smtpConfig() {
+  // Hostinger default; override with SMTP_HOST if you use another provider.
+  const host = process.env.SMTP_HOST?.trim() || "smtp.hostinger.com";
+  const user = process.env.SMTP_USER?.trim();
+  const pass = process.env.SMTP_PASS?.trim();
+  const port = Number(process.env.SMTP_PORT || "465");
+  const from =
+    process.env.SMTP_FROM?.trim() ||
+    (user ? `"${SITE.name}" <${user}>` : `"${SITE.name}" <${SITE.contactEmail}>`);
+  const secureEnv = process.env.SMTP_SECURE?.trim().toLowerCase();
+  const secure =
+    secureEnv === "true" || secureEnv === "1"
+      ? true
+      : secureEnv === "false" || secureEnv === "0"
+        ? false
+        : port === 465;
+
+  return { host, user, pass, port, from, secure };
+}
+
 /**
  * Accepts contact-form submissions without exposing the inbox address to the
- * browser. Delivers via SMTP when SMTP_HOST / SMTP_USER / SMTP_PASS are set;
- * otherwise acknowledges receipt in development only.
+ * browser. Delivers via SMTP when SMTP_USER / SMTP_PASS are set
+ * (SMTP_HOST defaults to smtp.hostinger.com); otherwise acknowledges receipt
+ * in development only.
  */
 export async function POST(request: Request) {
   let body: ContactBody;
@@ -53,10 +74,7 @@ export async function POST(request: Request) {
     message,
   ].join("\n");
 
-  const host = process.env.SMTP_HOST?.trim();
-  const user = process.env.SMTP_USER?.trim();
-  const pass = process.env.SMTP_PASS?.trim();
-  const port = Number(process.env.SMTP_PORT || "465");
+  const { host, user, pass, port, from, secure } = smtpConfig();
 
   if (host && user && pass) {
     try {
@@ -64,11 +82,11 @@ export async function POST(request: Request) {
       const transporter = nodemailer.createTransport({
         host,
         port,
-        secure: port === 465,
+        secure,
         auth: { user, pass },
       });
       await transporter.sendMail({
-        from: `"${SITE.name}" <${user}>`,
+        from,
         to: inbox,
         replyTo: email,
         subject,
@@ -90,7 +108,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, dev: true });
   }
 
-  console.error("Contact form received but SMTP is not configured.");
+  const missing = [!user && "SMTP_USER", !pass && "SMTP_PASS"].filter(Boolean);
+  console.error(
+    `Contact form received but SMTP is not configured (missing: ${missing.join(", ") || "unknown"}).`,
+  );
   return NextResponse.json(
     { error: "Messaging is temporarily unavailable. Please try again later." },
     { status: 503 },

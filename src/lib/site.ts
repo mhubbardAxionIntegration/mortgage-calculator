@@ -3,6 +3,8 @@ export const SITE = {
   shortName: "Smart Mortgage Calculator",
   // Update this to your production domain before deploying.
   url: "https://www.smartmortgagecalc.com",
+  /** Public contact address shown on legal/contact pages (not the SMTP password). */
+  contactEmail: "contact@smartmortgagecalc.com",
   description:
     "Free mortgage tools for payment, affordability, refinance, FHA MIP, and ARM stress testing — plus unique state guides and public methodology. Updated for 2026.",
   seo: {

@@ -27,6 +27,10 @@ export default function ContactPage() {
       <h2>About us</h2>
       <ul>
         {COMPANY.phone && <li>Phone: {COMPANY.phone}</li>}
+        <li>
+          Email:{" "}
+          <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>
+        </li>
         <li>{COMPANY.name}</li>
         {COMPANY.addressLines.map((line) => (
           <li key={line}>{line}</li>

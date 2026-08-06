@@ -59,12 +59,46 @@ All monetization is **config-driven and off by default** — nothing renders wit
 
 Trust/compliance pages required for AdSense approval are included: `/about`, `/contact`, `/privacy-policy` (covers ad + affiliate cookies), `/terms`, and `/disclaimer`.
 
+## Contact form email
+
+`POST /api/contact` sends mail with **nodemailer over SMTP**. There is no Resend/Formspree integration.
+
+| Environment | Behavior when SMTP is unset |
+| --- | --- |
+| Development (`next dev`) | Fake success (message logged to the server console only) |
+| Production | HTTP 503 — *Messaging is temporarily unavailable. Please try again later.* |
+
+### Env vars (Hostinger Node app)
+
+Set these in **Hostinger → Websites → your site → Node.js / Environment variables** (then redeploy/restart):
+
+| Variable | Example | Required |
+| --- | --- | --- |
+| `SMTP_HOST` | `smtp.hostinger.com` | No (defaults to `smtp.hostinger.com`) |
+| `SMTP_PORT` | `465` (or `587`) | No (defaults to `465`) |
+| `SMTP_USER` | `contact@smartmortgagecalc.com` | Yes (full mailbox address) |
+| `SMTP_PASS` | mailbox password | Yes |
+| `CONTACT_EMAIL` | `contact@smartmortgagecalc.com` | No (defaults to `SITE.contactEmail`) |
+| `SMTP_FROM` | `Smart Mortgage Calculator <contact@smartmortgagecalc.com>` | No (defaults to `SMTP_USER`) |
+| `SMTP_SECURE` | `true` / `false` | No (defaults to secure when port is `465`) |
+
+Hostinger steps:
+
+1. Create a mailbox under **Emails** for your domain (e.g. `contact@smartmortgagecalc.com`).
+2. Use Hostinger’s SMTP host (`smtp.hostinger.com`), port **465** (SSL) or **587** (STARTTLS with `SMTP_SECURE=false`).
+3. Set `SMTP_USER` / `SMTP_PASS` to that mailbox’s credentials. Never commit the password.
+4. Optionally set `CONTACT_EMAIL` if submissions should go somewhere other than `contact@smartmortgagecalc.com`.
+5. Restart/redeploy the Node app so the new env vars load.
+6. Submit the contact form again — you should see *Thanks — your message was sent.*
+
+Locally: copy `.env.example` → `.env.local`, fill the same vars, and run `npm run dev`.
+
 ## Before deploying
 
 1. Set your production domain in `src/lib/site.ts` (`SITE.url`) — this drives canonicals, sitemap, and Open Graph URLs.
-2. Fill in `COMPANY` details (legal name, email, address) — used on the legal/contact pages.
+2. Fill in `COMPANY` details (legal name, address) — used on the legal/contact pages. Public contact email is `SITE.contactEmail`.
 3. Add your AdSense ID and affiliate URL(s) in `MONETIZATION` when ready to monetize.
-4. Wire the contact form to a real handler (Formspree, an API route, etc.) — it currently uses a `mailto:` fallback.
+4. Configure contact-form SMTP on the host (see **Contact form email** above). Without `SMTP_USER` / `SMTP_PASS`, production returns *“Messaging is temporarily unavailable…”*.
 5. Replace the indicative `defaultRate` / `ratesAsOf` with a live rate source and keep them current (good for E-E-A-T).
 6. Refresh the per-state data in `src/lib/states.ts` from an authoritative source on a schedule.
 7. Verify the site and submit the sitemap in Google Search Console; apply for AdSense once you have original content and steady traffic.
