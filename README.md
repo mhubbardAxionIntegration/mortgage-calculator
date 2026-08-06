@@ -61,16 +61,20 @@ Trust/compliance pages required for AdSense approval are included: `/about`, `/c
 
 ## Contact form email
 
-`POST /api/contact` sends mail with **nodemailer over SMTP**. There is no Resend/Formspree integration.
+`POST /api/contact` sends mail with **nodemailer over SMTP** on the **Node.js** runtime (not Edge). There is no Resend/Formspree integration.
 
-| Environment | Behavior when SMTP is unset |
-| --- | --- |
-| Development (`next dev`) | Fake success (message logged to the server console only) |
-| Production | HTTP 503 — *Messaging is temporarily unavailable. Please try again later.* |
+| HTTP | When | User-facing message |
+| --- | --- | --- |
+| 503 | Production and `SMTP_USER` / `SMTP_PASS` missing or empty | *Messaging is temporarily unavailable… (Server email is not configured.)* |
+| 502 | SMTP connected but auth failed | *Email login failed. Check SMTP_USER and SMTP_PASS…* |
+| 502 | Other SMTP send/connection failure | *Unable to send your message right now…* |
+| 200 | Dev without SMTP | Fake success (message logged to the server console only) |
+
+**Important:** The 503 “not configured” message means the Node process does **not** see non-empty `SMTP_USER` and `SMTP_PASS`. It is *not* the same as a wrong password (that is 502 auth). Creating a mailbox in Hostinger Emails alone does nothing until those env vars are set on the **Node.js app** and the app is restarted.
 
 ### Env vars (Hostinger Node app)
 
-Set these in **Hostinger → Websites → your site → Node.js / Environment variables** (then redeploy/restart):
+Set these in **Hostinger hPanel → Websites → your site → Advanced / Node.js → Environment variables** (names must match exactly — **no** `NEXT_PUBLIC_` prefix; those are exposed to the browser and are wrong for SMTP secrets):
 
 | Variable | Example | Required |
 | --- | --- | --- |
@@ -82,14 +86,23 @@ Set these in **Hostinger → Websites → your site → Node.js / Environment va
 | `SMTP_FROM` | `Smart Mortgage Calculator <contact@smartmortgagecalc.com>` | No (defaults to `SMTP_USER`) |
 | `SMTP_SECURE` | `true` / `false` | No (defaults to secure when port is `465`) |
 
-Hostinger steps:
+**Password / special characters:** Put the raw mailbox password in `SMTP_PASS`. Do not wrap it in quotes in the Hostinger UI (quotes become part of the value). Characters like `!`, `#`, `$`, `@` are fine. Do not URL-encode the password. Empty or whitespace-only values are treated as unset.
 
-1. Create a mailbox under **Emails** for your domain (e.g. `contact@smartmortgagecalc.com`).
-2. Use Hostinger’s SMTP host (`smtp.hostinger.com`), port **465** (SSL) or **587** (STARTTLS with `SMTP_SECURE=false`).
-3. Set `SMTP_USER` / `SMTP_PASS` to that mailbox’s credentials. Never commit the password.
-4. Optionally set `CONTACT_EMAIL` if submissions should go somewhere other than `contact@smartmortgagecalc.com`.
-5. Restart/redeploy the Node app so the new env vars load.
-6. Submit the contact form again — you should see *Thanks — your message was sent.*
+**Hostinger SMTP (official defaults):** host `smtp.hostinger.com`, port **465** with SSL (`secure: true`). Fallback if needed: port **587** with STARTTLS (`SMTP_PORT=587`, `SMTP_SECURE=false`). Auth username = full email address.
+
+### Hostinger checklist (production)
+
+1. **Emails** → create mailbox `contact@smartmortgagecalc.com` and set/reset its password (you will use this as `SMTP_PASS`).
+2. **Node.js app** for this site → **Environment variables** → add at least:
+   - `SMTP_USER` = `contact@smartmortgagecalc.com`
+   - `SMTP_PASS` = *(that mailbox password, no quotes)*
+   - Optional: `SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465`
+3. **Save**, then **Restart / Redeploy** the Node.js app (env changes do not apply to an already-running process).
+4. Submit the contact form again. Success shows *Thanks — your message was sent.*
+5. If it still fails, open **Runtime Logs** (Hostinger → your Node.js site → Logs / Runtime logs) and look for:
+   - `Contact form received but SMTP is not configured (missing: …)` → env vars still not loaded
+   - `[contact] SMTP env presence: { SMTP_USER: false, SMTP_PASS: false, … }` → same (booleans only; passwords are never logged)
+   - `Contact form SMTP send failed:` / `Email login failed` → vars are present but auth/connection failed
 
 Locally: copy `.env.example` → `.env.local`, fill the same vars, and run `npm run dev`.
 
@@ -98,7 +111,7 @@ Locally: copy `.env.example` → `.env.local`, fill the same vars, and run `npm 
 1. Set your production domain in `src/lib/site.ts` (`SITE.url`) — this drives canonicals, sitemap, and Open Graph URLs.
 2. Fill in `COMPANY` details (legal name, address) — used on the legal/contact pages. Public contact email is `SITE.contactEmail`.
 3. Add your AdSense ID and affiliate URL(s) in `MONETIZATION` when ready to monetize.
-4. Configure contact-form SMTP on the host (see **Contact form email** above). Without `SMTP_USER` / `SMTP_PASS`, production returns *“Messaging is temporarily unavailable…”*.
+4. Configure contact-form SMTP on the host (see **Contact form email** above). Without `SMTP_USER` / `SMTP_PASS`, production returns HTTP 503 (*server email is not configured*).
 5. Replace the indicative `defaultRate` / `ratesAsOf` with a live rate source and keep them current (good for E-E-A-T).
 6. Refresh the per-state data in `src/lib/states.ts` from an authoritative source on a schedule.
 7. Verify the site and submit the sitemap in Google Search Console; apply for AdSense once you have original content and steady traffic.
