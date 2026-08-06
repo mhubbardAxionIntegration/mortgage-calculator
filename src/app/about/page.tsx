@@ -92,12 +92,12 @@ export default function AboutPage() {
 
       <h2>How we stay free</h2>
       <p>
-        We keep our calculators free to use through advertising and through
-        affiliate partnerships with lenders. If you choose to request rates or
-        a loan through a partner link, we may earn a commission at no extra cost
-        to you. This never changes the math or the estimates we show. See our{" "}
-        <a href="/disclaimer">Disclaimer</a> and{" "}
-        <a href="/privacy-policy">Privacy Policy</a> for details.
+        The calculators and guides on this Site are free to use. We do not run
+        advertising trackers or analytics profiling on the Site. Optional
+        features (such as a paid PDF report, if enabled) or future partner
+        links—if any—are separate from ordinary calculator use. See our{" "}
+        <a href="/privacy-policy">Privacy Policy</a> and{" "}
+        <a href="/disclaimer">Disclaimer</a> for details.
       </p>
 
       <h2>Get in touch</h2>

@@ -1,28 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/schema";
-import {
-  SITE,
-  MONETIZATION,
-  isAdsEnabled,
-  isAnalyticsEnabled,
-  isConsentRequired,
-} from "@/lib/site";
+import { SITE } from "@/lib/site";
 import { ConsentProvider } from "@/components/consent/ConsentProvider";
 import { CookieConsent } from "@/components/consent/CookieConsent";
+import { ConsentedScripts } from "@/components/consent/ConsentedScripts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -69,52 +60,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full`}
-    >
-      <head>
-        {/* smc-deploy:ga4-v3 — search page source for this marker to confirm Hostinger pulled latest build */}
-        {/* Google Consent Mode v2 — must run before gtag config. */}
-        {isConsentRequired() && (
-          <script
-            dangerouslySetInnerHTML={{
-              __html:
-                "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});",
-            }}
-          />
-        )}
-        {/* AdSense site verification + script — literal tags in SSR HTML for crawler detection. */}
-        {isAdsEnabled() && (
-          <>
-            <meta
-              name="google-adsense-account"
-              content={MONETIZATION.adsenseClientId}
-            />
-            <script
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${MONETIZATION.adsenseClientId}`}
-              crossOrigin="anonymous"
-            />
-          </>
-        )}
-        {/* GA4 — literal tags in SSR HTML so Tag Assistant / GA detect the tag. */}
-        {isAnalyticsEnabled() && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${MONETIZATION.analyticsId}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${MONETIZATION.analyticsId}',{anonymize_ip:true,send_page_view:true});`,
-              }}
-            />
-          </>
-        )}
-      </head>
-      <body className="flex min-h-full flex-col bg-white text-slate-900">
+    <html lang="en" className={`${geistSans.variable} h-full`}>
+      <body className="flex min-h-full flex-col bg-[var(--surface,#f8fafc)] text-slate-900">
         <ConsentProvider>
+          {/* No-op while ads/analytics IDs are empty — keeps banner and trackers off. */}
+          <ConsentedScripts />
           <JsonLd data={organizationSchema()} />
           <a
             href="#main"

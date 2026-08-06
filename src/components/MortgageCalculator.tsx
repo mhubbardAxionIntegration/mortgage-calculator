@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Suspense, useMemo, useState, useId, useCallback, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -17,9 +18,28 @@ import { copyOrShareText, isInAppBrowser } from "@/lib/clipboard";
 import { inputsFromSearchParams } from "@/lib/readCalculatorParams";
 import { APPLY_RATE_EVENT } from "@/lib/calculatorEvents";
 import { bindTap } from "@/lib/tap";
-import { PaymentDonut } from "./PaymentDonut";
-import { AmortizationSchedule } from "./AmortizationSchedule";
+import { CalculatorSkeleton } from "./CalculatorSkeleton";
 import { RangeSlider } from "./RangeSlider";
+
+const PaymentDonut = dynamic(
+  () => import("./PaymentDonut").then((m) => m.PaymentDonut),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mx-auto h-40 w-40 animate-pulse rounded-full bg-slate-100" aria-hidden />
+    ),
+  },
+);
+
+const AmortizationSchedule = dynamic(
+  () => import("./AmortizationSchedule").then((m) => m.AmortizationSchedule),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mt-4 h-48 animate-pulse rounded-xl bg-slate-100" aria-hidden />
+    ),
+  },
+);
 
 type Mode = "payment" | "affordability";
 
@@ -62,45 +82,9 @@ const DONUT_COLORS = {
 
 export function MortgageCalculator(props: Props) {
   return (
-    <Suspense fallback={<CalculatorLoadingShell />}>
-      <MortgageCalculatorMountGate {...props} />
+    <Suspense fallback={<CalculatorSkeleton />}>
+      <MortgageCalculatorInner {...props} />
     </Suspense>
-  );
-}
-
-function CalculatorLoadingShell() {
-  return (
-    <section
-      id="calculator"
-      aria-label="Mortgage calculator"
-      aria-busy="true"
-      className="scroll-mt-24 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-    >
-      <div className="flex items-center justify-center p-12 text-sm text-slate-500">
-        Loading calculator…
-      </div>
-    </section>
-  );
-}
-
-function MortgageCalculatorMountGate({
-  initialInputs,
-  initialMode = "payment",
-  lockMode = false,
-}: Props) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  if (!mounted) {
-    return <CalculatorLoadingShell />;
-  }
-
-  return (
-    <MortgageCalculatorInner
-      initialInputs={initialInputs}
-      initialMode={initialMode}
-      lockMode={lockMode}
-    />
   );
 }
 
@@ -108,8 +92,7 @@ function MortgageCalculatorInner({
   initialInputs,
   initialMode = "payment",
   lockMode = false,
-}: Props) {
-  const searchParams = useSearchParams();
+}: Props) {  const searchParams = useSearchParams();
   const [mode, setMode] = useState<Mode>(initialMode);
   const [inputs, setInputs] = useState<MortgageInputs>({
     ...DEFAULT_INPUTS,

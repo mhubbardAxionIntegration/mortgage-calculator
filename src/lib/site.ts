@@ -61,56 +61,33 @@ export const COMPANY = {
  * URLs, so no ads or affiliate links render with placeholder values.
  */
 export const MONETIZATION = {
-  // Google AdSense publisher ID, e.g. "ca-pub-1234567890123456".
-  // Leave empty to disable ads (placeholders show only in development).
-  adsenseClientId: "ca-pub-1060204849522425",
+  // Google AdSense publisher ID. Leave empty — this site does not run ads or tracking pixels.
+  adsenseClientId: "",
   ads: {
-    // AdSense ad-unit slot IDs (numeric strings). Leave empty to disable a slot.
     inContent: "",
     sidebar: "",
     footer: "",
   },
-  // Google Analytics 4 measurement ID, e.g. "G-XXXXXXXXXX". Leave empty to
-  // disable analytics. When set, the GA script loads only after the visitor
-  // accepts cookies in the consent banner.
-  analyticsId: "G-PSELBZR91H",
+  // Google Analytics ID. Leave empty — this site does not use analytics tracking.
+  analyticsId: "",
   affiliate: {
-    // Lead-gen / affiliate destination for "Get personalized rates" CTAs.
-    // e.g. your LendingTree, Rocket Mortgage, or FlexOffers tracking link.
-    // Calculator values are appended as query params for better conversion.
+    // Leave empty while affiliate lead-gen is disabled (avoids sending users to trackers).
     rateQuoteUrl: "",
-    // Optional secondary affiliate offers.
     homeInsuranceUrl: "",
     refinanceUrl: "",
-    // Subtext shown under the "Get personalized rates" heading. Keep this
-    // neutral — avoid promising specific rates or "no credit impact" unless
-    // your partner guarantees a soft credit pull, as such claims can be
-    // considered deceptive (FTC / UDAAP).
     subtext:
       "Compare personalized mortgage offers from top lenders in a few minutes.",
-    // Network/program disclosure shown near affiliate CTAs (FTC compliance).
     disclosure:
       "We may earn a commission if you get a quote or loan through our partners, at no extra cost to you.",
   },
-  // Off-topic cross-promo weakens mortgage topical focus for AdSense review.
   showCompanyPromo: false,
-  // Freemium premium features (e.g. branded PDF export of the amortization
-  // schedule). When `locked` is false the feature is free for everyone, so it
-  // works out of the box. Set `locked: true` and a `checkoutUrl` (Stripe,
-  // Gumroad, Lemon Squeezy, etc.) to charge for it. After a successful
-  // purchase, send buyers back with `?unlock=<UNLOCK_CODE>` to grant access.
   premium: {
     locked: false,
     price: "$9",
-    // Amount charged via Stripe when no STRIPE_PRICE_ID is configured.
     priceCents: 900,
     productName: "Pro mortgage PDF report",
     label: "Pro PDF report",
-    // Optional non-Stripe fallback link (e.g. Gumroad). Stripe takes priority
-    // when STRIPE_SECRET_KEY is set in the environment.
     checkoutUrl: "",
-    // Shared code that grants access after a verified purchase. The Stripe
-    // unlock route redirects buyers to ...?unlock=<unlockCode> on success.
     unlockCode: "PMPRO2026",
   },
 } as const;
@@ -123,6 +100,12 @@ export function isAdsEnabled(): boolean {
   return MONETIZATION.adsenseClientId.trim().length > 0;
 }
 
+/** True when at least one AdSense unit can paint (avoid loading adsbygoogle.js for empty slots). */
+export function isAdServingEnabled(): boolean {
+  if (!isAdsEnabled()) return false;
+  return Object.values(MONETIZATION.ads).some((id) => id.trim().length > 0);
+}
+
 export function isAnalyticsEnabled(): boolean {
   return MONETIZATION.analyticsId.trim().length > 0;
 }
@@ -133,7 +116,7 @@ export function isAnalyticsEnabled(): boolean {
  * default out-of-the-box site stays banner-free.
  */
 export function isConsentRequired(): boolean {
-  return isAdsEnabled() || isAnalyticsEnabled();
+  return isAdServingEnabled() || isAnalyticsEnabled();
 }
 
 export function isDev(): boolean {

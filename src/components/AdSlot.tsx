@@ -52,14 +52,16 @@ export function AdSlot({
         aria-label={label}
         className={`mx-auto w-full max-w-3xl text-center ${className}`}
       >
-        <ins
-          className="adsbygoogle block"
-          style={{ display: "block" }}
-          data-ad-client={MONETIZATION.adsenseClientId}
-          data-ad-slot={slotId}
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
+        <div className="min-h-[280px] w-full">
+          <ins
+            className="adsbygoogle block"
+            style={{ display: "block", minHeight: 280 }}
+            data-ad-client={MONETIZATION.adsenseClientId}
+            data-ad-slot={slotId}
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
+        </div>
       </aside>
     );
   }

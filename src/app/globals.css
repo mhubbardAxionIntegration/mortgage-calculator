@@ -2,7 +2,8 @@
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
   /* Modern trustworthy mortgage palette */
   --color-brand-50: #f0f9ff;
   --color-brand-100: #e0f2fe;

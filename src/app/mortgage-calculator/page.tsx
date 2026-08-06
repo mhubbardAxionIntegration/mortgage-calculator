@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { CalculatorSeoPreview } from "@/components/CalculatorSeoPreview";
+import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
 import { StateAwareCalculatorHub } from "@/components/StateAwareCalculatorHub";
 import { CurrentMortgageRates } from "@/components/CurrentMortgageRates";
 import { FaqSection } from "@/components/FaqSection";
@@ -119,13 +120,7 @@ export default async function MortgageCalculatorPage({
         </div>
 
         <div className="mt-8">
-          <Suspense
-            fallback={
-              <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center text-sm text-slate-500">
-                Loading calculator…
-              </div>
-            }
-          >
+          <Suspense fallback={<CalculatorSkeleton />}>
             <StateAwareCalculatorHub
               initialStateSlug={selected?.slug ?? ""}
               annualRate={rates.rate30}
@@ -137,7 +132,11 @@ export default async function MortgageCalculatorPage({
           <AdSlot slot="inContent" />
         </div>
 
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <div className="mt-10 min-h-[10rem] animate-pulse rounded-2xl border border-slate-200 bg-slate-50" />
+          }
+        >
           <CurrentMortgageRates
             calculatorHref="/mortgage-calculator"
             className="mt-10"

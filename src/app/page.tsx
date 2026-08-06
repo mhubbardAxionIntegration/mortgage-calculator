@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { MortgageCalculator } from "@/components/MortgageCalculator";
+import { LazyMortgageCalculator } from "@/components/LazyMortgageCalculator";
 import { CurrentMortgageRates } from "@/components/CurrentMortgageRates";
 import { LOAN_TYPES } from "@/lib/loanTypes";
 import { STATES, stateCalculatorHref } from "@/lib/states";
@@ -80,7 +80,7 @@ export default async function Home() {
           </div>
 
           <div className="mx-auto mt-8 max-w-5xl">
-            <MortgageCalculator initialInputs={{ annualRate: rates.rate30 }} />
+            <LazyMortgageCalculator initialInputs={{ annualRate: rates.rate30 }} />
           </div>
 
           <div className="mx-auto mt-8 max-w-5xl">
@@ -90,15 +90,13 @@ export default async function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <Suspense
-          fallback={
-            <div className="mx-auto max-w-3xl animate-pulse rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
-              Loading current US mortgage rates…
-            </div>
-          }
-        >
-          <CurrentMortgageRates calculatorHref="/" className="mx-auto max-w-3xl" />
-        </Suspense>
+          <Suspense
+            fallback={
+              <div className="mx-auto max-w-3xl min-h-[9rem] animate-pulse rounded-2xl border border-slate-200 bg-slate-50" />
+            }
+          >
+            <CurrentMortgageRates calculatorHref="/" className="mx-auto max-w-3xl" />
+          </Suspense>
       </section>
 
       <section className="border-y border-slate-200 bg-white">

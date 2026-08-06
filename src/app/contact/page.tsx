@@ -5,7 +5,7 @@ import { SITE, COMPANY } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: `Contact ${COMPANY.name}, the team behind ${SITE.name}. Send us your questions, feedback, or partnership inquiries.`,
+  description: `Contact ${COMPANY.name}, the team behind ${SITE.name}. Send us your questions, feedback, or corrections.`,
   alternates: { canonical: "/contact" },
 };
 
@@ -14,8 +14,8 @@ export default function ContactPage() {
     <LegalShell title="Contact Us" href="/contact">
       <p>
         We&rsquo;d love to hear from you — whether you&rsquo;ve found a bug,
-        have feedback on a calculator, or want to discuss an advertising or
-        lender partnership. Use the form below; we read every message.
+        have feedback on a calculator, or spotted something that needs a
+        correction. Use the form below; we read every message.
       </p>
 
       <h2>About us</h2>
