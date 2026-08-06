@@ -37,6 +37,47 @@ export default function BlogIndexPage() {
         </p>
       </header>
 
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <Link
+          href="/blog/category/pitfalls"
+          className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 transition hover:border-amber-300 hover:shadow-md"
+        >
+          <span className="text-xs font-semibold uppercase tracking-wide text-amber-900">
+            New category
+          </span>
+          <h2 className="mt-2 text-lg font-bold text-slate-900">
+            Common Pitfalls
+          </h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Mistakes most homebuyers never hear about until they cost rate,
+            cash, or the deal — credit after pre-approval, one-lender shopping,
+            MIP duration, and under-counted PITI.
+          </p>
+          <p className="mt-3 text-sm font-medium text-amber-900">
+            Browse pitfalls &rarr;
+          </p>
+        </Link>
+        <Link
+          href="/questions-nobody-thinks-to-ask"
+          className="rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white p-5 transition hover:border-sky-300 hover:shadow-md"
+        >
+          <span className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+            Buyer toolkit
+          </span>
+          <h2 className="mt-2 text-lg font-bold text-slate-900">
+            Questions nobody thinks to ask
+          </h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Realtor interview scripts, offer tactics, and property questions on
+            systems, taxes, HOA, flood zones, and FHA/VA appraisal risks — 50+
+            prompts you can copy.
+          </p>
+          <p className="mt-3 text-sm font-medium text-sky-800">
+            Open the checklist &rarr;
+          </p>
+        </Link>
+      </div>
+
       <nav aria-label="Blog categories" className="mt-8 flex flex-wrap gap-2">
         <span className="rounded-full border border-sky-800 bg-sky-50 px-3 py-1.5 text-sm font-medium text-sky-800">
           All
@@ -45,7 +86,11 @@ export default function BlogIndexPage() {
           <Link
             key={c.slug}
             href={`/blog/category/${c.slug}`}
-            className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:border-sky-300 hover:text-sky-800"
+            className={
+              c.slug === "pitfalls"
+                ? "rounded-full border border-amber-300 bg-amber-50 px-3 py-1.5 text-sm font-medium text-amber-950 transition hover:border-amber-400"
+                : "rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:border-sky-300 hover:text-sky-800"
+            }
           >
             {c.name}
           </Link>

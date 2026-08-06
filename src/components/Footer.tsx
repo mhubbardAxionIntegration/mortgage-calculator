@@ -77,6 +77,19 @@ export function Footer() {
               <Link href="/blog" className="hover:text-sky-800">Blog</Link>
             </li>
             <li>
+              <Link href="/blog/category/pitfalls" className="hover:text-sky-800">
+                Common pitfalls
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/questions-nobody-thinks-to-ask"
+                className="hover:text-sky-800"
+              >
+                Questions to ask
+              </Link>
+            </li>
+            <li>
               <Link href="/how-we-calculate" className="hover:text-sky-800">
                 How we calculate
               </Link>

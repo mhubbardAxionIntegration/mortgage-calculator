@@ -5,6 +5,7 @@ import { postsGuidesRefi } from "./guides-refi";
 import { postsStateAffordability } from "./state-affordability";
 import { postsNewHighValue } from "./new-posts-a";
 import { postsNewHighValueB } from "./new-posts-b";
+import { postsPitfalls } from "./pitfalls";
 
 /** All published posts (order does not matter; consumers sort by date). */
 export const ALL_BLOG_POSTS: BlogPost[] = [
@@ -14,4 +15,5 @@ export const ALL_BLOG_POSTS: BlogPost[] = [
   ...postsStateAffordability,
   ...postsNewHighValue,
   ...postsNewHighValueB,
+  ...postsPitfalls,
 ];

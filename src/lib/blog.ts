@@ -65,6 +65,25 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
       { href: "/blog/seller-concessions-and-rate-buydowns", label: "Seller concessions guide" },
     ],
   },
+  {
+    slug: "pitfalls",
+    name: "Common Pitfalls",
+    description:
+      "Mistakes most homebuyers never see coming — credit after pre-approval, one-lender shopping, MIP duration, and under-counted housing costs.",
+    intro:
+      "These guides focus on expensive, easy-to-miss traps: changing credit during underwriting, comparing only a headline rate, misunderstanding FHA MIP length, under-estimating taxes and insurance, and treating pre-approval as a guarantee. Read them with our checklist of questions nobody thinks to ask before you interview agents or write an offer.",
+    relatedTools: [
+      {
+        href: "/questions-nobody-thinks-to-ask",
+        label: "Questions nobody thinks to ask",
+      },
+      {
+        href: "/blog/mortgage-pitfalls-homebuyers-should-avoid",
+        label: "Pitfalls overview",
+      },
+      { href: "/calculators/home-affordability-calculator", label: "Affordability calculator" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = ALL_BLOG_POSTS;
