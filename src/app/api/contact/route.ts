@@ -85,12 +85,49 @@ function smtpErrorKind(err: unknown): "auth" | "connection" | "other" {
   return "other";
 }
 
+function buildVisitorAckText(name: string, message: string): string {
+  return [
+    `Hi ${name},`,
+    "",
+    `Thanks for contacting ${SITE.name}. We received your message and will get back to you as soon as we can.`,
+    "",
+    `— ${SITE.name}`,
+    SITE.contactEmail,
+    "",
+    "---",
+    "Your message:",
+    message,
+  ].join("\n");
+}
+
+function visitorAckMail(from: string, visitorEmail: string, name: string, message: string): ContactMail {
+  return {
+    from,
+    to: visitorEmail,
+    // Replies to the ack go to the site inbox, not back to the visitor.
+    replyTo: SITE.contactEmail,
+    subject: `We received your message — ${SITE.shortName}`,
+    text: buildVisitorAckText(name, message),
+  };
+}
+
 /**
- * Hostinger vacation / auto-reply typically fires for **inbound MX** mail.
- * SMTP auth as contact@ with From=contact@ and To=contact@ is often treated as
- * local/self-sent and skipped — headers alone (Reply-To) do not fix that.
- * Prefer Resend so the message arrives via MX; see README “Hostinger auto-reply”.
+ * Application-level visitor acknowledgment. Does not depend on Hostinger vacation.
+ * Failures are logged only — the form submission already succeeded via the admin notify.
  */
+async function sendVisitorAcknowledgment(
+  send: () => Promise<void>,
+): Promise<void> {
+  try {
+    await send();
+  } catch (err) {
+    console.error(
+      "Contact form visitor acknowledgment failed (admin notify already sent):",
+      err instanceof Error ? err.message : err,
+    );
+  }
+}
+
 async function sendViaSmtp(
   options: SmtpTransportOptions,
   mail: ContactMail,
@@ -105,7 +142,6 @@ async function sendViaSmtp(
       replyTo: mail.replyTo,
       subject: mail.subject,
       text: mail.text,
-      // Envelope MAIL FROM / RCPT TO — still same-mailbox SMTP in typical Hostinger setups.
       envelope,
     });
   } finally {
@@ -121,7 +157,6 @@ async function sendViaResend(
 
   const { Resend } = await import("resend");
   const resend = new Resend(apiKey);
-  // Same To / Reply-To / body as SMTP; From must be a Resend-verified domain address.
   const { error } = await resend.emails.send({
     from: mail.from,
     to: mail.to,
@@ -140,15 +175,17 @@ async function sendViaResend(
  * Accepts contact-form submissions without exposing the inbox address to the
  * browser beyond the public SITE.contactEmail already shown on /contact.
  *
- * Headers (both paths):
+ * Headers (admin notification, both paths):
  *   to:      contact inbox (SITE.contactEmail / CONTACT_EMAIL)
  *   from:    site mailbox / verified sender — NEVER the visitor
  *   replyTo: visitor’s submitted email
  *
+ * After a successful admin notify, also sends a visitor acknowledgment
+ * (From = site mailbox, To = visitor). Ack failure is logged and does not
+ * fail the form response.
+ *
  * Delivery order: Resend (RESEND_API_KEY) → Hostinger SMTP (SMTP_USER/PASS)
  * → 503 in production when neither is configured.
- *
- * Auto-reply: use Resend (inbound MX). SMTP self-send often skips Hostinger auto-reply.
  */
 export async function POST(request: Request) {
   let body: ContactBody;
@@ -188,12 +225,20 @@ export async function POST(request: Request) {
 
   const smtp = getSmtpConfig();
 
-  // Preferred: Resend → arrives via MX → Hostinger auto-reply can fire.
+  // Preferred: Resend HTTPS API when configured.
   if (resolveResendApiKey()) {
     const from = resolveResendFrom(SITE.name, SITE.contactEmail);
     try {
       const result = await sendViaResend({ ...mailBase, from });
       if (result.ok) {
+        await sendVisitorAcknowledgment(async () => {
+          const ack = await sendViaResend(
+            visitorAckMail(from, email, name, message),
+          );
+          if (!ack.ok) {
+            throw new Error(ack.error);
+          }
+        });
         return NextResponse.json({ ok: true, via: "resend" });
       }
       console.error("Contact form Resend send failed:", result.error);
@@ -248,8 +293,18 @@ export async function POST(request: Request) {
       auth: { user, pass },
     };
 
+    const ackWithSmtp = (options: SmtpTransportOptions) =>
+      sendVisitorAcknowledgment(async () => {
+        const ack = visitorAckMail(fromAddress, email, name, message);
+        await sendViaSmtp(options, ack, {
+          from: bareEmail(user),
+          to: bareEmail(email),
+        });
+      });
+
     try {
       await sendViaSmtp(primary, mail, envelope);
+      await ackWithSmtp(primary);
       return NextResponse.json({ ok: true, via: "smtp" });
     } catch (primaryErr) {
       // Hostinger: 465+SSL is preferred; if the host blocks it, retry 587 STARTTLS.
@@ -265,12 +320,15 @@ export async function POST(request: Request) {
           "Contact form SMTP primary (465/SSL) failed; retrying 587/STARTTLS:",
           primaryErr instanceof Error ? primaryErr.message : primaryErr,
         );
+        const fallback: SmtpTransportOptions = {
+          host,
+          port: 587,
+          secure: false,
+          auth: { user, pass },
+        };
         try {
-          await sendViaSmtp(
-            { host, port: 587, secure: false, auth: { user, pass } },
-            mail,
-            envelope,
-          );
+          await sendViaSmtp(fallback, mail, envelope);
+          await ackWithSmtp(fallback);
           return NextResponse.json({ ok: true, via: "smtp" });
         } catch (fallbackErr) {
           console.error("Contact form SMTP fallback (587) also failed:", fallbackErr);

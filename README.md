@@ -63,18 +63,17 @@ Trust/compliance pages required for AdSense approval are included: `/about`, `/c
 
 `POST /api/contact` runs on the **Node.js** runtime (not Edge). Delivery order:
 
-1. **Resend** when `RESEND_API_KEY` is set (HTTPS API — preferred; inbound MX so Hostinger auto-reply can fire)
+1. **Resend** when `RESEND_API_KEY` is set (HTTPS API)
 2. **SMTP** via nodemailer when `SMTP_USER` + `SMTP_PASS` are set (defaults to `smtp.hostinger.com`)
 3. **503** in production if neither path is configured
 
-**Headers (both paths):** `To` = `contact@smartmortgagecalc.com` (inbox), `From` = site mailbox / verified sender (**never** the visitor), `Reply-To` = visitor’s submitted email.
+**Admin notification (both paths):** `To` = `contact@smartmortgagecalc.com` (inbox), `From` = site mailbox / verified sender (**never** the visitor), `Reply-To` = visitor’s submitted email.
 
-### Hostinger auto-reply / vacation
+**Visitor confirmation:** After a successful admin notify, the app sends a second email to the visitor (`From` = site mailbox, `To` = visitor, short “we received your message” body with an optional copy of their text). This is application-level acknowledgment — it does **not** depend on Hostinger vacation/auto-reply. If the ack send fails, the form still returns success and the error is logged.
 
-Hostinger automatic reply usually requires **inbound MX** delivery. External mail *to* `contact@` triggers it; contact-form mail sent via SMTP authenticated as the same mailbox (`From=contact@` → `To=contact@`) is often treated as **local/self-sent** and **skipped**, even with a correct `Reply-To`.
+### Hostinger vacation (optional; not used for the form)
 
-- **For auto-reply to work on form submissions:** set `RESEND_API_KEY`, verify `smartmortgagecalc.com` in Resend (or set `RESEND_FROM` to a verified address such as `contact@…`), redeploy. Resend delivers to the inbox via MX → auto-reply fires; replies still go to the visitor via `Reply-To`.
-- **SMTP-only:** form delivery can succeed, but Hostinger auto-reply often will **not**. Use Resend for auto-reply, or accept that only external inbound mail triggers the vacation filter.
+Hostinger mailbox vacation/auto-reply can still work for **external** inbound mail to `contact@`. Form submissions often skip it when SMTP self-sends (`From=contact@` → `To=contact@`). That is fine: the app’s visitor confirmation email covers form acknowledgments. You do **not** need Resend solely for Hostinger vacation.
 
 This app does **not** use `output: 'standalone'`. Hostinger should run SSR with Application type `next`, build `npm run build`, output `.next`, and start via `npm start` (`next start`). Server env vars are read at **runtime** from `process.env` — they are **not** baked into the client bundle. Do **not** put secrets in `next.config` `env` or as `NEXT_PUBLIC_*`.
 
@@ -100,7 +99,7 @@ After deploy, open:
 
 Keys must be `A–Z`, `0–9`, `_` only (Hostinger rule). **No** `NEXT_PUBLIC_` prefix for secrets.
 
-**Option A — Resend (recommended if SMTP env keeps failing)**
+**Option A — Resend (optional alternative to SMTP)**
 
 | Variable | Example | Required |
 | --- | --- | --- |
@@ -136,8 +135,8 @@ Exact path:
 1. **hPanel** → **Websites** → open **smartmortgagecalc.com** (the Node.js site — not CDN-only / static, not a different domain).
 2. Sidebar → **Environment variables** *or* **Deployments** → **Settings & Redeploy** → Environment variables.
 3. **Add environment variable** (or **Import .env**):
-   - Easiest: `RESEND_API_KEY` = `re_…`
-   - Or SMTP: `SMTP_USER` = `contact@smartmortgagecalc.com`, `SMTP_PASS` = *(Emails → mailbox password, no quotes)*
+   - SMTP (current live setup): `SMTP_USER` = `contact@smartmortgagecalc.com`, `SMTP_PASS` = *(Emails → mailbox password, no quotes)*
+   - Or Resend: `RESEND_API_KEY` = `re_…`
    - Optional: `SMTP_HOST` = `smtp.hostinger.com`, `SMTP_PORT` = `465`
 4. Use the show/hide toggle to confirm values are non-empty (masked `••••` with empty value is a common mistake).
 5. **Save** — wait until redeploy finishes. If needed: **Deployments** → **Settings & Redeploy** → **Save and Redeploy** (ZIP deploys can keep “Use previous files”).

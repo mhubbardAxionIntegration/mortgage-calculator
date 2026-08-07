@@ -33,9 +33,9 @@ export async function GET() {
       missing,
       hint: delivery.ready
         ? delivery.resend
-          ? "RESEND_API_KEY is present (preferred path for Hostinger auto-reply via inbound MX). If send still fails, check Runtime Logs / Resend dashboard and domain verification."
-          : "SMTP_USER and SMTP_PASS are present. Delivery works, but Hostinger vacation/auto-reply often skips SMTP self-send (From=To=contact@). Set RESEND_API_KEY + verify domain for auto-reply. If send fails, check Runtime Logs."
-        : "No email delivery path configured. On Hostinger: Website → Environment variables → set RESEND_API_KEY (recommended for auto-reply) and/or SMTP_USER + SMTP_PASS → Save (redeploys). Or Deployments → Settings & Redeploy.",
+          ? "RESEND_API_KEY is present. Form sends an admin notify plus an app-level visitor confirmation email. If send still fails, check Runtime Logs / Resend dashboard and domain verification."
+          : "SMTP_USER and SMTP_PASS are present. Form sends an admin notify plus an app-level visitor confirmation email (Hostinger vacation is not required). If send fails, check Runtime Logs."
+        : "No email delivery path configured. On Hostinger: Website → Environment variables → set SMTP_USER + SMTP_PASS and/or RESEND_API_KEY → Save (redeploys). Or Deployments → Settings & Redeploy.",
     },
     {
       status: delivery.ready ? 200 : 503,
