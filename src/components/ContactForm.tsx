@@ -1,36 +1,69 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { SITE } from "@/lib/site";
+
+type ContactApiPayload = {
+  error?: string;
+  configured?: {
+    SMTP_USER?: boolean;
+    SMTP_PASS?: boolean;
+    RESEND_API_KEY?: boolean;
+  };
+  missing?: string[];
+};
+
+function buildMailto(name: string, email: string, message: string): string {
+  const subject = encodeURIComponent(`[${SITE.shortName}] Contact — ${name}`);
+  const body = encodeURIComponent(
+    [`Name: ${name}`, `Reply-to: ${email}`, "", message].join("\n"),
+  );
+  return `mailto:${SITE.contactEmail}?subject=${subject}&body=${body}`;
+}
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
   const [error, setError] = useState("");
+  const [showMailto, setShowMailto] = useState(false);
+  const [mailtoHref, setMailtoHref] = useState(`mailto:${SITE.contactEmail}`);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("sending");
     setError("");
+    setShowMailto(false);
 
     const form = event.currentTarget;
     const data = new FormData(form);
+    const name = String(data.get("name") ?? "");
+    const email = String(data.get("email") ?? "");
+    const message = String(data.get("message") ?? "");
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: String(data.get("name") ?? ""),
-          email: String(data.get("email") ?? ""),
-          message: String(data.get("message") ?? ""),
-        }),
+        body: JSON.stringify({ name, email, message }),
       });
-      const payload = (await res.json().catch(() => ({}))) as {
-        error?: string;
-      };
+      const payload = (await res.json().catch(() => ({}))) as ContactApiPayload;
       if (!res.ok) {
         setStatus("error");
+        const notConfigured = res.status === 503;
+        setShowMailto(notConfigured || res.status === 502);
+        setMailtoHref(buildMailto(name, email, message));
+        if (notConfigured) {
+          const missing =
+            Array.isArray(payload.missing) && payload.missing.length > 0
+              ? ` Missing: ${payload.missing.join(", ")}.`
+              : "";
+          setError(
+            payload.error ||
+              `Email is not configured on the server. Site operator: set SMTP_USER and SMTP_PASS (or RESEND_API_KEY), then Save / redeploy.${missing}`,
+          );
+          return;
+        }
         setError(payload.error || "Something went wrong. Please try again.");
         return;
       }
@@ -38,6 +71,8 @@ export function ContactForm() {
       setStatus("sent");
     } catch {
       setStatus("error");
+      setShowMailto(true);
+      setMailtoHref(buildMailto(name, email, message));
       setError("Something went wrong. Please try again.");
     }
   }
@@ -98,9 +133,20 @@ export function ContactForm() {
         </p>
       )}
       {status === "error" && (
-        <p className="text-sm font-medium text-red-600" role="alert">
-          {error}
-        </p>
+        <div className="grid gap-2" role="alert">
+          <p className="text-sm font-medium text-red-600">{error}</p>
+          {showMailto && (
+            <p className="text-sm text-slate-600">
+              You can also email us directly:{" "}
+              <a
+                href={mailtoHref}
+                className="font-medium text-sky-800 underline underline-offset-2 hover:text-sky-950"
+              >
+                {SITE.contactEmail}
+              </a>
+            </p>
+          )}
+        </div>
       )}
     </form>
   );

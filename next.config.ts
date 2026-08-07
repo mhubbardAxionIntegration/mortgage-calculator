@@ -10,6 +10,12 @@ const stateRedirects = STATES.map((s) => ({
 const nextConfig: NextConfig = {
   // Avoid trailing-slash redirects that fight Hostinger hcdn canonicalization on "/".
   skipTrailingSlashRedirect: true,
+  images: {
+    // Hero/logo images are static local assets that only change when we touch
+    // the source files — cache optimized variants aggressively so a CDN/browser
+    // (and the on-disk image cache) never has to re-run sharp for them.
+    minimumCacheTTL: 31_536_000,
+  },
   async redirects() {
     return [
       ...stateRedirects,

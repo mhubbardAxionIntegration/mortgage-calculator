@@ -14,12 +14,12 @@ export function Header() {
           className="flex min-w-0 items-center gap-2.5 text-base font-bold leading-tight text-slate-900 sm:text-lg"
         >
           <Image
-            src="/images/heroes/home.png"
+            src="/images/heroes/home.webp"
             alt=""
             width={40}
             height={40}
             className="h-10 w-10 shrink-0 rounded-lg object-cover shadow-sm ring-1 ring-slate-200"
-            priority
+            loading="eager"
           />
           <span className="flex min-w-0 flex-col text-left">
             <span className="truncate">Smart Mortgage</span>

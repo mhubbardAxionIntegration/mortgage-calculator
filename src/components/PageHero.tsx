@@ -24,7 +24,8 @@ export function PageHero({
         src={hero.src}
         alt={hero.alt}
         fill
-        priority
+        preload
+        fetchPriority="high"
         sizes="100vw"
         className="object-cover object-center"
       />

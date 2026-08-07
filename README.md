@@ -61,48 +61,90 @@ Trust/compliance pages required for AdSense approval are included: `/about`, `/c
 
 ## Contact form email
 
-`POST /api/contact` sends mail with **nodemailer over SMTP** on the **Node.js** runtime (not Edge). There is no Resend/Formspree integration.
+`POST /api/contact` runs on the **Node.js** runtime (not Edge). Delivery order:
+
+1. **Resend** when `RESEND_API_KEY` is set (HTTPS API — often the most reliable on Hostinger)
+2. **SMTP** via nodemailer when `SMTP_USER` + `SMTP_PASS` are set (defaults to `smtp.hostinger.com`)
+3. **503** in production if neither path is configured
+
+This app does **not** use `output: 'standalone'`. Hostinger should run SSR with Application type `next`, build `npm run build`, output `.next`, and start via `npm start` (`next start`). Server env vars are read at **runtime** from `process.env` — they are **not** baked into the client bundle. Do **not** put secrets in `next.config` `env` or as `NEXT_PUBLIC_*`.
 
 | HTTP | When | User-facing message |
 | --- | --- | --- |
-| 503 | Production and `SMTP_USER` / `SMTP_PASS` missing or empty | *Messaging is temporarily unavailable… (Server email is not configured.)* |
-| 502 | SMTP connected but auth failed | *Email login failed. Check SMTP_USER and SMTP_PASS…* |
-| 502 | Other SMTP send/connection failure | *Unable to send your message right now…* |
-| 200 | Dev without SMTP | Fake success (message logged to the server console only) |
+| 503 | Production and no Resend/SMTP configured | *Email is not configured on the server…* + JSON `configured` / `missing` (booleans / key names only) |
+| 502 | Resend or SMTP send/auth/connection failed | Auth or generic retry message |
+| 200 | Dev without email env | Fake success (message logged to the server console only) |
 
-**Important:** The 503 “not configured” message means the Node process does **not** see non-empty `SMTP_USER` and `SMTP_PASS`. It is *not* the same as a wrong password (that is 502 auth). Creating a mailbox in Hostinger Emails alone does nothing until those env vars are set on the **Node.js app** and the app is restarted.
+**Important:** Creating a mailbox in Hostinger **Emails** alone does nothing. Env vars must be set on the **Node.js website** and the app must be **redeployed** (Save). A wrong password is **502**, not 503.
+
+### Diagnostic endpoint (no secrets)
+
+After deploy, open:
+
+`https://www.smartmortgagecalc.com/api/contact/health`
+
+- **200** + `"emailConfigured": true` → at least one path is present (`resendConfigured` and/or `smtpConfigured`).
+- **503** + `"missing": ["RESEND_API_KEY", "SMTP_USER", …]` → still missing; fix Hostinger env and redeploy.
+- Logs `[contact/health] email env presence: …` to **Runtime Logs** (booleans only).
 
 ### Env vars (Hostinger Node app)
 
-Set these in **Hostinger hPanel → Websites → your site → Advanced / Node.js → Environment variables** (names must match exactly — **no** `NEXT_PUBLIC_` prefix; those are exposed to the browser and are wrong for SMTP secrets):
+Keys must be `A–Z`, `0–9`, `_` only (Hostinger rule). **No** `NEXT_PUBLIC_` prefix for secrets.
+
+**Option A — Resend (recommended if SMTP env keeps failing)**
 
 | Variable | Example | Required |
 | --- | --- | --- |
-| `SMTP_HOST` | `smtp.hostinger.com` | No (defaults to `smtp.hostinger.com`) |
-| `SMTP_PORT` | `465` (or `587`) | No (defaults to `465`) |
+| `RESEND_API_KEY` | `re_…` | Yes for this path |
+| `RESEND_FROM` | `Smart Mortgage Calculator <contact@smartmortgagecalc.com>` | No (falls back to `SMTP_FROM` or `SITE.contactEmail`) |
+
+Verify the sending domain in the [Resend](https://resend.com) dashboard (DNS), or use `onboarding@resend.dev` only for testing.
+
+**Option B — Hostinger SMTP**
+
+Primary names: `SMTP_USER`, `SMTP_PASS`. Aliases: `SMTP_USERNAME` / `SMTP_PASSWORD`, `MAIL_USER` / `MAIL_PASS`.
+
+| Variable | Example | Required |
+| --- | --- | --- |
 | `SMTP_USER` | `contact@smartmortgagecalc.com` | Yes (full mailbox address) |
 | `SMTP_PASS` | mailbox password | Yes |
-| `CONTACT_EMAIL` | `contact@smartmortgagecalc.com` | No (defaults to `SITE.contactEmail`) |
-| `SMTP_FROM` | `Smart Mortgage Calculator <contact@smartmortgagecalc.com>` | No (defaults to `SMTP_USER`) |
-| `SMTP_SECURE` | `true` / `false` | No (defaults to secure when port is `465`) |
+| `SMTP_HOST` | `smtp.hostinger.com` | No (default) |
+| `SMTP_PORT` | `465` (or `587`) | No (default `465`) |
+| `CONTACT_EMAIL` | `contact@smartmortgagecalc.com` | No |
+| `SMTP_FROM` | `Smart Mortgage Calculator <contact@smartmortgagecalc.com>` | No |
+| `SMTP_SECURE` | `true` / `false` | No (secure when port is `465`) |
 
-**Password / special characters:** Put the raw mailbox password in `SMTP_PASS`. Do not wrap it in quotes in the Hostinger UI (quotes become part of the value). Characters like `!`, `#`, `$`, `@` are fine. Do not URL-encode the password. Empty or whitespace-only values are treated as unset.
+**Password / special characters:** Raw mailbox password in `SMTP_PASS`. No wrapping quotes. Special chars OK. Empty/whitespace-only = unset.
 
-**Hostinger SMTP (official defaults):** host `smtp.hostinger.com`, port **465** with SSL (`secure: true`). Fallback if needed: port **587** with STARTTLS (`SMTP_PORT=587`, `SMTP_SECURE=false`). Auth username = full email address.
+**Hostinger SMTP defaults:** `smtp.hostinger.com`, port **465** SSL. Auto-retry **587** STARTTLS if 465 connection fails and port/secure were not overridden.
 
-### Hostinger checklist (production)
+### Hostinger click-path (must Save / redeploy)
 
-1. **Emails** → create mailbox `contact@smartmortgagecalc.com` and set/reset its password (you will use this as `SMTP_PASS`).
-2. **Node.js app** for this site → **Environment variables** → add at least:
-   - `SMTP_USER` = `contact@smartmortgagecalc.com`
-   - `SMTP_PASS` = *(that mailbox password, no quotes)*
-   - Optional: `SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465`
-3. **Save**, then **Restart / Redeploy** the Node.js app (env changes do not apply to an already-running process).
-4. Submit the contact form again. Success shows *Thanks — your message was sent.*
-5. If it still fails, open **Runtime Logs** (Hostinger → your Node.js site → Logs / Runtime logs) and look for:
-   - `Contact form received but SMTP is not configured (missing: …)` → env vars still not loaded
-   - `[contact] SMTP env presence: { SMTP_USER: false, SMTP_PASS: false, … }` → same (booleans only; passwords are never logged)
-   - `Contact form SMTP send failed:` / `Email login failed` → vars are present but auth/connection failed
+Per [Hostinger docs](https://docs.hostinger.com/node.js/environment-variables): variables are injected into **both build and the running app**, but only after you **Save** (which **redeploys**). “Unsaved changes” = not applied. A running process will not pick up new vars until redeploy finishes.
+
+Exact path:
+
+1. **hPanel** → **Websites** → open **smartmortgagecalc.com** (the Node.js site — not CDN-only / static, not a different domain).
+2. Sidebar → **Environment variables** *or* **Deployments** → **Settings & Redeploy** → Environment variables.
+3. **Add environment variable** (or **Import .env**):
+   - Easiest: `RESEND_API_KEY` = `re_…`
+   - Or SMTP: `SMTP_USER` = `contact@smartmortgagecalc.com`, `SMTP_PASS` = *(Emails → mailbox password, no quotes)*
+   - Optional: `SMTP_HOST` = `smtp.hostinger.com`, `SMTP_PORT` = `465`
+4. Use the show/hide toggle to confirm values are non-empty (masked `••••` with empty value is a common mistake).
+5. **Save** — wait until redeploy finishes. If needed: **Deployments** → **Settings & Redeploy** → **Save and Redeploy** (ZIP deploys can keep “Use previous files”).
+6. Verify: `https://www.smartmortgagecalc.com/api/contact/health` → `"emailConfigured": true`.
+7. Submit the contact form. Success: *Thanks — your message was sent.*
+8. If still failing → **Runtime Logs**. Look for `email env presence` / Resend or SMTP send errors.
+
+**Common pitfalls**
+
+| Pitfall | What happens |
+| --- | --- |
+| Vars set but not Saved / redeploy not finished | 503; health shows false |
+| Mailbox under **Emails** but no Node env vars | 503 |
+| Wrong website / CDN panel vs this Node app | 503 |
+| Typed `smtp_user` / spaces / `NEXT_PUBLIC_SMTP_*` | Ignored; use exact names |
+| Health URL 404 | This code not deployed yet — push/redeploy first |
 
 Locally: copy `.env.example` → `.env.local`, fill the same vars, and run `npm run dev`.
 
@@ -111,7 +153,7 @@ Locally: copy `.env.example` → `.env.local`, fill the same vars, and run `npm 
 1. Set your production domain in `src/lib/site.ts` (`SITE.url`) — this drives canonicals, sitemap, and Open Graph URLs.
 2. Fill in `COMPANY` details (legal name, address) — used on the legal/contact pages. Public contact email is `SITE.contactEmail`.
 3. Add your AdSense ID and affiliate URL(s) in `MONETIZATION` when ready to monetize.
-4. Configure contact-form SMTP on the host (see **Contact form email** above). Without `SMTP_USER` / `SMTP_PASS`, production returns HTTP 503 (*server email is not configured*).
+4. Configure contact-form email on the host (see **Contact form email** above). Without `RESEND_API_KEY` or `SMTP_USER`/`SMTP_PASS`, production returns HTTP 503.
 5. Replace the indicative `defaultRate` / `ratesAsOf` with a live rate source and keep them current (good for E-E-A-T).
 6. Refresh the per-state data in `src/lib/states.ts` from an authoritative source on a schedule.
 7. Verify the site and submit the sitemap in Google Search Console; apply for AdSense once you have original content and steady traffic.

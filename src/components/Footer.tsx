@@ -12,7 +12,7 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
             <Image
-              src="/images/heroes/home.png"
+              src="/images/heroes/home.webp"
               alt=""
               width={32}
               height={32}
