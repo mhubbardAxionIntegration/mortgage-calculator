@@ -146,34 +146,32 @@ export function AmortizationSchedulePanel({
       aria-label="Amortization schedule"
       className={`overflow-hidden rounded-2xl border border-slate-200 bg-white ${className}`.trim()}
     >
-      <div className="flex flex-wrap items-center justify-between gap-3 p-4 sm:p-5">
+      <div className="flex items-center justify-between gap-3 p-4 sm:p-5">
         <button
           type="button"
           aria-expanded={expanded}
           aria-controls={panelId}
           {...bindTap(() => setExpanded((v) => !v))}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-sky-800 hover:text-sky-900"
+          className="inline-flex min-w-0 items-center gap-2 text-left text-sm font-semibold text-sky-800 hover:text-sky-900"
         >
           <span
             aria-hidden
-            className={`inline-block text-xs transition-transform ${expanded ? "rotate-90" : ""}`}
+            className={`inline-block shrink-0 text-xs transition-transform ${expanded ? "rotate-90" : ""}`}
           >
             &#9654;
           </span>
           {expanded ? "Hide amortization schedule" : "View amortization schedule"}
         </button>
 
-        {expanded && (
-          <button
-            type="button"
-            {...bindTap(handleDownloadPdf)}
-            disabled={pdfBusy}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-sky-400 hover:text-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <span aria-hidden>&#8595;</span>{" "}
-            {pdfBusy ? "Preparing…" : "Download PDF"}
-          </button>
-        )}
+        <button
+          type="button"
+          {...bindTap(handleDownloadPdf)}
+          disabled={pdfBusy}
+          className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-sky-400 hover:text-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <span aria-hidden>&#8595;</span>{" "}
+          {pdfBusy ? "Preparing…" : "Download PDF"}
+        </button>
       </div>
 
       {pdfError && (

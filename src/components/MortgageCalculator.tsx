@@ -702,8 +702,11 @@ function MortgageCalculatorInner({
         </div>
       </div>
 
-      {/* Amortization */}
-      {mode === "payment" && schedule.length > 0 && (
+      {/*
+        In-card amortization + PDF when this calculator is used standalone.
+        Home / located pages pass onSummaryChange and render AmortizationSchedulePanel instead.
+      */}
+      {!onSummaryChange && mode === "payment" && schedule.length > 0 && (
         <div className="border-t border-slate-200 p-5 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <button
