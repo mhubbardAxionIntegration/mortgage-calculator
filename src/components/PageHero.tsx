@@ -25,8 +25,8 @@ export function PageHero({
         alt={hero.alt}
         fill
         preload
-        fetchPriority="high"
         sizes="100vw"
+        quality={60}
         className="object-cover object-center"
       />
       <div

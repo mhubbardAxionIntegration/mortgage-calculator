@@ -19,7 +19,7 @@ export function Header() {
             width={40}
             height={40}
             className="h-10 w-10 shrink-0 rounded-lg object-cover shadow-sm ring-1 ring-slate-200"
-            loading="eager"
+            fetchPriority="low"
           />
           <span className="flex min-w-0 flex-col text-left">
             <span className="truncate">Smart Mortgage</span>

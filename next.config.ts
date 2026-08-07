@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
     // the source files — cache optimized variants aggressively so a CDN/browser
     // (and the on-disk image cache) never has to re-run sharp for them.
     minimumCacheTTL: 31_536_000,
+    // 60 lets PageHero request a lower-quality re-encode for the full-bleed
+    // hero (it sits under a heavy gradient overlay, so the loss is invisible)
+    // without changing the site-wide default of 75 used everywhere else.
+    qualities: [60, 75],
   },
   async redirects() {
     return [
