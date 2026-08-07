@@ -1,6 +1,10 @@
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { SITE } from "@/lib/site";
-import type { PageHeroConfig } from "@/lib/pageHeroes";
+import {
+  HERO_INTRINSIC_SIZE,
+  mobileHeroSrc,
+  type PageHeroConfig,
+} from "@/lib/pageHeroes";
 
 type Props = {
   hero: PageHeroConfig;
@@ -10,7 +14,18 @@ type Props = {
   children?: React.ReactNode;
 };
 
-/** Full-bleed panoramic property hero for major pages. */
+/** Tailwind's `sm` breakpoint — matches the min-height switch below. */
+const DESKTOP_MEDIA = "(min-width: 640px)";
+
+/**
+ * Full-bleed panoramic property hero for major pages.
+ *
+ * Art-directed: phones (<640px) get a pre-built static mobile-width WebP
+ * (see `scripts/optimize-heroes-mobile.mjs`) served with no `/_next/image`
+ * round trip at all, so the LCP image never waits on a cold sharp
+ * resize/re-encode on constrained hosting. Desktop (>=640px) keeps using
+ * the Next.js image optimizer, which is already fast/cached there.
+ */
 export function PageHero({
   hero,
   title,
@@ -18,17 +33,42 @@ export function PageHero({
   showBrand = true,
   children,
 }: Props) {
+  const mobileSrc = mobileHeroSrc(hero.src);
+
+  const {
+    props: { srcSet: desktopSrcSet },
+  } = getImageProps({
+    src: hero.src,
+    alt: hero.alt,
+    width: HERO_INTRINSIC_SIZE.width,
+    height: HERO_INTRINSIC_SIZE.height,
+    quality: 60,
+    sizes: "100vw",
+  });
+
   return (
     <section className="relative isolate min-h-[16rem] overflow-hidden sm:min-h-[20rem]">
-      <Image
-        src={hero.src}
-        alt={hero.alt}
-        fill
-        preload
-        sizes="100vw"
-        quality={60}
-        className="object-cover object-center"
-      />
+      {/*
+        No explicit `<link rel="preload">` here on purpose: React/Next's
+        automatic <link> hoisting for Server Components drops the `media`
+        attribute and only keeps one resource per `as` type, so a
+        media-scoped mobile-vs-desktop preload pair silently collapses into
+        a single *unconditional* preload — which would preload the desktop
+        srcset on phones and defeat this whole optimization. The browser's
+        preload scanner already discovers this `<picture>` immediately (it's
+        the first thing in <body>), and `fetchPriority="high"` plus no
+        `loading="lazy"` gives it top priority without that footgun.
+      */}
+      <picture className="absolute inset-0 block h-full w-full">
+        <source media={DESKTOP_MEDIA} srcSet={desktopSrcSet} sizes="100vw" />
+        <img
+          src={mobileSrc}
+          alt={hero.alt}
+          fetchPriority="high"
+          decoding="async"
+          className="h-full w-full object-cover object-center"
+        />
+      </picture>
       <div
         aria-hidden
         className="absolute inset-0 bg-gradient-to-b from-slate-950/55 via-slate-950/45 to-slate-950/70"

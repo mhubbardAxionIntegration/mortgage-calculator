@@ -35,11 +35,23 @@ function parseFredCsv(csv: string): { date: string; value: number } | null {
   return null;
 }
 
+// FRED's CSV endpoint is occasionally slow. This function backs a page-level
+// `await` that blocks the entire HTML response (see getMortgageRatesWithFallback
+// call sites), so a slow upstream must never be allowed to stall FCP/LCP for
+// everyone — bail out to the cached/fallback rate quickly instead.
+const FETCH_TIMEOUT_MS = 1_500;
+
 async function fetchLiveMortgageRates(): Promise<LiveMortgageRates | null> {
   try {
     const [res30, res15] = await Promise.all([
-      fetch(FRED_CSV.rate30, { next: { revalidate: 86_400 } }),
-      fetch(FRED_CSV.rate15, { next: { revalidate: 86_400 } }),
+      fetch(FRED_CSV.rate30, {
+        next: { revalidate: 86_400 },
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      }),
+      fetch(FRED_CSV.rate15, {
+        next: { revalidate: 86_400 },
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      }),
     ]);
 
     if (!res30.ok || !res15.ok) return null;

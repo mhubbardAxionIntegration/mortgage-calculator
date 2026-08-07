@@ -51,6 +51,18 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Static hero art (desktop source + the pre-built mobile/ art-direction
+        // copies used by PageHero) — content only changes when we touch the
+        // files, so let browsers/Hostinger cache them for a year.
+        source: "/images/heroes/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
         source: "/ads.txt",
         headers: [
           { key: "Content-Type", value: "text/plain; charset=utf-8" },
