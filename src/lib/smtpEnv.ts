@@ -4,6 +4,11 @@
  * Delivery order (see /api/contact): Resend (RESEND_API_KEY) → SMTP
  * (SMTP_USER + SMTP_PASS) → 503 in production.
  *
+ * Hostinger auto-reply / vacation usually needs inbound MX delivery. Prefer
+ * Resend so mail arrives at contact@ via MX. Authenticating SMTP as contact@
+ * and sending To contact@ is often treated as local/self-sent and skips
+ * auto-reply even when From/Reply-To headers are correct.
+ *
  * Primary SMTP names (set these on Hostinger): SMTP_USER, SMTP_PASS
  * Optional aliases are accepted so a misnamed panel entry still works.
  *
@@ -53,8 +58,9 @@ export function resolveResendApiKey(): string | undefined {
 }
 
 /**
- * From address for Resend.
- * Use a verified domain sender in production, or onboarding@resend.dev for tests.
+ * From address for Resend (must be a verified domain sender, e.g. contact@).
+ * Never the visitor — visitor goes in Reply-To only.
+ * Use onboarding@resend.dev only for tests before domain verification.
  */
 export function resolveResendFrom(
   siteName: string,

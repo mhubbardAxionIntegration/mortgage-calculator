@@ -63,9 +63,18 @@ Trust/compliance pages required for AdSense approval are included: `/about`, `/c
 
 `POST /api/contact` runs on the **Node.js** runtime (not Edge). Delivery order:
 
-1. **Resend** when `RESEND_API_KEY` is set (HTTPS API — often the most reliable on Hostinger)
+1. **Resend** when `RESEND_API_KEY` is set (HTTPS API — preferred; inbound MX so Hostinger auto-reply can fire)
 2. **SMTP** via nodemailer when `SMTP_USER` + `SMTP_PASS` are set (defaults to `smtp.hostinger.com`)
 3. **503** in production if neither path is configured
+
+**Headers (both paths):** `To` = `contact@smartmortgagecalc.com` (inbox), `From` = site mailbox / verified sender (**never** the visitor), `Reply-To` = visitor’s submitted email.
+
+### Hostinger auto-reply / vacation
+
+Hostinger automatic reply usually requires **inbound MX** delivery. External mail *to* `contact@` triggers it; contact-form mail sent via SMTP authenticated as the same mailbox (`From=contact@` → `To=contact@`) is often treated as **local/self-sent** and **skipped**, even with a correct `Reply-To`.
+
+- **For auto-reply to work on form submissions:** set `RESEND_API_KEY`, verify `smartmortgagecalc.com` in Resend (or set `RESEND_FROM` to a verified address such as `contact@…`), redeploy. Resend delivers to the inbox via MX → auto-reply fires; replies still go to the visitor via `Reply-To`.
+- **SMTP-only:** form delivery can succeed, but Hostinger auto-reply often will **not**. Use Resend for auto-reply, or accept that only external inbound mail triggers the vacation filter.
 
 This app does **not** use `output: 'standalone'`. Hostinger should run SSR with Application type `next`, build `npm run build`, output `.next`, and start via `npm start` (`next start`). Server env vars are read at **runtime** from `process.env` — they are **not** baked into the client bundle. Do **not** put secrets in `next.config` `env` or as `NEXT_PUBLIC_*`.
 

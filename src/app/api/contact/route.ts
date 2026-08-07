@@ -28,8 +28,23 @@ type SmtpTransportOptions = {
   auth: { user: string; pass: string };
 };
 
+type ContactMail = {
+  from: string;
+  to: string;
+  replyTo: string;
+  subject: string;
+  text: string;
+};
+
 function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+/** Bare address for SMTP envelope (strips `Name <addr>` display forms). */
+function bareEmail(value: string): string {
+  const angled = value.match(/<([^>]+)>/);
+  if (angled?.[1]) return angled[1].trim();
+  return value.trim();
 }
 
 function isLikelyConnectionError(err: unknown): boolean {
@@ -70,37 +85,43 @@ function smtpErrorKind(err: unknown): "auth" | "connection" | "other" {
   return "other";
 }
 
+/**
+ * Hostinger vacation / auto-reply typically fires for **inbound MX** mail.
+ * SMTP auth as contact@ with From=contact@ and To=contact@ is often treated as
+ * local/self-sent and skipped — headers alone (Reply-To) do not fix that.
+ * Prefer Resend so the message arrives via MX; see README “Hostinger auto-reply”.
+ */
 async function sendViaSmtp(
   options: SmtpTransportOptions,
-  mail: {
-    from: string;
-    to: string;
-    replyTo: string;
-    subject: string;
-    text: string;
-  },
+  mail: ContactMail,
+  envelope: { from: string; to: string },
 ) {
   const nodemailer = await import("nodemailer");
   const transporter = nodemailer.createTransport(options);
   try {
-    await transporter.sendMail(mail);
+    await transporter.sendMail({
+      from: mail.from,
+      to: mail.to,
+      replyTo: mail.replyTo,
+      subject: mail.subject,
+      text: mail.text,
+      // Envelope MAIL FROM / RCPT TO — still same-mailbox SMTP in typical Hostinger setups.
+      envelope,
+    });
   } finally {
     transporter.close();
   }
 }
 
-async function sendViaResend(mail: {
-  from: string;
-  to: string;
-  replyTo: string;
-  subject: string;
-  text: string;
-}): Promise<{ ok: true } | { ok: false; error: string }> {
+async function sendViaResend(
+  mail: ContactMail,
+): Promise<{ ok: true } | { ok: false; error: string }> {
   const apiKey = resolveResendApiKey();
   if (!apiKey) return { ok: false, error: "RESEND_API_KEY missing" };
 
   const { Resend } = await import("resend");
   const resend = new Resend(apiKey);
+  // Same To / Reply-To / body as SMTP; From must be a Resend-verified domain address.
   const { error } = await resend.emails.send({
     from: mail.from,
     to: mail.to,
@@ -119,8 +140,15 @@ async function sendViaResend(mail: {
  * Accepts contact-form submissions without exposing the inbox address to the
  * browser beyond the public SITE.contactEmail already shown on /contact.
  *
+ * Headers (both paths):
+ *   to:      contact inbox (SITE.contactEmail / CONTACT_EMAIL)
+ *   from:    site mailbox / verified sender — NEVER the visitor
+ *   replyTo: visitor’s submitted email
+ *
  * Delivery order: Resend (RESEND_API_KEY) → Hostinger SMTP (SMTP_USER/PASS)
  * → 503 in production when neither is configured.
+ *
+ * Auto-reply: use Resend (inbound MX). SMTP self-send often skips Hostinger auto-reply.
  */
 export async function POST(request: Request) {
   let body: ContactBody;
@@ -147,14 +175,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Message is too long." }, { status: 400 });
   }
 
+  // To = site inbox; Reply-To = visitor. Never put the visitor in From.
   const inbox = getContactEmail();
   const subject = `[${SITE.shortName}] Contact form, ${name}`;
   const text = [`Name: ${name}`, `Email: ${email}`, message].join("\n");
-  const mailBase = { to: inbox, replyTo: email, subject, text };
+  const mailBase = {
+    to: inbox,
+    replyTo: email,
+    subject,
+    text,
+  };
 
   const smtp = getSmtpConfig();
 
-  // Preferred path: Resend API (often more reliable env injection than SMTP).
+  // Preferred: Resend → arrives via MX → Hostinger auto-reply can fire.
   if (resolveResendApiKey()) {
     const from = resolveResendFrom(SITE.name, SITE.contactEmail);
     try {
@@ -193,8 +227,20 @@ export async function POST(request: Request) {
   const { host, user, pass, port, secure, ready } = smtp;
 
   if (ready && user && pass) {
-    // From must be the authenticated SMTP mailbox (raw SMTP_USER), not a display name.
-    const mail = { from: user, to: inbox, replyTo: email, subject, text };
+    // From = authenticated mailbox (raw SMTP_USER), never the visitor.
+    // Prefer SITE.contactEmail when it matches the login address.
+    const fromAddress =
+      bareEmail(user).toLowerCase() === SITE.contactEmail.toLowerCase()
+        ? SITE.contactEmail
+        : bareEmail(user);
+    const mail: ContactMail = {
+      from: fromAddress,
+      to: inbox,
+      replyTo: email,
+      subject,
+      text,
+    };
+    const envelope = { from: bareEmail(user), to: bareEmail(inbox) };
     const primary: SmtpTransportOptions = {
       host,
       port,
@@ -203,7 +249,7 @@ export async function POST(request: Request) {
     };
 
     try {
-      await sendViaSmtp(primary, mail);
+      await sendViaSmtp(primary, mail, envelope);
       return NextResponse.json({ ok: true, via: "smtp" });
     } catch (primaryErr) {
       // Hostinger: 465+SSL is preferred; if the host blocks it, retry 587 STARTTLS.
@@ -223,6 +269,7 @@ export async function POST(request: Request) {
           await sendViaSmtp(
             { host, port: 587, secure: false, auth: { user, pass } },
             mail,
+            envelope,
           );
           return NextResponse.json({ ok: true, via: "smtp" });
         } catch (fallbackErr) {
@@ -266,7 +313,12 @@ export async function POST(request: Request) {
 
   // No delivery path configured: keep secrets out of the client.
   if (process.env.NODE_ENV !== "production") {
-    console.info("[contact] (dev, email not configured)", { to: inbox, subject, text });
+    console.info("[contact] (dev, email not configured)", {
+      to: inbox,
+      replyTo: email,
+      subject,
+      text,
+    });
     return NextResponse.json({ ok: true, dev: true });
   }
 
