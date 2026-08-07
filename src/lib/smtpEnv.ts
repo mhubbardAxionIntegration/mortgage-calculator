@@ -93,19 +93,16 @@ export type SmtpConfig = {
   ready: boolean;
 };
 
-export function getSmtpConfig(opts: {
-  siteName: string;
-  fallbackEmail: string;
-}): SmtpConfig {
+/**
+ * SMTP transport settings. `from` is the raw mailbox login (SMTP_USER) —
+ * Hostinger expects From to match the authenticated user, not a display-name form.
+ */
+export function getSmtpConfig(): SmtpConfig {
   const host = envValue("SMTP_HOST") || "smtp.hostinger.com";
   const user = resolveSmtpUser();
   const pass = resolveSmtpPass();
   const port = parseSmtpPort(envValue("SMTP_PORT"), 465);
-  const from =
-    envValue("SMTP_FROM") ||
-    (user
-      ? `"${opts.siteName}" <${user}>`
-      : `"${opts.siteName}" <${opts.fallbackEmail}>`);
+  const from = user ?? "";
   const secure = resolveSmtpSecure(
     port,
     envValue("SMTP_SECURE")?.toLowerCase(),

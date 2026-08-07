@@ -148,14 +148,11 @@ export async function POST(request: Request) {
   }
 
   const inbox = getContactEmail();
-  const subject = `[${SITE.shortName}] Contact form — ${name}`;
-  const text = [`Name: ${name}`, `Reply-to: ${email}`, "", message].join("\n");
+  const subject = `[${SITE.shortName}] Contact form, ${name}`;
+  const text = [`Name: ${name}`, `Email: ${email}`, message].join("\n");
   const mailBase = { to: inbox, replyTo: email, subject, text };
 
-  const smtp = getSmtpConfig({
-    siteName: SITE.name,
-    fallbackEmail: SITE.contactEmail,
-  });
+  const smtp = getSmtpConfig();
 
   // Preferred path: Resend API (often more reliable env injection than SMTP).
   if (resolveResendApiKey()) {
@@ -193,10 +190,11 @@ export async function POST(request: Request) {
     }
   }
 
-  const { host, user, pass, port, from, secure, ready } = smtp;
+  const { host, user, pass, port, secure, ready } = smtp;
 
   if (ready && user && pass) {
-    const mail = { from, to: inbox, replyTo: email, subject, text };
+    // From must be the authenticated SMTP mailbox (raw SMTP_USER), not a display name.
+    const mail = { from: user, to: inbox, replyTo: email, subject, text };
     const primary: SmtpTransportOptions = {
       host,
       port,
