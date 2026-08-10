@@ -114,11 +114,11 @@ export function isAnalyticsEnabled(): boolean {
 }
 
 /**
- * Whether a cookie-consent banner is needed. True once AdSense or analytics
- * is configured (publisher script and/or tracking).
+ * Whether optional first-party analytics consent UI is needed.
+ * Ad consent for EEA/UK/CH uses Google Privacy & messaging (certified CMP).
  */
 export function isConsentRequired(): boolean {
-  return isAdsEnabled() || isAnalyticsEnabled();
+  return isAnalyticsEnabled();
 }
 
 export function isDev(): boolean {

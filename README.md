@@ -53,7 +53,8 @@ If `LICENSE_SECRET` is unset, the system gracefully falls back to the shared unl
 
 All monetization is **config-driven and off by default** — nothing renders with placeholder values, so there are no broken links or empty ad units in production. Edit the `MONETIZATION` and `COMPANY` objects in `src/lib/site.ts`:
 
-- **Display ads (Google AdSense):** set `MONETIZATION.adsenseClientId` (e.g. `ca-pub-...`) and the per-slot IDs in `MONETIZATION.ads`. The AdSense script loads only when an ID is present; `<AdSlot>` renders real units in production and labeled placeholders in development. Placements sit above the fold below the calculator and mid-content.
+- **Display ads (Google AdSense):** set `MONETIZATION.adsenseClientId` (e.g. `ca-pub-...`) and optional per-slot IDs in `MONETIZATION.ads`. The site loads Consent Mode v2 defaults, Google Funding Choices / Privacy & messaging (Google's certified IAB TCF CMP), then `adsbygoogle.js`. **Required in AdSense:** Privacy & messaging → European regulations → create and **Publish** a message so the CMP UI appears for EEA/UK/Switzerland. Also keep `public/ads.txt` / `/ads.txt` in sync with your publisher ID.
+- **Analytics (optional):** set `MONETIZATION.analyticsId` to show a separate analytics Accept/Decline banner.
 - **Affiliate / lead generation:** set `MONETIZATION.affiliate.rateQuoteUrl` to your LendingTree / Rocket Mortgage / FlexOffers tracking link. "Get personalized rates" CTAs then appear in the calculator results (pre-filled with the user's price, down payment, rate, term, state, and loan type as query params), on each page, and use `rel="sponsored nofollow"`. An FTC disclosure is shown automatically.
 - **Company cross-promo:** optional CTA powered by `COMPANY` / `MONETIZATION.showCompanyPromo` (disabled when no external website is configured) plus legal-page company details.
 

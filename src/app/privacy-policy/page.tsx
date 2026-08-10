@@ -144,11 +144,15 @@ export default function PrivacyPage() {
         for cross-site advertising.
       </p>
       <p>
-        The Site&rsquo;s cookie banner offers a single choice to accept or
-        decline non-essential analytics and advertising scripts, and the
-        &ldquo;Cookie preferences&rdquo; footer control lets you withdraw or
-        change that choice. It is not a vendor-level consent-management
-        platform. You can also manage Google ad personalization in{" "}
+        Advertising consent for visitors in regulated regions is collected
+        through Google&rsquo;s Privacy &amp; messaging European regulations
+        message (Funding Choices), which is a Google-certified consent
+        management platform integrated with the IAB Europe Transparency and
+        Consent Framework (TCF). That message identifies relevant ad partners
+        and records consent or refusal for personalized ads. The footer
+        &ldquo;Cookie preferences&rdquo; control re-opens that Google privacy
+        message when it is available (or your analytics choice if analytics is
+        enabled). You can also manage Google ad personalization in{" "}
         <a
           href="https://myadcenter.google.com/"
           target="_blank"
@@ -178,15 +182,13 @@ export default function PrivacyPage() {
       </p>
       <p>
         For visitors in the European Economic Area, the United Kingdom, and
-        Switzerland, personalized Google ads must not be served unless and until
-        we implement a Google-certified consent management platform (CMP)
-        integrated with the IAB Europe Transparency and Consent Framework
-        (TCF), obtain the required consent, and identify the relevant ad
-        partners. Until that is in place, the Site&rsquo;s basic cookie banner
-        is not a substitute for a certified CMP and cannot support personalized
-        AdSense ads for visitors in those regions. Where permitted by Google
-        and applicable law, non-personalized or limited ads may be available
-        instead.
+        Switzerland, personalized Google ads are served only after the required
+        consent is obtained through that certified CMP and related Consent Mode
+        signals. Where consent is not given, Google may still show
+        non-personalized or limited ads where permitted. The Site also sets
+        Google Consent Mode defaults before ad tags load so advertising storage
+        and personalization remain denied in regulated regions until the CMP
+        updates them.
       </p>
 
       <h2>Hosting and security logs</h2>

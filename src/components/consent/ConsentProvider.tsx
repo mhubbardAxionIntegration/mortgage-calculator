@@ -18,27 +18,22 @@ declare global {
   }
 }
 
-/** Push a Google Consent Mode v2 update so ad/analytics cookies match choice. */
+/** Push a Google Consent Mode v2 update so analytics cookies match choice. */
 function updateConsentMode(granted: boolean) {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
   const v = granted ? "granted" : "denied";
+  // Ad consent for EEA/UK/CH is owned by Google Privacy & messaging (TCF CMP).
+  // This helper only updates analytics_storage for the optional GA banner.
   window.gtag("consent", "update", {
-    ad_storage: v,
-    ad_user_data: v,
-    ad_personalization: v,
-    // Only turn off analytics when the visitor explicitly declines.
-    analytics_storage: granted ? "granted" : "denied",
+    analytics_storage: v,
   });
 }
 
-/** Restore first-visit defaults when the visitor re-opens cookie preferences. */
+/** Restore analytics default when the visitor re-opens preferences. */
 function resetConsentModeDefaults() {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
   window.gtag("consent", "update", {
-    analytics_storage: "granted",
-    ad_storage: "denied",
-    ad_user_data: "denied",
-    ad_personalization: "denied",
+    analytics_storage: "denied",
   });
 }
 

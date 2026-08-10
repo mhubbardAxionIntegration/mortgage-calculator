@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/schema";
-import { MONETIZATION, SITE, isAdsEnabled } from "@/lib/site";
+import { MONETIZATION, SITE } from "@/lib/site";
 import { ConsentProvider } from "@/components/consent/ConsentProvider";
 import { CookieConsent } from "@/components/consent/CookieConsent";
 import { ConsentedScripts } from "@/components/consent/ConsentedScripts";
+import { AdSenseConsentScripts } from "@/components/consent/AdSenseConsentScripts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,20 +67,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} h-full`}>
       <head>
-        {/* Google AdSense: required in <head> on every page for site readiness / Auto ads. */}
-        {isAdsEnabled() ? (
-          <Script
-            id="adsense"
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${MONETIZATION.adsenseClientId}`}
-            crossOrigin="anonymous"
-            strategy="beforeInteractive"
-          />
-        ) : null}
+        {/* Consent Mode defaults → Funding Choices (certified CMP) → adsbygoogle */}
+        <AdSenseConsentScripts />
       </head>
       <body className="flex min-h-full flex-col bg-[var(--surface,#f8fafc)] text-slate-900">
         <ConsentProvider>
-          {/* Analytics (and any consent-gated extras) after choice — AdSense loads above. */}
           <ConsentedScripts />
           <JsonLd data={organizationSchema()} />
           <a
