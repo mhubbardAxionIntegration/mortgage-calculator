@@ -53,6 +53,10 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
   },
+  // Official AdSense site-verification meta (helps "Couldn't verify your site").
+  other: {
+    "google-adsense-account": MONETIZATION.adsenseClientId,
+  },
 };
 
 export default function RootLayout({

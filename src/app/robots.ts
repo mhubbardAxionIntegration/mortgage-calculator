@@ -12,6 +12,10 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "*", ...publicAllow },
       { userAgent: "Googlebot", ...publicAllow },
       { userAgent: "Googlebot-Image", ...publicAllow },
+      // AdSense crawlers — explicit allow (also covered by "*").
+      { userAgent: "Mediapartners-Google", ...publicAllow },
+      { userAgent: "AdsBot-Google", ...publicAllow },
+      { userAgent: "AdsBot-Google-Mobile", ...publicAllow },
       { userAgent: "Bingbot", ...publicAllow },
     ],
     sitemap: absoluteUrl("/sitemap.xml"),
