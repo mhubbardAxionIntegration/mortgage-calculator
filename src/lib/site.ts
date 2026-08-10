@@ -63,14 +63,15 @@ export const COMPANY = {
  * URLs, so no ads or affiliate links render with placeholder values.
  */
 export const MONETIZATION = {
-  // Google AdSense publisher ID. Leave empty — this site does not run ads or tracking pixels.
-  adsenseClientId: "",
+  // Google AdSense publisher ID (required in <head> for site verification / Auto ads).
+  adsenseClientId: "ca-pub-1060204849522425",
+  // Fill these with ad unit IDs from AdSense when you create placements.
   ads: {
     inContent: "",
     sidebar: "",
     footer: "",
   },
-  // Google Analytics ID. Leave empty — this site does not use analytics tracking.
+  // Google Analytics ID. Leave empty while analytics is unused.
   analyticsId: "",
   affiliate: {
     // Leave empty while affiliate lead-gen is disabled (avoids sending users to trackers).
@@ -102,7 +103,7 @@ export function isAdsEnabled(): boolean {
   return MONETIZATION.adsenseClientId.trim().length > 0;
 }
 
-/** True when at least one AdSense unit can paint (avoid loading adsbygoogle.js for empty slots). */
+/** True when at least one AdSense unit slot ID is configured. */
 export function isAdServingEnabled(): boolean {
   if (!isAdsEnabled()) return false;
   return Object.values(MONETIZATION.ads).some((id) => id.trim().length > 0);
@@ -113,12 +114,11 @@ export function isAnalyticsEnabled(): boolean {
 }
 
 /**
- * Whether a cookie-consent banner is needed at all. Only true once a
- * non-essential script (ads or analytics) is actually configured, so the
- * default out-of-the-box site stays banner-free.
+ * Whether a cookie-consent banner is needed. True once AdSense or analytics
+ * is configured (publisher script and/or tracking).
  */
 export function isConsentRequired(): boolean {
-  return isAdServingEnabled() || isAnalyticsEnabled();
+  return isAdsEnabled() || isAnalyticsEnabled();
 }
 
 export function isDev(): boolean {

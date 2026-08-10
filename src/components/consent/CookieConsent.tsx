@@ -5,9 +5,9 @@ import { useConsent } from "./ConsentProvider";
 import { isConsentRequired } from "@/lib/site";
 
 /**
- * Lightweight cookie-consent banner. Only appears when a non-essential script
- * (ads/analytics) is configured and the visitor hasn't chosen yet. Accepting
- * lets ConsentedScripts load AdSense/GA; declining keeps them off.
+ * Lightweight cookie-consent banner. Only appears when AdSense or analytics is
+ * configured and the visitor hasn't chosen yet. Accepting allows analytics via
+ * ConsentedScripts; AdSense publisher script is always in <head> for Google.
  */
 export function CookieConsent() {
   const { consent, ready, setConsent } = useConsent();
