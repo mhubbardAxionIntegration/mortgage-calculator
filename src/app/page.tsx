@@ -5,6 +5,7 @@ import { StateAwareCalculatorHub } from "@/components/StateAwareCalculatorHub";
 import { CalculatorSkeleton } from "@/components/CalculatorSkeleton";
 import { CalculatorWithRates, RatesPanel } from "@/components/CalculatorWithRates";
 import { PageHero } from "@/components/PageHero";
+import { HomeEditorialContent } from "@/components/HomeEditorialContent";
 import { LOAN_TYPES } from "@/lib/loanTypes";
 import { getState } from "@/lib/states";
 import { BLOG_POSTS_SORTED } from "@/lib/blog";
@@ -110,6 +111,8 @@ export default async function Home({
           </p>
         </div>
       </section>
+
+      <HomeEditorialContent />
 
       <section id="calculator" className="scroll-mt-24 bg-gradient-to-b from-slate-50 to-white">
         <div className="mx-auto max-w-6xl px-4 pb-10 pt-10 sm:pt-12">
