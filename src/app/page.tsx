@@ -15,6 +15,8 @@ import { webApplicationSchema } from "@/lib/schema";
 import { getMortgageRatesWithFallback, formatRateDate } from "@/lib/mortgageRates";
 import { SITE } from "@/lib/site";
 import { PAGE_HEROES } from "@/lib/pageHeroes";
+import { searchParamsLookDiluting } from "@/lib/crawl";
+import { AdSlot } from "@/components/AdSlot";
 
 const FEATURED_LOAN_SLUGS = [
   "fha-mortgage-calculator",
@@ -22,16 +24,27 @@ const FEATURED_LOAN_SLUGS = [
   "arm-mortgage-calculator",
 ] as const;
 
-export const metadata: Metadata = {
-  title: { absolute: SITE.seo.homeTitle },
-  description: SITE.seo.homeDescription,
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: SITE.seo.homeTitle,
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const noindex = searchParamsLookDiluting(params);
+  return {
+    title: { absolute: SITE.seo.homeTitle },
     description: SITE.seo.homeDescription,
-    url: SITE.url,
-  },
-};
+    alternates: { canonical: "/" },
+    openGraph: {
+      title: SITE.seo.homeTitle,
+      description: SITE.seo.homeDescription,
+      url: SITE.url,
+    },
+    ...(noindex
+      ? { robots: { index: false, follow: true, googleBot: { index: false, follow: true } } }
+      : {}),
+  };
+}
 
 export default async function Home({
   searchParams,
@@ -136,6 +149,9 @@ export default async function Home({
 
           <div className="mx-auto mt-8 max-w-5xl">
             <RateCta />
+          </div>
+          <div className="mx-auto mt-10 max-w-5xl">
+            <AdSlot slot="inContent" />
           </div>
         </div>
       </section>

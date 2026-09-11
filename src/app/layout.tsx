@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   applicationName: SITE.name,
-  authors: [{ name: SITE.author.name }],
+  authors: [{ name: SITE.author.name, url: "/about" }],
   keywords: [
     "mortgage calculator",
     "mortgage payment calculator",
@@ -33,7 +33,6 @@ export const metadata: Metadata = {
     "mortgage calculator with taxes and insurance",
     "how much house can i afford",
   ],
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: SITE.name,

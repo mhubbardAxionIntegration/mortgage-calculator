@@ -7,6 +7,7 @@ import {
   BLOG_CATEGORIES,
   getCategory,
   getPostsByCategory,
+  isCategoryIndexable,
 } from "@/lib/blog";
 import { PAGE_HEROES, type PageHeroConfig } from "@/lib/pageHeroes";
 
@@ -31,14 +32,14 @@ export async function generateMetadata({
   const { category } = await params;
   const cat = getCategory(category);
   if (!cat) return {};
-  const posts = getPostsByCategory(cat.slug);
-  /** Sparse category hubs get noindex until they have enough unique posts. */
-  const thin = posts.length < 2;
+  const thin = !isCategoryIndexable(cat.slug);
   return {
     title: `${cat.name} — Mortgage Guides`,
     description: cat.description,
     alternates: { canonical: `/blog/category/${cat.slug}` },
-    ...(thin ? { robots: { index: false, follow: true } } : {}),
+    ...(thin
+      ? { robots: { index: false, follow: true, googleBot: { index: false, follow: true } } }
+      : {}),
   };
 }
 

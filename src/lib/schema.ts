@@ -64,6 +64,7 @@ export function organizationSchema() {
     url: SITE.url,
     description: SITE.description,
     logo: absoluteUrl("/icon.svg"),
+    email: SITE.contactEmail,
     parentOrganization: {
       "@type": "Organization",
       name: COMPANY.name,
@@ -77,6 +78,14 @@ export function personAuthorSchema() {
     name: SITE.author.name,
     jobTitle: SITE.author.role,
     description: SITE.author.bio,
+    url: absoluteUrl("/about"),
+    image: absoluteUrl(SITE.author.image),
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Franklin",
+      addressRegion: "GA",
+      addressCountry: "US",
+    },
     worksFor: {
       "@type": "Organization",
       name: COMPANY.name,

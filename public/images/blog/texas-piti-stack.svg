@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="Texas median-style PITI: $350,000, 20% down, 6.75% 30-year">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">Texas median-style PITI: $350,000, 20% down, 6.75% 30-year</text>
+  <text x="40" y="64" font-size="13" fill="#64748b">I loaded our Texas defaults (1.60% tax, ~$2,400 insurance). Escrow is not a rounding error.</text>
+  <line x1="72" y1="388" x2="832" y2="388" stroke="#e2e8f0"/>
+  
+      <rect x="90" y="146.92857142857144" width="229.33333333333334" height="241.07142857142856" rx="6" fill="#075985"/>
+      <text x="204.66666666666669" y="138.92857142857144" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$1,816</text>
+      <text x="204.66666666666669" y="410" text-anchor="middle" font-size="13" fill="#0f172a">P&amp;I</text>
+      
+      <rect x="337.33333333333337" y="326.0532079246617" width="229.33333333333334" height="61.94679207533828" rx="6" fill="#b45309"/>
+      <text x="452.00000000000006" y="318.0532079246617" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$467</text>
+      <text x="452.00000000000006" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Taxes</text>
+      
+      <rect x="584.6666666666667" y="361.451374824855" width="229.33333333333334" height="26.548625175144977" rx="6" fill="#9f1239"/>
+      <text x="699.3333333333334" y="353.451374824855" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$200</text>
+      <text x="699.3333333333334" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Insurance</text>
+      
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

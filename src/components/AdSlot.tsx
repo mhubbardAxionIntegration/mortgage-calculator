@@ -66,7 +66,7 @@ export function AdSlot({
     );
   }
 
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== "production" && slotId.trim().length > 0) {
     return (
       <aside
         aria-label={`${label} (placeholder)`}

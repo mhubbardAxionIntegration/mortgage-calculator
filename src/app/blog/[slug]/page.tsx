@@ -6,8 +6,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { BlogContent } from "@/components/BlogContent";
 import { RateCta } from "@/components/RateCta";
 import { AdSlot } from "@/components/AdSlot";
-import { BLOG_POSTS, BLOG_POSTS_SORTED, getPost, getCategory } from "@/lib/blog";
-import { blogPostingSchema } from "@/lib/schema";
+import { AuthorBio } from "@/components/AuthorBio";
+import { BLOG_POSTS, BLOG_POSTS_SORTED, getPost, getCategory, getPostFaqs } from "@/lib/blog";
+import { blogPostingSchema, faqPageSchema } from "@/lib/schema";
 import { absoluteUrl, SITE } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -25,6 +26,7 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.description,
+    authors: [{ name: SITE.author.name, url: "/about" }],
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       type: "article",
@@ -56,6 +58,7 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const url = absoluteUrl(`/blog/${post.slug}`);
+  const faqs = getPostFaqs(post);
   const category = getCategory(post.category);
   const related = BLOG_POSTS_SORTED.filter(
     (p) => p.slug !== post.slug && p.category === post.category,
@@ -75,6 +78,7 @@ export default async function BlogPostPage({
           updated: post.updated,
         })}
       />
+      {faqs.length > 0 ? <JsonLd data={faqPageSchema(faqs)} /> : null}
 
       <article className="mx-auto max-w-3xl px-4 py-8">
         <Breadcrumbs
@@ -113,25 +117,9 @@ export default async function BlogPostPage({
             {post.updated !== post.published && <> &middot; Updated {formatDate(post.updated)}</>}{" "}
             &middot; {post.readingMinutes} min read
           </p>
-          <p className="mt-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-600">
-            <strong className="text-slate-900">{SITE.author.name}</strong>
-            {" — "}
-            {SITE.author.bio}{" "}
-            <Link
-              href="/about"
-              className="font-medium text-sky-800 hover:text-sky-900"
-            >
-              About the editor
-            </Link>
-            {" · "}
-            <Link
-              href="/how-we-calculate"
-              className="font-medium text-sky-800 hover:text-sky-900"
-            >
-              Methodology
-            </Link>
-            .
-          </p>
+          <div className="mt-5">
+            <AuthorBio />
+          </div>
         </header>
 
         <div className="mt-8">
@@ -156,14 +144,6 @@ export default async function BlogPostPage({
           </aside>
         )}
 
-        <div className="mt-10">
-          <RateCta />
-        </div>
-
-        <div className="mt-10">
-          <AdSlot slot="inContent" />
-        </div>
-
         {related.length > 0 && (
           <section className="mt-12">
             <h2 className="text-lg font-bold text-slate-900">Keep reading</h2>
@@ -181,6 +161,14 @@ export default async function BlogPostPage({
             </div>
           </section>
         )}
+
+        <div className="mt-10">
+          <RateCta />
+        </div>
+
+        <div className="mt-10">
+          <AdSlot slot="inContent" />
+        </div>
 
         <p className="mt-10 rounded-lg bg-slate-50 p-4 text-xs leading-relaxed text-slate-500">
           This article is for general educational purposes only and is not

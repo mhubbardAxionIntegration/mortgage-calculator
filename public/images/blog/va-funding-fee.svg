@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="VA funding fee on a $400,000 $0-down purchase (illustrative)">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">VA funding fee on a $400,000 $0-down purchase</text><text x="40" y="58" font-size="18" font-weight="800" fill="#0f172a">(illustrative)</text>
+  <text x="40" y="86" font-size="13" fill="#64748b">First-use 2.15% vs subsequent-use 3.30% of loan — confirm current VA tables. Disability exemptions can be $0.</text>
+  <line x1="72" y1="388" x2="832" y2="388" stroke="#e2e8f0"/>
+  
+      <rect x="90" y="230.9383116883117" width="229.33333333333334" height="157.0616883116883" rx="6" fill="#075985"/>
+      <text x="204.66666666666669" y="222.9383116883117" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$8,600</text>
+      <text x="204.66666666666669" y="410" text-anchor="middle" font-size="13" fill="#0f172a">First use</text>
+      <text x="204.66666666666669" y="428" text-anchor="middle" font-size="11" fill="#64748b">2.15%</text>
+      <rect x="337.33333333333337" y="146.92857142857144" width="229.33333333333334" height="241.07142857142856" rx="6" fill="#b45309"/>
+      <text x="452.00000000000006" y="138.92857142857144" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$13,200</text>
+      <text x="452.00000000000006" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Subsequent use</text>
+      <text x="452.00000000000006" y="428" text-anchor="middle" font-size="11" fill="#64748b">3.30%</text>
+      <rect x="584.6666666666667" y="388" width="229.33333333333334" height="0" rx="6" fill="#0f766e"/>
+      <text x="699.3333333333334" y="380" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$0</text>
+      <text x="699.3333333333334" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Exempt</text>
+      <text x="699.3333333333334" y="428" text-anchor="middle" font-size="11" fill="#64748b">if qualified</text>
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

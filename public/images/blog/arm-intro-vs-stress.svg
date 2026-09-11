@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="$350,000 5/1 ARM vs 30-year fixed (P&amp;I only)">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">$350,000 5/1 ARM vs 30-year fixed (P&amp;I only)</text>
+  <text x="40" y="64" font-size="13" fill="#64748b">Intro 6.00% vs fixed 6.75% vs a 11% lifetime-cap-style reset on remaining term after 60 months.</text>
+  <line x1="72" y1="388" x2="832" y2="388" stroke="#e2e8f0"/>
+  
+      <rect x="90" y="229.51918684284504" width="229.33333333333334" height="158.48081315715496" rx="6" fill="#0f766e"/>
+      <text x="204.66666666666669" y="221.51918684284504" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$2,098</text>
+      <text x="204.66666666666669" y="410" text-anchor="middle" font-size="13" fill="#0f172a">ARM intro</text>
+      <text x="204.66666666666669" y="428" text-anchor="middle" font-size="11" fill="#64748b">6.00%</text>
+      <rect x="337.33333333333337" y="216.5543095302532" width="229.33333333333334" height="171.4456904697468" rx="6" fill="#075985"/>
+      <text x="452.00000000000006" y="208.5543095302532" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$2,270</text>
+      <text x="452.00000000000006" y="410" text-anchor="middle" font-size="13" fill="#0f172a">30-yr fixed</text>
+      <text x="452.00000000000006" y="428" text-anchor="middle" font-size="11" fill="#64748b">6.75%</text>
+      <rect x="584.6666666666667" y="146.92857142857144" width="229.33333333333334" height="241.07142857142856" rx="6" fill="#9f1239"/>
+      <text x="699.3333333333334" y="138.92857142857144" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$3,192</text>
+      <text x="699.3333333333334" y="410" text-anchor="middle" font-size="13" fill="#0f172a">ARM stress</text>
+      <text x="699.3333333333334" y="428" text-anchor="middle" font-size="11" fill="#64748b">11% after yr 5</text>
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

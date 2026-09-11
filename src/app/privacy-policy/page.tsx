@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalShell } from "@/components/LegalShell";
+import { CookiePreferencesButton } from "@/components/consent/CookiePreferencesButton";
 import { SITE, COMPANY } from "@/lib/site";
 import { PAGE_HEROES } from "@/lib/pageHeroes";
 
@@ -14,7 +15,7 @@ export default function PrivacyPage() {
     <LegalShell
       title="Privacy Policy"
       href="/privacy-policy"
-      updated="August 6, 2026"
+      updated="September 11, 2026"
       hero={PAGE_HEROES.privacy}
       subtitle="How we handle information, cookies, and advertising on this site."
     >
@@ -180,6 +181,57 @@ export default function PrivacyPage() {
         not necessarily stop all ads; they generally affect personalization and
         cookie-based advertising.
       </p>
+      <p>
+        You can reopen cookie and ad-personalization choices with the control
+        below (the same control also appears in the site footer).
+      </p>
+      <p>
+        <CookiePreferencesButton className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50" />
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Technology</th>
+            <th>Who sets it</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Essential first-party storage</td>
+            <td>{COMPANY.name}</td>
+            <td>
+              Remember a cookie-preference choice and, if you buy it, a paid PDF
+              license unlock. Not used for cross-site advertising.
+            </td>
+          </tr>
+          <tr>
+            <td>Advertising cookies and identifiers</td>
+            <td>Google AdSense and participating ad partners</td>
+            <td>
+              Deliver and measure ads, limit how often you see the same ad,
+              detect fraud, and — where allowed — personalize ads based on
+              visits to this Site and other sites. Google describes this in its{" "}
+              <a
+                href="https://policies.google.com/technologies/ads"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Advertising cookies policy
+              </a>
+              .
+            </td>
+          </tr>
+          <tr>
+            <td>Analytics cookies</td>
+            <td>Not currently used by this Site</td>
+            <td>
+              We do not currently load Google Analytics or a similar first-party
+              analytics product. If that changes, this policy will be updated.
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <p>
         For visitors in the European Economic Area, the United Kingdom, and
         Switzerland, personalized Google ads are served only after the required

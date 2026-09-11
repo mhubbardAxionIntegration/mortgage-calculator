@@ -162,8 +162,14 @@ export function HomeEditorialContent() {
             What these tools are — and are not
           </h2>
           <p className="mt-4 leading-relaxed text-slate-600">
-            {SITE.name} is an educational product from {SITE.author.name} /{" "}
-            Axion Integration Services, LLC. We are not a mortgage lender,
+            {SITE.name} is an educational product from{" "}
+            <Link
+              href="/about"
+              className="font-medium text-sky-800 hover:text-sky-900"
+            >
+              {SITE.author.name}
+            </Link>{" "}
+            / Axion Integration Services, LLC. We are not a mortgage lender,
             broker, or creditor, and nothing on this site is a loan offer,
             pre-approval, or personalized financial advice. Rate averages shown
             with the calculator come from public Freddie Mac / FRED series when

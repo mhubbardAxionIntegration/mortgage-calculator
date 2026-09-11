@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="Property tax escrow on the same $400,000 home">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">Property tax escrow on the same $400,000 home</text>
+  <text x="40" y="64" font-size="13" fill="#64748b">Monthly tax at each state’s average effective rate in our planning data — insurance and HOA not included.</text>
+  <line x1="72" y1="388" x2="832" y2="388" stroke="#e2e8f0"/>
+  
+      <rect x="90" y="265.95758928571433" width="167.5" height="122.04241071428568" rx="6" fill="#075985"/>
+      <text x="173.75" y="257.95758928571433" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$270</text>
+      <text x="173.75" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Georgia</text>
+      <text x="173.75" y="428" text-anchor="middle" font-size="11" fill="#64748b">0.81%</text>
+      <rect x="275.5" y="281.0245535714286" width="167.5" height="106.9754464285714" rx="6" fill="#0ea5e9"/>
+      <text x="359.25" y="273.0245535714286" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$237</text>
+      <text x="359.25" y="410" text-anchor="middle" font-size="13" fill="#0f172a">California</text>
+      <text x="359.25" y="428" text-anchor="middle" font-size="11" fill="#64748b">0.71%</text>
+      <rect x="461" y="258.42410714285717" width="167.5" height="129.57589285714283" rx="6" fill="#0f766e"/>
+      <text x="544.75" y="250.42410714285717" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$287</text>
+      <text x="544.75" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Florida</text>
+      <text x="544.75" y="428" text-anchor="middle" font-size="11" fill="#64748b">0.86%</text>
+      <rect x="646.5" y="146.92857142857147" width="167.5" height="241.07142857142853" rx="6" fill="#b45309"/>
+      <text x="730.25" y="138.92857142857147" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$533</text>
+      <text x="730.25" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Texas</text>
+      <text x="730.25" y="428" text-anchor="middle" font-size="11" fill="#64748b">1.60%</text>
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

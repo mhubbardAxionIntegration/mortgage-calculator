@@ -12,11 +12,12 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
             <Image
-              src="/images/heroes/home.webp"
+              src="/icon.svg"
               alt=""
               width={32}
               height={32}
-              className="h-8 w-8 rounded-lg object-cover ring-1 ring-slate-200"
+              className="h-8 w-8"
+              unoptimized
             />
             {SITE.shortName}
           </div>
@@ -73,6 +74,14 @@ export function Footer() {
             </li>
             <li>
               <Link href="/about" className="hover:text-sky-800">About</Link>
+            </li>
+            <li>
+              <a
+                href={`mailto:${SITE.contactEmail}`}
+                className="hover:text-sky-800"
+              >
+                {SITE.contactEmail}
+              </a>
             </li>
             <li>
               <Link href="/contact" className="hover:text-sky-800">Contact</Link>

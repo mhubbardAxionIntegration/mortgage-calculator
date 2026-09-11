@@ -4,8 +4,8 @@ import { buildRateQuoteUrl, isAffiliateEnabled, type QuotePrefill } from "@/lib/
 /**
  * Affiliate / lead-gen call-to-action. Renders a prominent "Get personalized
  * rates" block that deep-links to your partner with pre-filled context.
- * Hidden in production until an affiliate URL is configured; shows a labeled
- * placeholder in development so you can see placement.
+ * Hidden until an affiliate URL is configured so empty partner boxes never
+ * look like unfinished monetization.
  */
 export function RateCta({
   prefill = {},
@@ -21,13 +21,6 @@ export function RateCta({
   const href = buildRateQuoteUrl(prefill);
 
   if (!href) {
-    if (process.env.NODE_ENV !== "production") {
-      return (
-        <div className="mx-auto max-w-3xl rounded-2xl border border-dashed border-sky-300 bg-sky-50/60 p-5 text-center text-xs font-medium uppercase tracking-wide text-sky-600">
-          Lead-gen CTA (set MONETIZATION.affiliate.rateQuoteUrl)
-        </div>
-      );
-    }
     return null;
   }
 

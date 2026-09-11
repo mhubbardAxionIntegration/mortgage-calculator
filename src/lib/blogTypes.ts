@@ -2,7 +2,27 @@ export type Block =
   | { type: "p"; html: string }
   | { type: "h2"; text: string }
   | { type: "ul"; items: string[] }
-  | { type: "ol"; items: string[] };
+  | { type: "ol"; items: string[] }
+  /** First-person editor note — testing, tool-building, or a scenario that surprised us. */
+  | { type: "aside"; html: string }
+  /** Original chart or calculator screenshot (not stock photography). */
+  | {
+      type: "figure";
+      src: string;
+      alt: string;
+      caption: string;
+      width: number;
+      height: number;
+    }
+  /** Comparison or data table. Cell HTML is trusted first-party content. */
+  | {
+      type: "table";
+      caption?: string;
+      headers: string[];
+      rows: string[][];
+    }
+  /** On-page FAQ (also used for FAQPage JSON-LD). Answers may include light HTML. */
+  | { type: "faq"; items: { q: string; a: string }[] };
 
 export interface BlogCategory {
   slug: string;

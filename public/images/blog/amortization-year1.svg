@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="Year 1 on a $300,000 30-year at 6.75%: mostly interest">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">Year 1 on a $300,000 30-year at 6.75%: mostly interest</text>
+  <text x="40" y="64" font-size="13" fill="#64748b">Same payment every month. Year 1 is about $20,152 interest vs about $3,197 principal.</text>
+  <line x1="72" y1="388" x2="832" y2="388" stroke="#e2e8f0"/>
+  
+      <rect x="90" y="146.92857142857144" width="353" height="241.07142857142856" rx="6" fill="#9f1239"/>
+      <text x="266.5" y="138.92857142857144" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$20,152</text>
+      <text x="266.5" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Interest</text>
+      <text x="266.5" y="428" text-anchor="middle" font-size="11" fill="#64748b">year 1</text>
+      <rect x="461" y="349.75539116996543" width="353" height="38.244608830034586" rx="6" fill="#075985"/>
+      <text x="637.5" y="341.75539116996543" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$3,197</text>
+      <text x="637.5" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Principal</text>
+      <text x="637.5" y="428" text-anchor="middle" font-size="11" fill="#64748b">year 1</text>
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

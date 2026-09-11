@@ -241,7 +241,7 @@ export const LOAN_TYPES: LoanType[] = [
       },
       {
         heading: "Rate-and-term vs cash-out",
-        text: "Rate-and-term refinances focus on payment, rate type, or term length. Cash-out refinances add debt and often price slightly worse. If you need cash for a finite project, compare a cash-out refinance against a HELOC or home equity loan so you do not put your primary mortgage rate at risk for a short-term need.",
+        text: "Rate-and-term refinances focus on payment, rate type, or term length. Cash-out refinances add debt and often price slightly worse. If you need cash for a finite project, compare a cash-out refinance against a HELOC or home equity loan so you do not put your primary mortgage rate at risk for a short-term need. A $50,000 worked example is in our cash-out vs HELOC guide under Smart Buying.",
       },
     ],
     faqIntro:
@@ -260,7 +260,7 @@ export const LOAN_TYPES: LoanType[] = [
       {
         question: "Should I do a cash-out refinance?",
         answer:
-          "Cash-out increases the balance and often prices worse than rate-and-term. For a short-term cash need, compare a HELOC or home equity loan so you do not put your entire first-mortgage rate at risk.",
+          "Cash-out increases the balance and often prices worse than rate-and-term. For a short-term cash need, compare a HELOC or home equity loan so you do not put your entire first-mortgage rate at risk. See the cash-out vs HELOC guide on Smart Buying for a $50,000 five-year comparison.",
       },
       {
         question: "What inputs do I need before using this tool?",

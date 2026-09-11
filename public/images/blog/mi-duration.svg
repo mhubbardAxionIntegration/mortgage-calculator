@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="How long mortgage insurance sticks (typical purchase)">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">How long mortgage insurance sticks (typical purchase)</text>
+  <text x="40" y="64" font-size="13" fill="#64748b">FHA annual MIP duration vs conventional PMI you can request to cancel near 20% equity. Confirm HUD/servicer rules.</text>
+  <line x1="72" y1="388" x2="832" y2="388" stroke="#e2e8f0"/>
+  
+      <rect x="90" y="146.92857142857144" width="229.33333333333334" height="241.07142857142856" rx="6" fill="#9f1239"/>
+      <text x="204.66666666666669" y="138.92857142857144" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">30 yrs</text>
+      <text x="204.66666666666669" y="410" text-anchor="middle" font-size="13" fill="#0f172a">FHA &lt;10% down</text>
+      <text x="204.66666666666669" y="428" text-anchor="middle" font-size="11" fill="#64748b">annual MIP</text>
+      <rect x="337.33333333333337" y="299.6071428571429" width="229.33333333333334" height="88.39285714285714" rx="6" fill="#b45309"/>
+      <text x="452.00000000000006" y="291.6071428571429" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">11 yrs</text>
+      <text x="452.00000000000006" y="410" text-anchor="middle" font-size="13" fill="#0f172a">FHA 10%+ down</text>
+      <text x="452.00000000000006" y="428" text-anchor="middle" font-size="11" fill="#64748b">annual MIP</text>
+      <rect x="584.6666666666667" y="323.7142857142857" width="229.33333333333334" height="64.28571428571428" rx="6" fill="#075985"/>
+      <text x="699.3333333333334" y="315.7142857142857" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">8 yrs</text>
+      <text x="699.3333333333334" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Conv. PMI</text>
+      <text x="699.3333333333334" y="428" text-anchor="middle" font-size="11" fill="#64748b">often cancellable</text>
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

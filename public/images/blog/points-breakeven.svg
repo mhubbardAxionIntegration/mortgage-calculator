@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="One discount point on $300,000: when it pays back">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">One discount point on $300,000: when it pays back</text>
+  <g transform="translate(40, 74)">
+           <rect width="18" height="3" y="5" fill="#9f1239"/>
+           <text x="24" y="11" font-size="12" fill="#0f172a">Upfront cost of 1 point</text>
+         </g><g transform="translate(260, 74)">
+           <rect width="18" height="3" y="5" fill="#075985"/>
+           <text x="24" y="11" font-size="12" fill="#0f172a">Cumulative P&amp;I savings</text>
+         </g>
+  <rect x="70" y="110" width="770" height="270" fill="#fff" stroke="#e2e8f0"/>
+  <path d="M 70.0 200.0 L 180.0 200.0 L 290.0 200.0 L 400.0 200.0 L 510.0 200.0 L 620.0 200.0 L 730.0 200.0 L 840.0 200.0" fill="none" stroke="#9f1239" stroke-width="3" stroke-linejoin="round"/><path d="M 70.0 380.0 L 180.0 344.3 L 290.0 308.6 L 400.0 272.9 L 510.0 237.2 L 620.0 201.5 L 730.0 165.8 L 840.0 130.1" fill="none" stroke="#075985" stroke-width="3" stroke-linejoin="round"/>
+  <text x="455" y="408" text-anchor="middle" font-size="12" fill="#64748b">Months you keep the loan</text>
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

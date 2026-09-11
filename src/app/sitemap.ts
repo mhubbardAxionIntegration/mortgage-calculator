@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { LOAN_TYPES } from "@/lib/loanTypes";
-import { BLOG_POSTS, BLOG_CATEGORIES } from "@/lib/blog";
+import { BLOG_POSTS, BLOG_CATEGORIES, isCategoryIndexable } from "@/lib/blog";
 import { absoluteUrl } from "@/lib/site";
 
 function safeDate(value: string | Date | undefined): Date {
@@ -57,14 +57,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     }));
 
-    const blogCategoryPages: MetadataRoute.Sitemap = BLOG_CATEGORIES.map(
-      (c) => ({
-        url: absoluteUrl(`/blog/category/${c.slug}`),
-        lastModified: now,
-        changeFrequency: "weekly" as const,
-        priority: 0.5,
-      }),
-    );
+    const blogCategoryPages: MetadataRoute.Sitemap = BLOG_CATEGORIES.filter(
+      (c) => isCategoryIndexable(c.slug),
+    ).map((c) => ({
+      url: absoluteUrl(`/blog/category/${c.slug}`),
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    }));
 
     const infoPages: MetadataRoute.Sitemap = [
       "/about",

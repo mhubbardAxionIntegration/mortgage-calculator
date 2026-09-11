@@ -1,6 +1,7 @@
 import { getState, STATES } from "./states";
 import type { Block, BlogCategory, BlogPost } from "./blogTypes";
 import { ALL_BLOG_POSTS } from "./blogPosts";
+import { MIN_POSTS_TO_INDEX_CATEGORY } from "./crawl";
 
 export type { Block, BlogCategory, BlogPost };
 
@@ -49,8 +50,8 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
       "Refinancing only helps if you recover closing costs and the new term does not erase interest savings. Start with break-even months and lifetime interest — not payment alone — then confirm fees on a Loan Estimate. Some states also require a tangible net benefit review before a refinance can close.",
     relatedTools: [
       { href: "/calculators/refinance-mortgage-calculator", label: "Refinance break-even calculator" },
-      { href: "/blog/refinance-closing-costs-by-state", label: "Closing costs by state" },
-      { href: "/blog/mortgage-recasting-vs-refinancing", label: "Recast vs refinance" },
+      { href: "/blog/should-you-refinance-2026", label: "Refinance vs recast guide" },
+      { href: "/blog/cash-out-refinance-vs-heloc", label: "Cash-out vs HELOC" },
     ],
   },
   {
@@ -62,14 +63,14 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
     relatedTools: [
       { href: "/", label: "Mortgage calculator" },
       { href: "/how-we-calculate", label: "How we calculate" },
-      { href: "/blog/seller-concessions-and-rate-buydowns", label: "Seller concessions guide" },
+      { href: "/blog/down-payment-how-much-do-you-need", label: "Down payment & concessions" },
     ],
   },
   {
     slug: "pitfalls",
     name: "Common Pitfalls",
     description:
-      "Mistakes most homebuyers never see coming — credit after pre-approval, one-lender shopping, MIP duration, and under-counted housing costs.",
+      "Mistakes most homebuyers never see coming — credit after pre-approval, one-lender shopping, MIP duration, overlays, and under-counted housing costs.",
     intro:
       "These guides focus on expensive, easy-to-miss traps: changing credit during underwriting, comparing only a headline rate, misunderstanding FHA MIP length, under-estimating taxes and insurance, and treating pre-approval as a guarantee. Read them with our checklist of questions nobody thinks to ask before you interview agents or write an offer.",
     relatedTools: [
@@ -102,6 +103,24 @@ export const BLOG_POSTS_SORTED = [...BLOG_POSTS].sort(
 
 export function getPostsByCategory(categorySlug: string): BlogPost[] {
   return BLOG_POSTS_SORTED.filter((p) => p.category === categorySlug);
+}
+
+/** Category listing hubs with too few unique posts are archives, not indexable. */
+export function isCategoryIndexable(categorySlug: string): boolean {
+  return getPostsByCategory(categorySlug).length >= MIN_POSTS_TO_INDEX_CATEGORY;
+}
+
+/** Visible FAQ items on a post — used for FAQPage JSON-LD. */
+export function getPostFaqs(
+  post: BlogPost,
+): { question: string; answer: string }[] {
+  return post.body.flatMap((block) => {
+    if (block.type !== "faq") return [];
+    return block.items.map((item) => ({
+      question: item.q,
+      answer: item.a.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+    }));
+  });
 }
 
 /**

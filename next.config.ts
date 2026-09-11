@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { BLOG_PERMANENT_REDIRECTS } from "./src/lib/blogRedirects";
 import { STATES } from "./src/lib/states";
 
 const stateRedirects = STATES.map((s) => ({
@@ -28,6 +29,11 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      ...BLOG_PERMANENT_REDIRECTS.map((r) => ({
+        source: r.source,
+        destination: r.destination,
+        statusCode: 301 as const,
+      })),
     ];
   },
   async headers() {
@@ -47,6 +53,16 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
+        // Founder photo and other small identity assets.
+        source: "/images/author/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

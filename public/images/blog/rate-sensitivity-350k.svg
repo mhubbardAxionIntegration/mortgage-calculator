@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="Same $350,000 loan, three rates (30-year P&amp;I)">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">Same $350,000 loan, three rates (30-year P&amp;I)</text>
+  <text x="40" y="64" font-size="13" fill="#64748b">Principal and interest only — I ran these three sliders on our calculator in September 2026.</text>
+  <line x1="72" y1="388" x2="832" y2="388" stroke="#e2e8f0"/>
+  
+      <rect x="90" y="191.62878628829824" width="229.33333333333334" height="196.37121371170176" rx="6" fill="#0f766e"/>
+      <text x="204.66666666666669" y="183.62878628829824" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$2,043</text>
+      <text x="204.66666666666669" y="410" text-anchor="middle" font-size="13" fill="#0f172a">5.75%</text>
+      <text x="204.66666666666669" y="428" text-anchor="middle" font-size="11" fill="#64748b">stress-test low</text>
+      <rect x="337.33333333333337" y="169.74791026024948" width="229.33333333333334" height="218.25208973975052" rx="6" fill="#075985"/>
+      <text x="452.00000000000006" y="161.74791026024948" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$2,270</text>
+      <text x="452.00000000000006" y="410" text-anchor="middle" font-size="13" fill="#0f172a">6.75%</text>
+      <text x="452.00000000000006" y="428" text-anchor="middle" font-size="11" fill="#64748b">site default</text>
+      <rect x="584.6666666666667" y="146.92857142857144" width="229.33333333333334" height="241.07142857142856" rx="6" fill="#9f1239"/>
+      <text x="699.3333333333334" y="138.92857142857144" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$2,507</text>
+      <text x="699.3333333333334" y="410" text-anchor="middle" font-size="13" fill="#0f172a">7.75%</text>
+      <text x="699.3333333333334" y="428" text-anchor="middle" font-size="11" fill="#64748b">+1 point</text>
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="$50,000 cash need: 5-year interest (keep first vs cash-out)">
+  <rect width="880" height="460" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="458" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">$50,000 cash need: 5-year interest (keep first vs</text><text x="40" y="58" font-size="18" font-weight="800" fill="#0f172a">cash-out)</text>
+  <text x="40" y="86" font-size="13" fill="#64748b">Keep a $240k 6.75% first + second, vs cash-out $290k at 7.125%. Cash-out bar includes $6,500 closing costs.</text>
+  <line x1="72" y1="388" x2="832" y2="388" stroke="#e2e8f0"/>
+  
+      <rect x="90" y="165.50595404875315" width="229.33333333333334" height="222.49404595124685" rx="6" fill="#075985"/>
+      <text x="204.66666666666669" y="157.50595404875315" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$98,819</text>
+      <text x="204.66666666666669" y="410" text-anchor="middle" font-size="13" fill="#0f172a">First + HELOC IO</text>
+      <text x="204.66666666666669" y="428" text-anchor="middle" font-size="11" fill="#64748b">8.50% IO</text>
+      <rect x="337.33333333333337" y="175.38342072609376" width="229.33333333333334" height="212.61657927390624" rx="6" fill="#0f766e"/>
+      <text x="452.00000000000006" y="167.38342072609376" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$94,432</text>
+      <text x="452.00000000000006" y="410" text-anchor="middle" font-size="13" fill="#0f172a">First + equity loan</text>
+      <text x="452.00000000000006" y="428" text-anchor="middle" font-size="11" fill="#64748b">8.25% 10-yr</text>
+      <rect x="584.6666666666667" y="146.92857142857144" width="229.33333333333334" height="241.07142857142856" rx="6" fill="#9f1239"/>
+      <text x="699.3333333333334" y="138.92857142857144" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">$107,070</text>
+      <text x="699.3333333333334" y="410" text-anchor="middle" font-size="13" fill="#0f172a">Cash-out + costs</text>
+      <text x="699.3333333333334" y="428" text-anchor="middle" font-size="11" fill="#64748b">7.125% 30-yr</text>
+  <text x="40" y="442" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

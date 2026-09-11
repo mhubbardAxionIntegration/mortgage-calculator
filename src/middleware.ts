@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getAdsTxtBody } from "@/lib/adsTxt";
+import { queryLooksDiluting } from "@/lib/crawl";
 
 /** Canonical public origin — never use request.nextUrl.clone() for redirects on Hostinger (leaks :3000). */
 const CANONICAL = "https://www.smartmortgagecalc.com";
@@ -16,6 +17,17 @@ function isInsecureRequest(request: NextRequest): boolean {
     request.nextUrl.protocol.replace(":", "")
   ).toLowerCase();
   return proto === "http";
+}
+
+function applyRobotsTag(response: NextResponse, request: NextRequest) {
+  const pathname = request.nextUrl.pathname || "/";
+  if (pathname.startsWith("/api/")) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return;
+  }
+  if (queryLooksDiluting(request.nextUrl.search)) {
+    response.headers.set("X-Robots-Tag", "noindex, follow");
+  }
 }
 
 export function middleware(request: NextRequest) {
@@ -49,10 +61,14 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "" && request.nextUrl.search) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
-    return NextResponse.rewrite(url);
+    const rewritten = NextResponse.rewrite(url);
+    applyRobotsTag(rewritten, request);
+    return rewritten;
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  applyRobotsTag(response, request);
+  return response;
 }
 
 export const config = {

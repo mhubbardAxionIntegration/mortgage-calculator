@@ -29,11 +29,20 @@ export const SITE = {
   author: {
     name: "Michael Hubbard",
     role: "Founder & editor",
+    location: "Franklin, Heard County, Georgia",
+    image: "/images/author/michael-hubbard.png",
+    imageAlt:
+      "Michael Hubbard, founder and editor of Smart Mortgage Calculator",
     /** Short byline used on Smart Buying posts. */
-    bio: "Founder of Smart Mortgage Calculator and operator of Axion Integration Services, LLC. Builds educational mortgage tools and plain-English guides — estimates are educational, not loan offers.",
+    bio: "I build the calculators and write the Smart Buying guides. I am not a licensed lender — the work here is educational payment math, tested against the formulas we publish.",
     /** Longer About-page credentials without inventing licenses. */
     credentials:
       "Michael designs the calculators, state guides, and editorial standards for this site. Content is reviewed for formula accuracy against the public methodology page; personal rate quotes and underwriting decisions always require a licensed lender.",
+    experience: [
+      "Designs and tests the amortization, PITI, FHA MIP, VA, ARM, and refinance calculators on this site",
+      "Operates Axion Integration Services, LLC from Franklin, Heard County, Georgia",
+      "Publishes worked examples from the same formulas as the tools — not from originating loans",
+    ],
   },
 } as const;
 

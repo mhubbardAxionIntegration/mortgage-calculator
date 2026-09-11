@@ -23,6 +23,7 @@ import {
 } from "@/lib/schema";
 import { absoluteUrl } from "@/lib/site";
 import { PAGE_HEROES, type PageHeroConfig } from "@/lib/pageHeroes";
+import { searchParamsLookDiluting } from "@/lib/crawl";
 
 function heroForLoanSlug(slug: string): PageHeroConfig {
   if (slug.includes("fha")) return PAGE_HEROES.fha;
@@ -39,12 +40,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ type: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
   const { type } = await params;
   const data = getLoanType(type);
   if (!data) return {};
+  const noindex = searchParamsLookDiluting(await searchParams);
   return {
     title: data.metaTitle,
     description: data.metaDescription,
@@ -55,6 +59,9 @@ export async function generateMetadata({
       description: data.metaDescription,
       url: absoluteUrl(`/calculators/${data.slug}`),
     },
+    ...(noindex
+      ? { robots: { index: false, follow: true, googleBot: { index: false, follow: true } } }
+      : {}),
   };
 }
 
@@ -77,6 +84,30 @@ export default async function LoanTypePage({
 
   const faqs = data.faqs;
   const otherTypes = LOAN_TYPES.filter((t) => t.slug !== data.slug);
+  const relatedGuide = (
+    {
+      "arm-mortgage-calculator": {
+        href: "/blog/arm-vs-fixed-rate-mortgage",
+        label: "ARM vs fixed — stress-test the reset",
+      },
+      "fha-mortgage-calculator": {
+        href: "/blog/fha-vs-conventional-loans",
+        label: "FHA vs conventional",
+      },
+      "va-mortgage-calculator": {
+        href: "/blog/va-loan-entitlement-residual-income",
+        label: "VA entitlement and residual income",
+      },
+      "refinance-mortgage-calculator": {
+        href: "/blog/should-you-refinance-2026",
+        label: "Refinance vs recast",
+      },
+      "home-affordability-calculator": {
+        href: "/blog/how-much-house-can-i-afford",
+        label: "How much house can I afford",
+      },
+    } as Record<string, { href: string; label: string }>
+  )[data.slug];
   const ratesPanel = (
     <RatesPanel calculatorHref={`/calculators/${data.slug}`} />
   );
@@ -159,19 +190,7 @@ export default async function LoanTypePage({
           </Suspense>
         </div>
 
-        <div className="mt-10">
-          <RateCta
-            prefill={{ loanType: data.slug }}
-            heading={`Get matched with ${data.label} lenders`}
-            subtext="Compare personalized offers from lenders that specialize in this loan type."
-          />
-        </div>
-
-        <div className="mt-10">
-          <AdSlot slot="inContent" />
-        </div>
-
-        <article className="mt-14 max-w-3xl space-y-10">
+        <article className="mt-10 max-w-3xl space-y-10">
           <section>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
               Quick comparison
@@ -218,6 +237,29 @@ export default async function LoanTypePage({
               >
                 how we calculate
               </Link>
+              {relatedGuide ? (
+                <>
+                  . Worked example:{" "}
+                  <Link
+                    href={relatedGuide.href}
+                    className="font-medium text-sky-800 hover:text-sky-900"
+                  >
+                    {relatedGuide.label}
+                  </Link>
+                </>
+              ) : null}
+              {data.slug === "refinance-mortgage-calculator" ? (
+                <>
+                  {" "}
+                  and{" "}
+                  <Link
+                    href="/blog/cash-out-refinance-vs-heloc"
+                    className="font-medium text-sky-800 hover:text-sky-900"
+                  >
+                    cash-out vs HELOC
+                  </Link>
+                </>
+              ) : null}
               .
             </p>
           </section>
@@ -247,6 +289,18 @@ export default async function LoanTypePage({
             heading={`${data.title} FAQs`}
             intro={data.faqIntro}
           />
+        </div>
+
+        <div className="mt-10">
+          <RateCta
+            prefill={{ loanType: data.slug }}
+            heading={`Get matched with ${data.label} lenders`}
+            subtext="Compare personalized offers from lenders that specialize in this loan type."
+          />
+        </div>
+
+        <div className="mt-10">
+          <AdSlot slot="inContent" />
         </div>
       </div>
     </>

@@ -91,6 +91,11 @@ export default function HowWeCalculatePage() {
               If the rate is zero, we divide the loan amount evenly across the
               term. Amortization schedules allocate each payment between interest
               (rate × remaining balance) and principal (payment minus interest).
+              A worked year-1 split on a $300,000 loan lives in our{" "}
+              <Link href="/blog/how-mortgage-amortization-works">
+                amortization guide
+              </Link>
+              .
             </p>
           </section>
 

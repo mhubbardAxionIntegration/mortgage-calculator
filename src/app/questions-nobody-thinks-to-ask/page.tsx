@@ -274,7 +274,7 @@ export default function QuestionsNobodyThinksToAskPage() {
               Tie financing questions to real caps for your loan (concessions,
               buydowns, appraisal risks) using our{" "}
               <Link
-                href="/blog/seller-concessions-and-rate-buydowns"
+                href="/blog/down-payment-how-much-do-you-need"
                 className="font-medium text-sky-800 hover:text-sky-900"
               >
                 concessions guide

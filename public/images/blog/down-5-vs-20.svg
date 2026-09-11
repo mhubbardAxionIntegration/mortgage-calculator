@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="480" viewBox="0 0 880 480" role="img" aria-label="$350,000 home: 5% down vs 20% down (6.75% 30-year)">
+  <rect width="880" height="480" fill="#f8fafc"/>
+  <rect x="1" y="1" width="878" height="478" fill="none" stroke="#e2e8f0"/>
+  <text x="40" y="36" font-size="18" font-weight="800" fill="#0f172a">$350,000 home: 5% down vs 20% down (6.75% 30-year)</text>
+  <g transform="translate(40, 76)">
+           <rect width="12" height="12" rx="2" fill="#075985"/>
+           <text x="18" y="11" font-size="12" fill="#0f172a">P&amp;I</text>
+         </g><g transform="translate(210, 76)">
+           <rect width="12" height="12" rx="2" fill="#b45309"/>
+           <text x="18" y="11" font-size="12" fill="#0f172a">PMI</text>
+         </g>
+  <line x1="72" y1="378" x2="832" y2="378" stroke="#e2e8f0"/>
+  <rect x="108" y="149.92982456140345" width="159" height="228.07017543859655" rx="5" fill="#075985"/>
+          <text x="187.5" y="143.92982456140345" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">$2k</text><rect x="275" y="357.48792381962807" width="159" height="20.512076180371917" rx="5" fill="#b45309"/>
+          <text x="354.5" y="351.48792381962807" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">$194</text><text x="271" y="402" text-anchor="middle" font-size="13" fill="#0f172a">5% down ($17,500)</text><rect x="470" y="185.94090489381347" width="159" height="192.05909510618653" rx="5" fill="#075985"/>
+          <text x="549.5" y="179.94090489381347" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">$2k</text><rect x="637" y="378" width="159" height="0" rx="5" fill="#b45309"/>
+          <text x="716.5" y="372" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">$0</text><text x="633" y="402" text-anchor="middle" font-size="13" fill="#0f172a">20% down ($70,000)</text>
+  <text x="40" y="462" font-size="11" fill="#64748b">Source: Smart Mortgage Calculator amortization formula · educational estimate · Sept 2026</text>
+</svg>

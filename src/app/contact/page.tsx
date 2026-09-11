@@ -6,7 +6,7 @@ import { PAGE_HEROES } from "@/lib/pageHeroes";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: `Contact ${COMPANY.name}, the team behind ${SITE.name}. Send us your questions, feedback, or corrections.`,
+  description: `Email ${SITE.contactEmail} or use the contact form to reach ${SITE.author.name} at ${SITE.name} with calculator questions or corrections.`,
   alternates: { canonical: "/contact" },
 };
 
@@ -16,26 +16,34 @@ export default function ContactPage() {
       title="Contact Us"
       href="/contact"
       hero={PAGE_HEROES.contact}
-      subtitle="Questions, corrections, and calculator feedback — we read every message."
+      subtitle="Calculator questions, corrections, and feedback — the form emails the editor."
     >
       <p>
-        We&rsquo;d love to hear from you — whether you&rsquo;ve found a bug,
-        have feedback on a calculator, or spotted something that needs a
-        correction. Use the form below; we read every message.
+        Use the form below or email{" "}
+        <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>. I read
+        every message. This is not a lender help desk: I can explain the
+        calculators, fix a bug, or correct a guide. I cannot lock a rate or
+        underwrite a file.
       </p>
 
-      <h2>About us</h2>
+      <h2>Reach the editor</h2>
       <ul>
-        {COMPANY.phone && <li>Phone: {COMPANY.phone}</li>}
         <li>
           Email:{" "}
           <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>
+        </li>
+        <li>
+          Editor: {SITE.author.name}, {SITE.author.role}
         </li>
         <li>{COMPANY.name}</li>
         {COMPANY.addressLines.map((line) => (
           <li key={line}>{line}</li>
         ))}
       </ul>
+      <p>
+        Typical replies are by email. If the form cannot send, the confirmation
+        screen includes a mailto fallback with your message already filled in.
+      </p>
 
       <h2>Send a message</h2>
       <ContactForm />

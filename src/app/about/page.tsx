@@ -1,117 +1,103 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AuthorBio } from "@/components/AuthorBio";
+import { JsonLd } from "@/components/JsonLd";
 import { LegalShell } from "@/components/LegalShell";
-import { SITE, COMPANY } from "@/lib/site";
+import { SITE, COMPANY, absoluteUrl } from "@/lib/site";
 import { PAGE_HEROES } from "@/lib/pageHeroes";
+import { personAuthorSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: `Learn about ${SITE.name}, editor ${SITE.author.name}, and ${COMPANY.name}: calculator methodology, editorial standards, and how we keep tools free for homebuyers.`,
+  description: `Learn about ${SITE.name} editor ${SITE.author.name}: who builds the calculators, why the math is public, and how we keep tools free for homebuyers.`,
   alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
   return (
-    <LegalShell
-      title="About Us"
-      href="/about"
-      hero={PAGE_HEROES.about}
-      subtitle={`Who builds ${SITE.name} and how we keep the tools educational and transparent.`}
-    >
-      <p>
-        {SITE.name} is a free suite of mortgage and home-affordability
-        calculators built to help homebuyers and homeowners make clearer,
-        more confident decisions. We believe estimating a mortgage payment
-        shouldn&rsquo;t require a spreadsheet or a sales call — and it
-        shouldn&rsquo;t hide the assumptions behind the number.
-      </p>
+    <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          ...personAuthorSchema(),
+          url: absoluteUrl("/about"),
+        }}
+      />
+      <LegalShell
+        title="About Us"
+        href="/about"
+        hero={PAGE_HEROES.about}
+        subtitle={`Who builds ${SITE.name}, why the formulas are public, and how to reach the editor.`}
+      >
+        <AuthorBio variant="profile" />
 
-      <h2>Who we are</h2>
-      <p>
-        The Site is operated by {COMPANY.name}, a {COMPANY.state}-based company.
-        Content and tools are edited by{" "}
-        <strong>{SITE.author.name}</strong>, {SITE.author.role.toLowerCase()}.
-      </p>
-      <p>{SITE.author.credentials}</p>
+        <h2>Who I am</h2>
+        <p>
+          I&rsquo;m {SITE.author.name}. I live in {SITE.author.location}, and I
+          operate {COMPANY.name}. {SITE.name} is the educational product I
+          maintain: payment, affordability, refinance, FHA, VA, and ARM tools,
+          plus the Smart Buying guides that walk through the same math.
+        </p>
+        <p>
+          I am qualified to publish these tools because I wrote them, I test
+          them when the sliders change, and I document the formulas on{" "}
+          <Link href="/how-we-calculate">How we calculate</Link>. I am not a
+          licensed mortgage lender, loan officer, or underwriter. I do not
+          originate loans, lock rates, or approve files. When a guide says
+          &ldquo;in my testing,&rdquo; it means I ran this site&rsquo;s
+          amortization engine — not that I closed a loan for a client.
+        </p>
 
-      <h2>Editorial standards</h2>
-      <ul>
-        <li>
-          Payment math follows the standard amortization formula published on{" "}
-          <Link href="/how-we-calculate">How we calculate</Link>. When defaults
-          change (rates, tax/insurance starting points), we update the labeled{" "}
-          &ldquo;as of&rdquo; date ({SITE.ratesAsOf}).
-        </li>
-        <li>
-          Specialized pages use scenario-specific models: refinance break-even,
-          FHA upfront and annual MIP, and ARM intro vs. stress payments — not
-          copy-paste of a single form with swapped labels.
-        </li>
-        <li>
-          Guides prioritize worked examples and decision frameworks over
-          keyword filler. We do not present educational estimates as personalized
-          loan offers or guarantees of approval.
-        </li>
-        <li>
-          Corrections and methodology questions are welcome via the{" "}
-          <Link href="/contact">contact form</Link>.
-        </li>
-      </ul>
+        <h2>Why this site exists</h2>
+        <p>
+          Payment apps often hide assumptions. I wanted a place where principal
+          and interest, taxes, insurance, and mortgage insurance sit in the open,
+          with state defaults you can challenge, and with worked examples that
+          use the same numbers as the widgets. The Smart Buying cluster stays
+          on that niche: term choice, PMI, loan types, shopping a Loan Estimate,
+          and refinance break-even — not a farm of thin pages.
+        </p>
 
-      <h2>What makes our content different</h2>
-      <ul>
-        <li>
-          State pages include local market notes, tax/homestead context,
-          insurance risk drivers, buyer-program lists, and worked payment
-          examples — not just a calculator with the state name swapped in.
-        </li>
-        <li>
-          Loan-type pages (FHA, VA, refinance, affordability, ARM) include
-          comparison tables, checklists, and multi-section explainers.
-        </li>
-        <li>
-          We maintain a public methodology page documenting formulas, PMI rules,
-          and data limits so reviewers and readers can verify the math.
-        </li>
-      </ul>
+        <h2>Editorial standards</h2>
+        <ul>
+          <li>
+            Payment math follows the standard amortization formula published on{" "}
+            <Link href="/how-we-calculate">How we calculate</Link>. When defaults
+            change (rates, tax/insurance starting points), we update the labeled{" "}
+            &ldquo;as of&rdquo; date ({SITE.ratesAsOf}).
+          </li>
+          <li>
+            Specialized pages use scenario-specific models: refinance break-even,
+            FHA upfront and annual MIP, and ARM intro vs. stress payments — not
+            copy-paste of a single form with swapped labels.
+          </li>
+          <li>
+            Guides prioritize worked examples and decision frameworks over
+            keyword filler. Educational estimates are never presented as
+            personalized loan offers or guarantees of approval.
+          </li>
+          <li>
+            Corrections are welcome via the <Link href="/contact">contact form</Link>{" "}
+            or {SITE.contactEmail}.
+          </li>
+        </ul>
 
-      <h2>Our approach to accuracy</h2>
-      <ul>
-        <li>
-          Calculations use the standard amortization formula and clearly
-          separate principal, interest, taxes, insurance, PMI/MIP, and HOA dues.
-        </li>
-        <li>
-          Default interest rates are indicative and labeled with an
-          &ldquo;as of&rdquo; date ({SITE.ratesAsOf}); always confirm current
-          rates with a lender.
-        </li>
-        <li>
-          State-level tax and insurance figures are approximate averages
-          intended as starting points, not guarantees or assessed bills.
-        </li>
-        <li>
-          Editorial guides cite common industry rules of thumb (such as 28/36
-          DTI) and remind readers that underwriting is case-specific.
-        </li>
-      </ul>
+        <h2>How the site stays free</h2>
+        <p>
+          Calculators and guides are free. Limited Google AdSense advertising
+          helps host them. Ads and any future partner links sit after the tools
+          and articles, not in place of them. How ad-related data is handled is
+          in the <Link href="/privacy-policy">Privacy Policy</Link>. Ordinary
+          calculator use does not require an account.
+        </p>
 
-      <h2>How we stay free</h2>
-      <p>
-        The calculators and guides on this Site are free to use. We support the
-        Site with Google AdSense advertising. How ad-related data is handled is
-        described in our{" "}
-        <a href="/privacy-policy">Privacy Policy</a>; additional notes appear in
-        our <a href="/disclaimer">Disclaimer</a>. Ordinary calculator use
-        remains separate from third-party ads and any optional partner offers.
-      </p>
-
-      <h2>Get in touch</h2>
-      <p>
-        Have feedback, a correction, or a partnership idea? Visit our{" "}
-        <Link href="/contact">contact page</Link> — we&rsquo;d love to hear from
-        you.
-      </p>
-    </LegalShell>
+        <h2>Get in touch</h2>
+        <p>
+          Questions, a math correction, or a broken link:{" "}
+          <Link href="/contact">contact page</Link> or{" "}
+          <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.
+        </p>
+      </LegalShell>
+    </>
   );
 }
